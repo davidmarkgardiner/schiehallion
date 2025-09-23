@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import LoginForm from '@/components/LoginForm'
-import UserProfile from '@/components/UserProfile'
+import NavUserProfile from '@/components/NavUserProfile'
 
 const navItems = [
   { label: 'Rooms', href: '#rooms' },
@@ -290,7 +290,7 @@ export default function Home() {
                   </a>
                 ))}
               </div>
-              <UserProfile />
+              <NavUserProfile />
             </div>
           </nav>
 
