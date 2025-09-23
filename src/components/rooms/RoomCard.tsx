@@ -53,8 +53,8 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
       .join(', ')
   }
 
-  const getKeyFeatures = () => {
-    const features = []
+  const getKeyFeatures = (): string[] => {
+    const features: string[] = []
     if (!room.features) return features
 
     if (room.features.wifi) features.push('WiFi')

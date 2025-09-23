@@ -363,8 +363,8 @@ export interface GuestFormData {
   }
   preferences: {
     specialRequests?: string
-    dietaryRequirements?: string[]
-    accessibilityNeeds?: string[]
+    dietaryRequirements: string[]
+    accessibilityNeeds: string[]
     marketingOptIn: boolean
   }
   arrival: {
