@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import { User, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, signInWithPopup } from 'firebase/auth'
 import { auth, googleProvider, hasPermission, type Permission } from '@/lib/firebase'
 import { UserProfile, UserRole } from '@/types/auth'
-import { createUserProfile, getUserProfile, updateLastLogin, logAuditEvent } from '@/lib/db'
+import { createUserProfile, getUserProfile, updateUserProfile, updateLastLogin, logAuditEvent } from '@/lib/db'
 
 interface AuthContextType {
   user: User | null

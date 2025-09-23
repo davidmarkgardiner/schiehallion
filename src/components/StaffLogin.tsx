@@ -23,7 +23,7 @@ export default function StaffLogin() {
         handleSessionTimeout()
       }, 30 * 60 * 1000) // 30 minutes
 
-      setSessionTimeout(timeout)
+      setSessionTimeout(timeout as unknown as number)
 
       return () => {
         if (timeout) {

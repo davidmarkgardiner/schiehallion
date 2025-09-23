@@ -23,7 +23,18 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 const db = getFirestore(app)
-const rtdb = getDatabase(app)
+let rtdb: any = null
+
+// Initialize Realtime Database only if URL is provided
+try {
+  if (process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL) {
+    rtdb = getDatabase(app)
+  } else {
+    console.warn('⚠️ NEXT_PUBLIC_FIREBASE_DATABASE_URL not set - skipping Realtime Database operations')
+  }
+} catch (error) {
+  console.warn('⚠️ Failed to initialize Realtime Database:', error)
+}
 
 // Sample room data based on Schiehallion Hotel in Scotland
 const generateSampleRooms = (): Omit<Room, 'id' | 'createdAt' | 'updatedAt'>[] => {
@@ -364,8 +375,16 @@ async function seedHotelData() {
       })
     })
 
-    await set(ref(rtdb, 'availability'), rtdbData)
-    console.log('✅ Real-time Database seeded successfully')
+    if (rtdb) {
+      try {
+        await set(ref(rtdb, 'availability'), rtdbData)
+        console.log('✅ Real-time Database seeded successfully')
+      } catch (error) {
+        console.warn('⚠️ Failed to seed Realtime Database:', error)
+      }
+    } else {
+      console.log('⚠️ Skipping Realtime Database seeding - not configured')
+    }
 
     // Summary
     console.log('\n🎉 Hotel data seeding completed successfully!')
@@ -385,10 +404,15 @@ async function seedHotelData() {
     })
 
     console.log('\n🔗 Next steps:')
-    console.log('   1. Deploy Firestore rules: firebase deploy --only firestore:rules')
-    console.log('   2. Deploy Firestore indexes: firebase deploy --only firestore:indexes')
-    console.log('   3. Set up Real-time Database rules in Firebase Console')
-    console.log('   4. Test the booking system with the seeded data')
+    console.log('   1. Start dev server: npm run dev')
+    console.log('   2. Visit rooms page: http://localhost:3002/rooms')
+    console.log('   3. Test Epic 4: npx playwright test tests/epic4-room-display-search.spec.ts')
+    console.log('   4. Deploy rules: firebase deploy --only firestore:rules,firestore:indexes')
+
+    if (!rtdb) {
+      console.log('\n⚠️ Note: Realtime Database not configured - some real-time features disabled')
+      console.log('   To enable: Set NEXT_PUBLIC_FIREBASE_DATABASE_URL in .env.local')
+    }
 
   } catch (error) {
     console.error('❌ Error seeding hotel data:', error)

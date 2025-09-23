@@ -289,6 +289,12 @@ export default function Home() {
                     {item.label}
                   </a>
                 ))}
+                <a
+                  href="/rooms"
+                  className="rounded-full px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-emerald-300 transition hover:bg-white/10 hover:text-white"
+                >
+                  Browse Rooms
+                </a>
               </div>
               <NavUserProfile />
             </div>
@@ -307,10 +313,16 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <a
-                  href="#rooms"
+                  href="/rooms"
                   className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-emerald-300"
                 >
-                  Explore Rooms
+                  Browse Rooms
+                </a>
+                <a
+                  href="#rooms"
+                  className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:border-white hover:bg-white/10"
+                >
+                  Room Overview
                 </a>
                 <a
                   href="#technology"
