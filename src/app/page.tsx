@@ -242,9 +242,9 @@ function SectionHeader({
 
   return (
     <div className={`max-w-3xl ${alignmentClasses}`}>
-      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">{eyebrow}</p>
-      <h2 className="mt-4 text-3xl font-semibold leading-tight text-slate-100 sm:text-4xl">{title}</h2>
-      {description ? <p className="mt-4 text-base text-slate-300 sm:text-lg">{description}</p> : null}
+      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-lundies-moss">{eyebrow}</p>
+      <h2 className="mt-4 text-3xl font-semibold leading-tight text-lundies-charcoal sm:text-4xl">{title}</h2>
+      {description ? <p className="mt-4 text-base text-lundies-peat sm:text-lg">{description}</p> : null}
     </div>
   )
 }
@@ -255,11 +255,11 @@ export default function Home() {
 
   if (!user) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex items-center justify-center p-4">
-        <div className="max-w-md w-full">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Schiehallion Hotel</h1>
-            <p className="text-slate-400">Highland hospitality reimagined</p>
+      <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-lundies-ivory via-lundies-linen to-lundies-stone p-4">
+        <div className="w-full max-w-md">
+          <div className="mb-8 text-center">
+            <h1 className="mb-2 text-3xl font-bold text-lundies-charcoal">Schiehallion Hotel</h1>
+            <p className="text-lundies-peat">Highland hospitality reimagined</p>
           </div>
           <LoginForm />
         </div>
@@ -268,11 +268,11 @@ export default function Home() {
   }
 
   return (
-    <main className="relative overflow-hidden bg-slate-950 text-slate-100">
+    <main className="relative overflow-hidden bg-lundies-ivory text-lundies-charcoal">
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-[-10%] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-emerald-500/10 blur-[120px]" />
-        <div className="absolute right-[-10%] top-1/3 h-[24rem] w-[24rem] rounded-full bg-sky-500/10 blur-[120px]" />
-        <div className="absolute bottom-[-20%] left-[5%] h-[28rem] w-[28rem] rounded-full bg-fuchsia-500/10 blur-[120px]" />
+        <div className="absolute left-1/2 top-[-10%] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-lundies-heather/30 blur-[160px]" />
+        <div className="absolute right-[-10%] top-1/3 h-[24rem] w-[24rem] rounded-full bg-lundies-sand/40 blur-[180px]" />
+        <div className="absolute bottom-[-20%] left-[5%] h-[28rem] w-[28rem] rounded-full bg-lundies-peat/20 blur-[160px]" />
       </div>
 
       <header className="relative">
@@ -282,7 +282,7 @@ export default function Home() {
             actionSlot={
               <Link
                 href="/rooms"
-                className="rounded-full px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-emerald-300 transition hover:bg-white/10 hover:text-white"
+                className="rounded-full border border-lundies-stone/70 bg-white/60 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-lundies-moss transition hover:bg-white/80 hover:text-lundies-charcoal"
               >
                 Browse Rooms
               </Link>
@@ -291,11 +291,11 @@ export default function Home() {
 
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="space-y-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">Highland hospitality reimagined</p>
-              <h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-lundies-moss">Highland hospitality reimagined</p>
+              <h1 className="text-4xl font-semibold leading-tight text-lundies-charcoal sm:text-5xl lg:text-6xl">
                 A modern booking journey for Aberfeldy’s landmark hotel
               </h1>
-              <p className="max-w-xl text-base text-slate-300 sm:text-lg">
+              <p className="max-w-xl text-base text-lundies-peat sm:text-lg">
                 This first-pass interface stitches together rooms, dining, experiences, and intelligent guest services into one
                 cohesive digital platform. Every section below maps directly to the architecture, data models, and product
                 ambitions outlined in the Schiehallion documentation.
@@ -303,56 +303,55 @@ export default function Home() {
               <div className="flex flex-wrap gap-4">
                 <a
                   href="/booking"
-                  className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-emerald-300"
+                  className="rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-lundies-heather/80"
                 >
                   Book Now
                 </a>
                 <a
                   href="/rooms"
-                  className="rounded-full border border-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300 transition hover:bg-emerald-400/10"
+                  className="rounded-full border border-lundies-moss px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-moss transition hover:bg-lundies-moss/10"
                 >
                   Browse Rooms
                 </a>
                 <a
                   href="#rooms"
-                  className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:border-white hover:bg-white/10"
+                  className="rounded-full border border-lundies-stone/70 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-white/70"
                 >
                   Room Overview
                 </a>
                 <a
                   href="#technology"
-                  className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:border-white hover:bg-white/10"
+                  className="rounded-full border border-lundies-stone/70 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-white/70"
                 >
                   View Platform Plan
                 </a>
               </div>
             </div>
-            <div className="grid gap-6 rounded-3xl border border-white/10 bg-white/5 p-8 shadow-xl backdrop-blur">
+            <div className="grid gap-6 rounded-3xl border border-lundies-stone/60 bg-white/80 p-8 shadow-xl backdrop-blur">
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-white">Why this matters</h2>
-                <p className="text-sm text-slate-200">
+                <h2 className="text-xl font-semibold text-lundies-charcoal">Why this matters</h2>
+                <p className="text-sm text-lundies-peat">
                   Designed for mobile-first bookings, high repeat guests, and story-driven marketing campaigns. This canvas sets the
                   tone for visual design, content hierarchy, and future interactive prototypes.
                 </p>
               </div>
               <dl className="grid gap-4 sm:grid-cols-3">
                 {heroStats.map((stat) => (
-                  <div key={stat.label} className="rounded-2xl bg-black/30 p-4 text-center shadow-inner">
-                    <dt className="text-xs uppercase tracking-[0.3em] text-slate-400">{stat.label}</dt>
-                    <dd className="mt-2 text-2xl font-semibold text-white">{stat.value}</dd>
+                  <div key={stat.label} className="rounded-2xl bg-lundies-stone/50 p-4 text-center shadow-inner">
+                    <dt className="text-xs uppercase tracking-[0.3em] text-lundies-moss">{stat.label}</dt>
+                    <dd className="mt-2 text-2xl font-semibold text-lundies-charcoal">{stat.value}</dd>
                   </div>
                 ))}
               </dl>
-              <div className="rounded-2xl bg-emerald-400/10 p-4 text-sm text-emerald-100">
-                Future Enhancements: integrate live availability widgets, hero photography, and real guest storytelling once data
-                connections are in place.
+              <div className="rounded-2xl bg-lundies-heather/20 p-4 text-sm text-lundies-charcoal">
+                Future Enhancements: integrate live availability widgets, hero photography, and real guest storytelling once data connections are in place.
               </div>
             </div>
           </div>
         </div>
       </header>
 
-      <section id="rooms" className="relative border-t border-white/10 bg-slate-950/60 py-20">
+      <section id="rooms" className="relative border-t border-lundies-stone/60 bg-white/70 py-20 backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-6">
           <SectionHeader
             eyebrow="Rooms & Suites"
@@ -362,33 +361,39 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {roomShowcase.map((room) => (
-              <article key={room.name} className="flex flex-col gap-5 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg">
+              <article
+                key={room.name}
+                className="flex flex-col gap-5 rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-lg shadow-lundies-stone/40"
+              >
                 <div>
-                  <h3 className="text-2xl font-semibold text-white">{room.name}</h3>
-                  <p className="text-sm uppercase tracking-[0.25em] text-emerald-200">{room.vibe}</p>
+                  <h3 className="text-2xl font-semibold text-lundies-charcoal">{room.name}</h3>
+                  <p className="text-sm uppercase tracking-[0.25em] text-lundies-moss">{room.vibe}</p>
                 </div>
-                <p className="text-sm text-slate-200">{room.notes}</p>
-                <div className="grid gap-4 text-sm text-slate-100">
-                  <p className="flex items-center justify-between rounded-2xl bg-black/30 px-4 py-3">
-                    <span className="font-medium text-slate-300">Occupancy</span>
+                <p className="text-sm text-lundies-peat">{room.notes}</p>
+                <div className="grid gap-4 text-sm text-lundies-charcoal">
+                  <p className="flex items-center justify-between rounded-2xl bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal">
+                    <span className="font-medium text-lundies-moss">Occupancy</span>
                     <span>{room.occupancy}</span>
                   </p>
-                  <div className="rounded-2xl bg-black/30 p-4">
-                    <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Packages</p>
+                  <div className="rounded-2xl bg-lundies-linen p-4">
+                    <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Packages</p>
                     <ul className="mt-3 space-y-2 text-sm">
                       {room.packages.map((pkg) => (
-                        <li key={pkg} className="flex items-center justify-between gap-2 rounded-full bg-white/5 px-3 py-2">
+                        <li
+                          key={pkg}
+                          className="flex items-center justify-between gap-2 rounded-full border border-lundies-stone/60 bg-white/80 px-3 py-2"
+                        >
                           <span>{pkg}</span>
-                          <span className="text-emerald-200">Live pricing soon</span>
+                          <span className="text-lundies-moss">Live pricing soon</span>
                         </li>
                       ))}
                     </ul>
                   </div>
-                  <div className="rounded-2xl bg-black/30 p-4">
-                    <p className="text-xs uppercase tracking-[0.25em] text-slate-400">Signature touches</p>
+                  <div className="rounded-2xl bg-lundies-linen p-4">
+                    <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Signature touches</p>
                     <ul className="mt-3 grid gap-2 text-sm">
                       {room.features.map((feature) => (
-                        <li key={feature} className="rounded-full bg-white/5 px-3 py-2 text-slate-100">
+                        <li key={feature} className="rounded-full bg-white/80 px-3 py-2 text-lundies-peat">
                           {feature}
                         </li>
                       ))}
@@ -401,7 +406,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="dining" className="relative border-t border-white/10 bg-gradient-to-b from-slate-950/60 to-slate-900/60 py-20">
+      <section
+        id="dining"
+        className="relative border-t border-lundies-stone/60 bg-gradient-to-b from-white/90 to-lundies-linen/80 py-20"
+      >
         <div className="mx-auto max-w-6xl px-6">
           <SectionHeader
             eyebrow="Dining"
@@ -411,32 +419,35 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {diningMoments.map((moment) => (
-              <article key={moment.title} className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-xl font-semibold text-white">{moment.title}</h3>
-                <p className="text-sm text-slate-200">{moment.description}</p>
-                <ul className="mt-auto space-y-2 text-sm text-emerald-100">
+              <article
+                key={moment.title}
+                className="flex flex-col gap-4 rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/30"
+              >
+                <h3 className="text-xl font-semibold text-lundies-charcoal">{moment.title}</h3>
+                <p className="text-sm text-lundies-peat">{moment.description}</p>
+                <ul className="mt-auto space-y-2 text-sm text-lundies-charcoal">
                   {moment.highlights.map((item) => (
-                    <li key={item} className="rounded-full bg-emerald-400/10 px-3 py-2">{item}</li>
+                    <li key={item} className="rounded-full bg-lundies-heather/30 px-3 py-2">{item}</li>
                   ))}
                 </ul>
               </article>
             ))}
           </div>
-          <div className="mt-10 grid gap-6 rounded-3xl border border-emerald-400/20 bg-emerald-400/10 p-6 text-sm text-emerald-50 md:grid-cols-3">
+          <div className="mt-10 grid gap-6 rounded-3xl border border-lundies-heather/40 bg-lundies-heather/20 p-6 text-sm text-lundies-charcoal md:grid-cols-3">
             <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-emerald-200">Restaurant Operations</p>
-              <p className="mt-2 text-emerald-50">
+              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Restaurant Operations</p>
+              <p className="mt-2 text-lundies-charcoal">
                 Interactive floor plan, waitlist management, and POS integrations will sit beneath this hospitality storytelling.
               </p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-emerald-200">Guest Signals</p>
+              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Guest Signals</p>
               <p className="mt-2">
                 Capture dietary notes, celebration flags, and concierge tasks for the team dashboard.
               </p>
             </div>
             <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-emerald-200">Content Rhythm</p>
+              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Content Rhythm</p>
               <p className="mt-2">
                 Schedule Sunday roast countdowns, chef’s journal entries, and seasonal photography drops.
               </p>
@@ -445,7 +456,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="experiences" className="relative border-t border-white/10 bg-slate-950/60 py-20">
+      <section id="experiences" className="relative border-t border-lundies-stone/60 bg-white/70 py-20 backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-6">
           <SectionHeader
             eyebrow="Experiences"
@@ -455,13 +466,16 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {experienceHighlights.map((experience) => (
-              <article key={experience.name} className="rounded-3xl border border-white/10 bg-white/5 p-6">
+              <article
+                key={experience.name}
+                className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/40"
+              >
                 <div className="flex items-baseline justify-between gap-4">
-                  <h3 className="text-xl font-semibold text-white">{experience.name}</h3>
-                  <span className="text-xs uppercase tracking-[0.25em] text-emerald-200">{experience.distance}</span>
+                  <h3 className="text-xl font-semibold text-lundies-charcoal">{experience.name}</h3>
+                  <span className="text-xs uppercase tracking-[0.25em] text-lundies-moss">{experience.distance}</span>
                 </div>
-                <p className="mt-4 text-sm text-slate-200">{experience.focus}</p>
-                <div className="mt-6 flex items-center justify-between text-xs uppercase tracking-[0.3em] text-slate-400">
+                <p className="mt-4 text-sm text-lundies-peat">{experience.focus}</p>
+                <div className="mt-6 flex items-center justify-between text-xs uppercase tracking-[0.3em] text-lundies-moss">
                   <span>Live data feed ready</span>
                   <span>Partner onboarding</span>
                 </div>
@@ -471,7 +485,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="technology" className="relative border-t border-white/10 bg-gradient-to-b from-slate-900/60 to-slate-950/80 py-20">
+      <section
+        id="technology"
+        className="relative border-t border-lundies-stone/60 bg-gradient-to-b from-lundies-linen/90 to-lundies-stone/70 py-20"
+      >
         <div className="mx-auto max-w-6xl px-6">
           <SectionHeader
             eyebrow="Platform Architecture"
@@ -480,20 +497,26 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {technologyPillars.map((pillar) => (
-              <article key={pillar.title} className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-lg font-semibold text-white">{pillar.title}</h3>
-                <p className="mt-4 text-sm text-slate-200">{pillar.detail}</p>
+              <article
+                key={pillar.title}
+                className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/40"
+              >
+                <h3 className="text-lg font-semibold text-lundies-charcoal">{pillar.title}</h3>
+                <p className="mt-4 text-sm text-lundies-peat">{pillar.detail}</p>
               </article>
             ))}
           </div>
-          <div className="mt-12 grid gap-6 rounded-3xl border border-white/10 bg-black/30 p-6 md:grid-cols-4">
+          <div className="mt-12 grid gap-6 rounded-3xl border border-lundies-stone/70 bg-lundies-stone/30 p-6 md:grid-cols-4">
             {bookingFlow.map((step) => (
-              <article key={step.stage} className="flex flex-col gap-4 rounded-2xl border border-white/5 bg-white/5 p-4">
-                <h4 className="text-base font-semibold text-white">{step.stage}</h4>
-                <p className="text-sm text-slate-200">{step.description}</p>
-                <ul className="mt-auto space-y-1 text-xs text-emerald-100">
+              <article
+                key={step.stage}
+                className="flex flex-col gap-4 rounded-2xl border border-lundies-stone/60 bg-white/90 p-4 text-lundies-charcoal"
+              >
+                <h4 className="text-base font-semibold text-lundies-charcoal">{step.stage}</h4>
+                <p className="text-sm text-lundies-peat">{step.description}</p>
+                <ul className="mt-auto space-y-1 text-xs text-lundies-charcoal">
                   {step.touchpoints.map((touchpoint) => (
-                    <li key={touchpoint} className="rounded-full bg-emerald-400/10 px-3 py-2">{touchpoint}</li>
+                    <li key={touchpoint} className="rounded-full bg-lundies-heather/30 px-3 py-2">{touchpoint}</li>
                   ))}
                 </ul>
               </article>
@@ -502,7 +525,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="concierge" className="relative border-t border-white/10 bg-slate-950/60 py-20">
+      <section id="concierge" className="relative border-t border-lundies-stone/60 bg-white/70 py-20 backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-6">
           <SectionHeader
             eyebrow="AI Concierge"
@@ -512,16 +535,22 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {conciergeFeatures.map((feature) => (
-              <article key={feature.title} className="rounded-3xl border border-emerald-400/20 bg-emerald-400/10 p-6 text-emerald-50">
-                <h3 className="text-lg font-semibold text-white">{feature.title}</h3>
-                <p className="mt-3 text-sm text-emerald-100">{feature.description}</p>
+              <article
+                key={feature.title}
+                className="rounded-3xl border border-lundies-heather/40 bg-lundies-heather/20 p-6 text-lundies-charcoal"
+              >
+                <h3 className="text-lg font-semibold text-lundies-charcoal">{feature.title}</h3>
+                <p className="mt-3 text-sm text-lundies-peat">{feature.description}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="operations" className="relative border-t border-white/10 bg-gradient-to-b from-slate-900/60 to-slate-950/80 py-20">
+      <section
+        id="operations"
+        className="relative border-t border-lundies-stone/60 bg-gradient-to-b from-lundies-linen/80 to-lundies-stone/60 py-20"
+      >
         <div className="mx-auto max-w-6xl px-6">
           <SectionHeader
             eyebrow="Operations"
@@ -530,11 +559,14 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {operationsHighlights.map((panel) => (
-              <article key={panel.title} className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-lg font-semibold text-white">{panel.title}</h3>
-                <ul className="space-y-2 text-sm text-slate-200">
+              <article
+                key={panel.title}
+                className="flex flex-col gap-4 rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/40"
+              >
+                <h3 className="text-lg font-semibold text-lundies-charcoal">{panel.title}</h3>
+                <ul className="space-y-2 text-sm text-lundies-peat">
                   {panel.bullets.map((bullet) => (
-                    <li key={bullet} className="rounded-full bg-white/5 px-3 py-2">
+                    <li key={bullet} className="rounded-full bg-lundies-linen px-3 py-2 text-lundies-charcoal">
                       {bullet}
                     </li>
                   ))}
@@ -545,7 +577,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="integrations" className="relative border-t border-white/10 bg-slate-950/60 py-20">
+      <section id="integrations" className="relative border-t border-lundies-stone/60 bg-white/70 py-20 backdrop-blur-sm">
         <div className="mx-auto max-w-6xl px-6">
           <SectionHeader
             eyebrow="Ecosystem"
@@ -555,12 +587,15 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {integrationPartners.map((partner) => (
-              <article key={partner.name} className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-lg font-semibold text-white">{partner.name}</h3>
-                <p className="mt-2 text-sm text-slate-200">{partner.focus}</p>
-                <div className="mt-4 flex flex-wrap gap-2 text-xs uppercase tracking-[0.25em] text-slate-400">
-                  <span className="rounded-full bg-white/5 px-3 py-1">Priority · {partner.priority}</span>
-                  <span className="rounded-full bg-white/5 px-3 py-1 text-emerald-200">{partner.status}</span>
+              <article
+                key={partner.name}
+                className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/40"
+              >
+                <h3 className="text-lg font-semibold text-lundies-charcoal">{partner.name}</h3>
+                <p className="mt-2 text-sm text-lundies-peat">{partner.focus}</p>
+                <div className="mt-4 flex flex-wrap gap-2 text-xs uppercase tracking-[0.25em] text-lundies-moss">
+                  <span className="rounded-full bg-lundies-linen px-3 py-1 text-lundies-charcoal">Priority · {partner.priority}</span>
+                  <span className="rounded-full bg-lundies-heather/30 px-3 py-1 text-lundies-charcoal">{partner.status}</span>
                 </div>
               </article>
             ))}
@@ -568,7 +603,10 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="roadmap" className="relative border-t border-white/10 bg-gradient-to-b from-slate-900/60 to-slate-950/80 py-20">
+      <section
+        id="roadmap"
+        className="relative border-t border-lundies-stone/60 bg-gradient-to-b from-lundies-linen/90 to-lundies-stone/70 py-20"
+      >
         <div className="mx-auto max-w-6xl px-6">
           <SectionHeader
             eyebrow="Delivery"
@@ -577,51 +615,54 @@ export default function Home() {
           />
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {milestones.map((milestone) => (
-              <article key={milestone.phase} className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-lg font-semibold text-white">{milestone.phase}</h3>
-                <p className="mt-3 text-sm text-slate-200">{milestone.detail}</p>
+              <article
+                key={milestone.phase}
+                className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/40"
+              >
+                <h3 className="text-lg font-semibold text-lundies-charcoal">{milestone.phase}</h3>
+                <p className="mt-3 text-sm text-lundies-peat">{milestone.detail}</p>
               </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section id="contact" className="relative border-t border-white/10 bg-slate-950/70 py-20">
+      <section id="contact" className="relative border-t border-lundies-stone/60 bg-lundies-linen/80 py-20">
         <div className="mx-auto max-w-5xl px-6 text-center">
           <SectionHeader
             eyebrow="Stay in touch"
             title="Let’s craft the full Schiehallion experience"
             description="Next steps: translate this vision into detailed component libraries, connect live data sources, and prepare usability tests with target guests."
           />
-          <div className="mt-10 grid gap-6 text-sm text-slate-200 sm:grid-cols-3">
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-              <p className="text-xs uppercase tracking-[0.25em] text-emerald-200">Visit</p>
-              <p className="mt-3 text-sm text-slate-100">
+          <div className="mt-10 grid gap-6 text-sm text-lundies-peat sm:grid-cols-3">
+            <div className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6">
+              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Visit</p>
+              <p className="mt-3 text-sm text-lundies-charcoal">
                 6 Dunkeld Street
                 <br /> Aberfeldy, Perth & Kinross
                 <br /> PH15 2AF
               </p>
             </div>
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-              <p className="text-xs uppercase tracking-[0.25em] text-emerald-200">Call</p>
-              <p className="mt-3 text-lg font-semibold text-white">01887 820421</p>
-              <p className="mt-2 text-xs text-slate-300">Front desk · 24/7</p>
+            <div className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6">
+              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Call</p>
+              <p className="mt-3 text-lg font-semibold text-lundies-charcoal">01887 820421</p>
+              <p className="mt-2 text-xs text-lundies-peat">Front desk · 24/7</p>
             </div>
-            <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
-              <p className="text-xs uppercase tracking-[0.25em] text-emerald-200">Write</p>
-              <p className="mt-3 text-sm text-slate-100">bookings@schiehallionhotel.co.uk</p>
-              <p className="mt-2 text-xs text-slate-300">Booking enquiries & partnerships</p>
+            <div className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6">
+              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Write</p>
+              <p className="mt-3 text-sm text-lundies-charcoal">bookings@schiehallionhotel.co.uk</p>
+              <p className="mt-2 text-xs text-lundies-peat">Booking enquiries & partnerships</p>
             </div>
           </div>
-          <div className="mt-12 flex flex-wrap justify-center gap-4 text-xs uppercase tracking-[0.25em] text-slate-300">
-            <span className="rounded-full border border-white/10 px-4 py-2">Phase 0 Prototype</span>
-            <span className="rounded-full border border-white/10 px-4 py-2">WCAG-first layout</span>
-            <span className="rounded-full border border-white/10 px-4 py-2">Mobile friendly</span>
+          <div className="mt-12 flex flex-wrap justify-center gap-4 text-xs uppercase tracking-[0.25em] text-lundies-moss">
+            <span className="rounded-full border border-lundies-stone/60 px-4 py-2">Phase 0 Prototype</span>
+            <span className="rounded-full border border-lundies-stone/60 px-4 py-2">WCAG-first layout</span>
+            <span className="rounded-full border border-lundies-stone/60 px-4 py-2">Mobile friendly</span>
           </div>
         </div>
       </section>
 
-      <footer className="border-t border-white/10 bg-black/60 py-10 text-xs text-slate-400">
+      <footer className="border-t border-lundies-stone/60 bg-lundies-stone/60 py-10 text-xs text-lundies-peat">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Schiehallion Hotel · Perthshire, Scotland</p>
           <p>Part of the Nano Banana hospitality stack initiative.</p>

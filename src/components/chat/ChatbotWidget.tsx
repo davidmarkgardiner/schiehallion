@@ -257,13 +257,13 @@ export default function ChatbotWidget() {
   }
 
   return (
-    <div className="pointer-events-none fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 text-slate-200">
+    <div className="pointer-events-none fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 text-lundies-charcoal">
       <button
         type="button"
         onClick={toggleWidget}
-        className="pointer-events-auto flex items-center gap-3 rounded-full bg-emerald-500/90 px-5 py-3 font-semibold text-slate-900 shadow-xl shadow-emerald-500/30 transition hover:bg-emerald-400"
+        className="pointer-events-auto flex items-center gap-3 rounded-full bg-lundies-heather px-5 py-3 font-semibold text-lundies-charcoal shadow-xl shadow-lundies-heather/40 transition hover:bg-lundies-heather/80"
       >
-        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-slate-900 text-emerald-300">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white/70 text-lundies-charcoal">
           <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path
               strokeLinecap="round"
@@ -276,17 +276,17 @@ export default function ChatbotWidget() {
       </button>
 
       {isOpen && (
-        <div className="pointer-events-auto w-full max-w-md overflow-hidden rounded-3xl border border-white/10 bg-slate-950/95 shadow-2xl shadow-slate-900/80 backdrop-blur-xl">
-          <div className="border-b border-white/10 bg-gradient-to-r from-emerald-500/20 via-transparent to-blue-500/20 p-5">
+        <div className="pointer-events-auto w-full max-w-md overflow-hidden rounded-3xl border border-lundies-stone/60 bg-white/95 shadow-2xl shadow-lundies-stone/50 backdrop-blur-xl">
+          <div className="border-b border-lundies-stone/60 bg-gradient-to-r from-lundies-heather/30 via-transparent to-lundies-sand/30 p-5">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-xs uppercase tracking-wide text-emerald-300/80">Virtual concierge</p>
-                <h2 className="text-lg font-semibold text-white">How can I help?</h2>
+                <p className="text-xs uppercase tracking-wide text-lundies-moss/80">Virtual concierge</p>
+                <h2 className="text-lg font-semibold text-lundies-charcoal">How can I help?</h2>
               </div>
               <button
                 type="button"
                 onClick={toggleWidget}
-                className="rounded-full p-2 text-slate-400 transition hover:bg-white/10 hover:text-white"
+                className="rounded-full p-2 text-lundies-peat transition hover:bg-lundies-stone/30 hover:text-lundies-charcoal"
                 aria-label="Close concierge"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none">
@@ -294,7 +294,7 @@ export default function ChatbotWidget() {
                 </svg>
               </button>
             </div>
-            <div className="mt-4 grid grid-cols-3 gap-2 text-xs text-slate-300">
+            <div className="mt-4 grid grid-cols-3 gap-2 text-xs text-lundies-peat">
               {MODE_OPTIONS.map((option) => {
                 const isActive = option.value === mode
                 return (
@@ -304,12 +304,12 @@ export default function ChatbotWidget() {
                     onClick={() => setMode(option.value)}
                     className={`rounded-xl border px-2 py-2 text-left transition ${
                       isActive
-                        ? 'border-emerald-400 bg-emerald-400/20 text-emerald-100'
-                        : 'border-white/10 bg-white/5 text-slate-300 hover:border-emerald-400/60 hover:text-emerald-200'
+                        ? 'border-lundies-heather bg-lundies-heather/30 text-lundies-charcoal'
+                        : 'border-lundies-stone/60 bg-white/70 text-lundies-peat hover:border-lundies-heather/60 hover:text-lundies-charcoal'
                     }`}
                   >
                     <span className="block text-[11px] font-semibold uppercase tracking-wide">{option.label}</span>
-                    <span className="mt-1 block text-[11px] leading-relaxed text-slate-300/80">
+                    <span className="mt-1 block text-[11px] leading-relaxed text-lundies-peat/80">
                       {option.description}
                     </span>
                   </button>
@@ -319,7 +319,7 @@ export default function ChatbotWidget() {
           </div>
 
           <div className="flex max-h-96 flex-col">
-            <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto bg-slate-950/60 px-5 py-4 text-sm">
+            <div ref={scrollRef} className="flex-1 space-y-3 overflow-y-auto bg-lundies-linen px-5 py-4 text-sm text-lundies-charcoal">
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -328,8 +328,8 @@ export default function ChatbotWidget() {
                   <div
                     className={`max-w-[85%] rounded-2xl px-4 py-3 leading-relaxed shadow-lg ${
                       message.role === 'user'
-                        ? 'bg-emerald-500/20 text-emerald-100 shadow-emerald-500/20'
-                        : 'bg-slate-800/70 text-slate-100 shadow-slate-900/40'
+                        ? 'bg-lundies-heather text-lundies-charcoal shadow-lundies-heather/30'
+                        : 'border border-lundies-stone/60 bg-white text-lundies-peat shadow-lundies-stone/30'
                     }`}
                   >
                     {message.content}
@@ -337,17 +337,17 @@ export default function ChatbotWidget() {
                 </div>
               ))}
               {contextUsed && (
-                <div className="mt-4 text-[11px] uppercase tracking-wide text-emerald-300/70">
+                <div className="mt-4 text-[11px] uppercase tracking-wide text-lundies-moss">
                   Context: {createContextSummary(contextUsed) ?? 'General knowledge'}
                 </div>
               )}
             </div>
 
-            <form onSubmit={handleSubmit} className="border-t border-white/10 bg-slate-900/60 p-4">
+            <form onSubmit={handleSubmit} className="border-t border-lundies-stone/60 bg-white/90 p-4">
               <label htmlFor="concierge-input" className="sr-only">
                 Ask the concierge a question
               </label>
-              <div className="rounded-2xl border border-white/10 bg-slate-950/60">
+              <div className="rounded-2xl border border-lundies-stone/60 bg-white/90">
                 <textarea
                   id="concierge-input"
                   ref={inputRef}
@@ -361,16 +361,16 @@ export default function ChatbotWidget() {
                   }}
                   placeholder="Ask about availability, restaurant concepts, or the technical stack…"
                   rows={3}
-                  className="w-full resize-none rounded-2xl bg-transparent px-4 py-3 text-sm outline-none"
+                  className="w-full resize-none rounded-2xl bg-transparent px-4 py-3 text-sm text-lundies-charcoal outline-none"
                 />
-                <div className="flex items-center justify-between border-t border-white/10 px-4 py-2">
-                  <div className="text-xs text-slate-400">
-                    {error ? <span className="text-rose-400">{error}</span> : 'Shift + Enter for a new line'}
+                <div className="flex items-center justify-between border-t border-lundies-stone/60 px-4 py-2">
+                  <div className="text-xs text-lundies-peat">
+                    {error ? <span className="text-rose-500">{error}</span> : 'Shift + Enter for a new line'}
                   </div>
                   <button
                     type="submit"
                     disabled={isLoading || !inputValue.trim()}
-                    className="flex items-center gap-2 rounded-full bg-emerald-500 px-4 py-1.5 text-sm font-semibold text-slate-900 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-emerald-500/60"
+                    className="flex items-center gap-2 rounded-full bg-lundies-heather px-4 py-1.5 text-sm font-semibold text-lundies-charcoal transition hover:bg-lundies-heather/80 disabled:cursor-not-allowed disabled:bg-lundies-heather/50"
                   >
                     <svg
                       className="h-4 w-4"
@@ -388,25 +388,25 @@ export default function ChatbotWidget() {
             </form>
           </div>
 
-          <div className="border-t border-white/10 bg-slate-900/80 px-5 py-4 text-xs text-slate-300">
+          <div className="border-t border-lundies-stone/60 bg-lundies-linen px-5 py-4 text-xs text-lundies-peat">
             <div className="flex items-center justify-between">
               <button
                 type="button"
                 onClick={toggleIssueForm}
-                className="rounded-full border border-emerald-400/50 px-3 py-1.5 font-semibold text-emerald-300 transition hover:border-emerald-300 hover:text-emerald-200"
+                className="rounded-full border border-lundies-heather/60 px-3 py-1.5 font-semibold text-lundies-moss transition hover:bg-lundies-heather/20"
               >
                 {issueOpen ? 'Hide issue form' : 'Report an issue'}
               </button>
-              <span className="text-[11px] text-slate-400">
+              <span className="text-[11px] text-lundies-peat">
                 Conversations may be attached to GitHub issues for follow-up.
               </span>
             </div>
 
             {issueOpen && (
-              <form onSubmit={submitIssue} className="mt-4 space-y-3 rounded-2xl border border-white/10 bg-slate-950/50 p-4">
+              <form onSubmit={submitIssue} className="mt-4 space-y-3 rounded-2xl border border-lundies-stone/60 bg-white/90 p-4">
                 <div className="grid gap-3 sm:grid-cols-2">
                   <div className="space-y-1">
-                    <label htmlFor="issue-title" className="text-[11px] font-semibold uppercase tracking-wide text-slate-300">
+                    <label htmlFor="issue-title" className="text-[11px] font-semibold uppercase tracking-wide text-lundies-moss">
                       Issue title
                     </label>
                     <input
@@ -414,19 +414,19 @@ export default function ChatbotWidget() {
                       value={issueTitle}
                       onChange={(event) => setIssueTitle(event.target.value)}
                       placeholder="Summarise the feedback"
-                      className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none"
+                      className="w-full rounded-xl border border-lundies-stone/60 bg-white px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div className="space-y-1">
-                      <label htmlFor="issue-severity" className="text-[11px] font-semibold uppercase tracking-wide text-slate-300">
+                      <label htmlFor="issue-severity" className="text-[11px] font-semibold uppercase tracking-wide text-lundies-moss">
                         Severity
                       </label>
                       <select
                         id="issue-severity"
                         value={issueSeverity}
                         onChange={(event) => setIssueSeverity(event.target.value as 'low' | 'medium' | 'high')}
-                        className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none"
+                        className="w-full rounded-xl border border-lundies-stone/60 bg-white px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none"
                       >
                         <option value="low">Low</option>
                         <option value="medium">Medium</option>
@@ -434,14 +434,14 @@ export default function ChatbotWidget() {
                       </select>
                     </div>
                     <div className="space-y-1">
-                      <label htmlFor="issue-category" className="text-[11px] font-semibold uppercase tracking-wide text-slate-300">
+                      <label htmlFor="issue-category" className="text-[11px] font-semibold uppercase tracking-wide text-lundies-moss">
                         Category
                       </label>
                       <select
                         id="issue-category"
                         value={issueCategory}
                         onChange={(event) => setIssueCategory(event.target.value as 'bug' | 'feedback' | 'feature')}
-                        className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none"
+                        className="w-full rounded-xl border border-lundies-stone/60 bg-white px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none"
                       >
                         <option value="bug">Bug</option>
                         <option value="feedback">Feedback</option>
@@ -451,7 +451,7 @@ export default function ChatbotWidget() {
                   </div>
                 </div>
                 <div className="space-y-1">
-                  <label htmlFor="issue-description" className="text-[11px] font-semibold uppercase tracking-wide text-slate-300">
+                  <label htmlFor="issue-description" className="text-[11px] font-semibold uppercase tracking-wide text-lundies-moss">
                     Description
                   </label>
                   <textarea
@@ -460,11 +460,11 @@ export default function ChatbotWidget() {
                     onChange={(event) => setIssueDescription(event.target.value)}
                     placeholder="Share the details we should capture in GitHub."
                     rows={3}
-                    className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none"
+                    className="w-full rounded-xl border border-lundies-stone/60 bg-white px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none"
                   />
                 </div>
                 {issueStatus === 'success' && (
-                  <div className="rounded-xl border border-emerald-400/40 bg-emerald-500/10 px-3 py-2 text-emerald-200">
+                  <div className="rounded-xl border border-lundies-heather/60 bg-lundies-heather/20 px-3 py-2 text-lundies-charcoal">
                     Issue created successfully.
                     {issueUrl && (
                       <a
@@ -479,16 +479,16 @@ export default function ChatbotWidget() {
                   </div>
                 )}
                 {issueError && (
-                  <div className="rounded-xl border border-rose-500/40 bg-rose-500/10 px-3 py-2 text-rose-300">
+                  <div className="rounded-xl border border-rose-400 bg-rose-100 px-3 py-2 text-rose-700">
                     {issueError}
                   </div>
                 )}
-                <div className="flex items-center justify-between text-[11px] text-slate-400">
+                <div className="flex items-center justify-between text-[11px] text-lundies-peat">
                   <span>Transcript is attached automatically for engineers.</span>
                   <button
                     type="submit"
                     disabled={issueStatus === 'submitting'}
-                    className="rounded-full bg-emerald-500 px-4 py-1.5 text-xs font-semibold text-slate-900 transition hover:bg-emerald-400 disabled:cursor-not-allowed disabled:bg-emerald-500/60"
+                    className="rounded-full bg-lundies-heather px-4 py-1.5 text-xs font-semibold text-lundies-charcoal transition hover:bg-lundies-heather/80 disabled:cursor-not-allowed disabled:bg-lundies-heather/50"
                   >
                     {issueStatus === 'submitting' ? 'Sending…' : 'Submit issue'}
                   </button>
