@@ -9,6 +9,9 @@ import {
   tableFeatureOptions,
   tableZoneOptions,
 } from '@/data/restaurant'
+import { RestaurantReservationConfirmation } from '@/components/restaurant/RestaurantReservationConfirmation'
+import { RestaurantReservationForm } from '@/components/restaurant/RestaurantReservationForm'
+import { WaitlistPanel } from '@/components/restaurant/WaitlistPanel'
 import type {
   AccessibilityFeature,
   RestaurantTable,
@@ -16,6 +19,11 @@ import type {
   TableZone,
   TimeSlotAvailability,
 } from '@/types/restaurant'
+import type {
+  AlternativeSlotSuggestion,
+  ReservationConfirmationRecord,
+  ReservationFormValues,
+} from '@/types/restaurant-reservation'
 
 const FLOORPLAN_WIDTH = 680
 const FLOORPLAN_HEIGHT = 480
@@ -107,6 +115,23 @@ function compareTimes(a: string, b: string): number {
   return a.localeCompare(b)
 }
 
+function formatDateLabel(value: string): string {
+  const date = new Date(value)
+  return new Intl.DateTimeFormat('en-GB', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  }).format(date)
+}
+
+function generateReservationReference(): string {
+  const now = new Date()
+  const datePart = `${now.getFullYear()}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}`
+  const randomPart = Math.floor(Math.random() * 9000 + 1000)
+  return `SCH-${datePart}-${randomPart}`
+}
+
 type TableState = {
   isAvailable: boolean
   isSelectable: boolean
@@ -125,6 +150,8 @@ function resolveTableState(
   const isSelectable = isAvailable && baseStatus !== 'maintenance' && baseStatus !== 'reserved'
   return { isAvailable, baseStatus, isSelectable, isSelected }
 }
+
+type ReservationStep = 'summary' | 'form' | 'confirmation' | 'waitlist'
 
 const slotEventIcon: Record<'highlight' | 'warning', string> = {
   highlight: '🎉',
@@ -170,6 +197,8 @@ export default function RestaurantGuestExperience() {
   const [selectedSlotId, setSelectedSlotId] = useState<string | null>(null)
   const [selectedTableId, setSelectedTableId] = useState<string | null>(null)
   const [hoveredTableId, setHoveredTableId] = useState<string | null>(null)
+  const [reservationStep, setReservationStep] = useState<ReservationStep>('summary')
+  const [confirmationRecord, setConfirmationRecord] = useState<ReservationConfirmationRecord | null>(null)
 
   const tables = restaurantTables
   const tableMap = useMemo(() => new Map<string, RestaurantTable>(tables.map((table) => [table.id, table])), [tables])
@@ -253,6 +282,32 @@ export default function RestaurantGuestExperience() {
     })
   }, [selectedSlot])
 
+  useEffect(() => {
+    if (!selectedSlot) {
+      if (reservationStep !== 'confirmation') {
+        setReservationStep('summary')
+      }
+      return
+    }
+
+    if (reservationStep === 'confirmation') {
+      return
+    }
+
+    if (selectedSlot.status === 'full') {
+      setReservationStep('waitlist')
+    } else if (reservationStep === 'waitlist') {
+      setReservationStep('summary')
+    }
+  }, [reservationStep, selectedSlot])
+
+  useEffect(() => {
+    if (reservationStep === 'confirmation') {
+      return
+    }
+    setConfirmationRecord(null)
+  }, [reservationStep, selectedSlotId, selectedTableId])
+
   const tableCapacityMap = useMemo(() => {
     const map = new Map<string, number>()
     tables.forEach((table) => {
@@ -320,6 +375,82 @@ export default function RestaurantGuestExperience() {
   const slotIsFull = selectedSlot?.status === 'full'
   const tableIsAvailable = selectedSlot ? availableSet.has(selectedTable?.id ?? '') : false
   const canReserve = Boolean(selectedSlot && selectedTable && tableIsAvailable && !slotIsFull)
+
+  const guestCapacityRange = useMemo(() => {
+    if (tables.length === 0) {
+      return { min: 1, max: 12 }
+    }
+    let min = Number.POSITIVE_INFINITY
+    let max = 0
+    tables.forEach((table) => {
+      min = Math.min(min, table.capacity.min)
+      max = Math.max(max, table.capacity.max)
+    })
+    return { min, max }
+  }, [tables])
+
+  const queuePosition = useMemo(() => {
+    if (!selectedSlot) {
+      return 0
+    }
+    const code = Array.from(selectedSlot.id).reduce((total, char) => total + char.charCodeAt(0), 0)
+    return (code % 4) + 2
+  }, [selectedSlot])
+
+  const estimatedWaitMinutes = selectedSlot
+    ? Math.max(15, Math.round(selectedSlot.durationMinutes * 0.4) + queuePosition * 5)
+    : 20
+  const acceptanceMinutes = 15
+
+  const alternativeSlots = useMemo<AlternativeSlotSuggestion[]>(() => {
+    if (!selectedSlot) {
+      return []
+    }
+    const candidates = timeSlots
+      .filter(
+        (slot) =>
+          slot.id !== selectedSlot.id &&
+          slot.status !== 'full' &&
+          slot.status !== 'closed' &&
+          slot.availableTableIds.length > 0,
+      )
+      .map<AlternativeSlotSuggestion>((slot) => ({
+        id: slot.id,
+        date: slot.date,
+        time: slot.time,
+        status: slot.status === 'limited' ? 'limited' : 'available',
+        label: `${formatDateLabel(slot.date)} · ${formatTimeLabel(slot.time)}`,
+      }))
+
+    return candidates
+      .sort((a, b) => {
+        if (a.date === selectedSlot.date && b.date !== selectedSlot.date) {
+          return -1
+        }
+        if (a.date !== selectedSlot.date && b.date === selectedSlot.date) {
+          return 1
+        }
+        if (a.date === b.date) {
+          return compareTimes(a.time, b.time)
+        }
+        return a.date.localeCompare(b.date)
+      })
+      .slice(0, 3)
+  }, [selectedSlot, timeSlots])
+
+  const waitlistDefaultPartySize = useMemo(() => {
+    if (selectedTable) {
+      return selectedTable.capacity.default
+    }
+    if (activePeriod?.maxPartySize) {
+      return Math.min(activePeriod.maxPartySize, guestCapacityRange.max)
+    }
+    if (selectedSlot) {
+      const average = Math.max(1, Math.round(selectedSlot.totalCapacity / Math.max(selectedSlot.totalTables, 1)))
+      return Math.min(Math.max(average, guestCapacityRange.min), guestCapacityRange.max)
+    }
+    return Math.min(Math.max(guestCapacityRange.min, 2), guestCapacityRange.max)
+  }, [activePeriod, guestCapacityRange.max, guestCapacityRange.min, selectedSlot, selectedTable])
 
   const viewportRef = useRef({ zoom: 0.95, translateX: 0, translateY: 0 })
   const [viewport, setViewport] = useState(viewportRef.current)
@@ -470,6 +601,49 @@ export default function RestaurantGuestExperience() {
     panStateRef.current = null
     pinchStateRef.current = null
   }
+
+  const handleReservationSubmit = (values: ReservationFormValues): void => {
+    const record: ReservationConfirmationRecord = {
+      reference: generateReservationReference(),
+      submittedAt: new Date().toISOString(),
+      formValues: values,
+    }
+    setConfirmationRecord(record)
+    setReservationStep('confirmation')
+  }
+
+  const handleReservationStart = (): void => {
+    setReservationStep('form')
+  }
+
+  const handleReservationCancel = (): void => {
+    setReservationStep('summary')
+  }
+
+  const handleMakeAnotherReservation = (): void => {
+    setConfirmationRecord(null)
+    setReservationStep('summary')
+  }
+
+  const handleSelectAlternativeSlot = (slotId: string): void => {
+    const targetSlot = timeSlots.find((slot) => slot.id === slotId)
+    if (!targetSlot) {
+      return
+    }
+    setSelectedDate(targetSlot.date)
+    setActivePeriodId(targetSlot.periodId)
+    setSelectedSlotId(targetSlot.id)
+  }
+
+  const reservationDateLabel = selectedSlot ? formatDateLabel(selectedSlot.date) : ''
+  const reservationTimeRange = selectedSlot
+    ? `${formatTimeLabel(selectedSlot.time)} – ${addMinutesToTime(selectedSlot.time, selectedSlot.durationMinutes)}`
+    : ''
+  const reservationDurationLabel = selectedSlot ? `Approx. ${selectedSlot.durationMinutes} minutes` : ''
+  const selectedZoneLabel = selectedTable ? formatZoneLabel(selectedTable.zone) : ''
+  const waitlistMaxGuests = activePeriod?.maxPartySize
+    ? Math.min(activePeriod.maxPartySize, guestCapacityRange.max)
+    : guestCapacityRange.max
 
   return (
     <div className="min-h-screen bg-slate-50 pb-16 pt-10 dark:bg-slate-950">
@@ -706,121 +880,160 @@ export default function RestaurantGuestExperience() {
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
               <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Reservation Summary</h2>
               {selectedSlot ? (
-                <div className="mt-4 space-y-4 text-sm text-slate-600 dark:text-slate-300">
-                  <div>
-                    <p className="text-lg font-semibold text-slate-900 dark:text-white">
-                      {formatTimeLabel(selectedSlot.time)} · {addMinutesToTime(selectedSlot.time, selectedSlot.durationMinutes)}
-                    </p>
-                    <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                      Approximately {selectedSlot.durationMinutes} minutes · Last booking {selectedSlot.lastBookingCutoff}
-                    </p>
-                    <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-                      Availability updates live — {selectedSlot.availableTableIds.length} of {selectedSlot.totalTables} tables · {selectedSlot.capacityAvailable} seats ready.
-                    </p>
-                    <p className="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">
-                      Live refresh {formatIsoTime(selectedSlot.lastUpdated)}
-                    </p>
-                    {selectedSlot.specialEvent && (
-                      <div className="mt-3 flex items-start gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-700 dark:border-emerald-500/40 dark:bg-emerald-900/30 dark:text-emerald-200">
-                        <span className="text-lg" aria-hidden="true">
-                          {slotEventIcon[selectedSlot.specialEvent.tone]}
-                        </span>
-                        <div>
-                          <p className="font-semibold">{selectedSlot.specialEvent.label}</p>
-                          {selectedSlot.specialEvent.description && <p>{selectedSlot.specialEvent.description}</p>}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-
-                  {selectedTable ? (
-                    <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/60">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <p className="text-base font-semibold text-slate-900 dark:text-white">{selectedTable.label}</p>
-                          <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                            {formatZoneLabel(selectedTable.zone)} · Seats {selectedTable.capacity.min}–{selectedTable.capacity.max}
-                          </p>
-                        </div>
-                        <span
-                          className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
-                            tableIsAvailable
-                              ? 'bg-emerald-600 text-white'
-                              : 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-200'
-                          }`}
-                        >
-                          {tableIsAvailable ? 'Available' : 'Unavailable'}
-                        </span>
-                      </div>
-                      <div className="flex flex-wrap gap-2 text-[11px]">
-                        {selectedTable.features.map((feature) => (
-                          <span
-                            key={`${selectedTable.id}-${feature}`}
-                            className="rounded-full bg-white px-2 py-0.5 text-slate-600 shadow-sm dark:bg-slate-800 dark:text-slate-200"
-                          >
-                            {featureMap.get(feature) ?? feature}
+                reservationStep === 'confirmation' && confirmationRecord && selectedTable ? (
+                  <RestaurantReservationConfirmation
+                    record={confirmationRecord}
+                    tableLabel={`Table ${selectedTable.label}`}
+                    dateLabel={reservationDateLabel}
+                    timeLabel={reservationTimeRange}
+                    durationLabel={reservationDurationLabel}
+                    zoneLabel={selectedZoneLabel}
+                    onBookAnother={handleMakeAnotherReservation}
+                  />
+                ) : (
+                  <div className="mt-4 space-y-6 text-sm text-slate-600 dark:text-slate-300">
+                    <div>
+                      <p className="text-lg font-semibold text-slate-900 dark:text-white">{reservationTimeRange}</p>
+                      <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        {reservationDurationLabel} · Last booking {selectedSlot.lastBookingCutoff}
+                      </p>
+                      <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                        Availability updates live — {selectedSlot.availableTableIds.length} of {selectedSlot.totalTables} tables · {selectedSlot.capacityAvailable} seats ready.
+                      </p>
+                      <p className="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                        Live refresh {formatIsoTime(selectedSlot.lastUpdated)}
+                      </p>
+                      {selectedSlot.specialEvent && (
+                        <div className="mt-3 flex items-start gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-700 dark:border-emerald-500/40 dark:bg-emerald-900/30 dark:text-emerald-200">
+                          <span className="text-lg" aria-hidden="true">
+                            {slotEventIcon[selectedSlot.specialEvent.tone]}
                           </span>
-                        ))}
-                      </div>
-                      {selectedTable.accessibility.length > 0 && (
-                        <div className="flex flex-wrap gap-2 text-[11px] text-indigo-600 dark:text-indigo-200">
-                          {selectedTable.accessibility.map((item) => (
+                          <div>
+                            <p className="font-semibold">{selectedSlot.specialEvent.label}</p>
+                            {selectedSlot.specialEvent.description && <p>{selectedSlot.specialEvent.description}</p>}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {reservationStep !== 'waitlist' && selectedTable ? (
+                      <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/60">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="text-base font-semibold text-slate-900 dark:text-white">Table {selectedTable.label}</p>
+                            <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                              {selectedZoneLabel} · Seats {selectedTable.capacity.min}–{selectedTable.capacity.max}
+                            </p>
+                          </div>
+                          <span
+                            className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
+                              tableIsAvailable
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-200'
+                            }`}
+                          >
+                            {tableIsAvailable ? 'Available' : 'Held'}
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap gap-2 text-[11px]">
+                          {selectedTable.features.map((feature) => (
                             <span
-                              key={`${selectedTable.id}-${item}`}
-                              className="flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 dark:bg-indigo-900/40"
+                              key={`${selectedTable.id}-${feature}`}
+                              className="rounded-full bg-white px-2 py-0.5 text-slate-600 shadow-sm dark:bg-slate-800 dark:text-slate-200"
                             >
-                              <span aria-hidden="true">{accessibilityIcons[item].icon}</span>
-                              <span>{accessibilityMap.get(item)}</span>
+                              {featureMap.get(feature) ?? feature}
                             </span>
                           ))}
                         </div>
-                      )}
-                      {selectedTable.notes && (
-                        <p className="text-xs text-slate-500 dark:text-slate-400">{selectedTable.notes}</p>
-                      )}
-                      {selectedTable.combinableWith.length > 0 && (
-                        <p className="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">
-                          Can combine with {selectedTable.combinableWith.map((id) => tableMap.get(id)?.label ?? id).join(', ')}
-                        </p>
-                      )}
+                        {selectedTable.accessibility.length > 0 && (
+                          <div className="flex flex-wrap gap-2 text-[11px] text-indigo-600 dark:text-indigo-200">
+                            {selectedTable.accessibility.map((item) => (
+                              <span
+                                key={`${selectedTable.id}-${item}`}
+                                className="flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 dark:bg-indigo-900/40"
+                              >
+                                <span aria-hidden="true">{accessibilityIcons[item].icon}</span>
+                                <span>{accessibilityMap.get(item)}</span>
+                              </span>
+                            ))}
+                          </div>
+                        )}
+                        {selectedTable.notes && (
+                          <p className="text-xs text-slate-500 dark:text-slate-400">{selectedTable.notes}</p>
+                        )}
+                        {selectedTable.combinableWith.length > 0 && (
+                          <p className="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                            Can combine with {selectedTable.combinableWith.map((id) => tableMap.get(id)?.label ?? id).join(', ')}
+                          </p>
+                        )}
+                        {!tableIsAvailable && (
+                          <p className="text-xs text-amber-600 dark:text-amber-300">
+                            This table is linked to another reservation right now. Choose any table highlighted in emerald to proceed.
+                          </p>
+                        )}
+                      </div>
+                    ) : null}
 
-                      <div className="flex flex-col gap-2 pt-2">
-                        <button
-                          type="button"
-                          disabled={!canReserve}
-                          className={`rounded-lg px-4 py-2 text-sm font-semibold transition ${
-                            canReserve
-                              ? 'bg-emerald-600 text-white shadow-sm hover:bg-emerald-500'
-                              : 'cursor-not-allowed bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
-                          }`}
-                          onClick={() => {
-                            if (canReserve && selectedSlot && selectedTable) {
-                              window.alert(`Table ${selectedTable.label} reserved for ${formatTimeLabel(selectedSlot.time)}!`)
-                            }
-                          }}
-                        >
-                          {canReserve ? 'Reserve this table' : slotIsFull ? 'Slot full — join waitlist' : 'Select highlighted table'}
-                        </button>
+                    {reservationStep === 'form' && selectedTable ? (
+                      <RestaurantReservationForm
+                        tableLabel={`Table ${selectedTable.label} · ${selectedZoneLabel}`}
+                        dateLabel={reservationDateLabel}
+                        timeLabel={reservationTimeRange}
+                        durationLabel={reservationDurationLabel}
+                        minGuests={selectedTable.capacity.min}
+                        maxGuests={selectedTable.capacity.max}
+                        onSubmit={handleReservationSubmit}
+                        onCancel={handleReservationCancel}
+                      />
+                    ) : reservationStep === 'waitlist' ? (
+                      <WaitlistPanel
+                        queuePosition={queuePosition}
+                        estimatedWaitMinutes={estimatedWaitMinutes}
+                        acceptanceMinutes={acceptanceMinutes}
+                        alternativeSlots={alternativeSlots}
+                        minGuests={guestCapacityRange.min}
+                        maxGuests={waitlistMaxGuests}
+                        defaultPartySize={waitlistDefaultPartySize}
+                        onSelectAlternative={handleSelectAlternativeSlot}
+                      />
+                    ) : (
+                      <div className="space-y-4">
+                        {selectedTable ? (
+                          <>
+                            <button
+                              type="button"
+                              onClick={handleReservationStart}
+                              disabled={!canReserve}
+                              className={`w-full rounded-lg px-4 py-2 text-sm font-semibold transition ${
+                                canReserve
+                                  ? 'bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500'
+                                  : 'cursor-not-allowed bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
+                              }`}
+                            >
+                              {canReserve ? 'Provide guest details' : 'Select an available table'}
+                            </button>
+                            <p className="text-xs text-slate-500 dark:text-slate-400">
+                              Secure your table in a few steps — we’ll capture dietary needs, special occasions, and contact details next.
+                            </p>
+                          </>
+                        ) : (
+                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                            All tables for this slot are currently held. Join the waitlist below or explore alternative times.
+                          </p>
+                        )}
                         {slotIsFull && (
                           <button
                             type="button"
-                            className="rounded-lg border border-emerald-500 px-4 py-2 text-sm font-semibold text-emerald-600 transition hover:bg-emerald-50 dark:border-emerald-400 dark:text-emerald-300 dark:hover:bg-emerald-900/30"
-                            onClick={() => window.alert('Added to waitlist — our host will confirm shortly.')}
+                            onClick={() => setReservationStep('waitlist')}
+                            className="w-full rounded-lg border border-emerald-500 px-4 py-2 text-sm font-semibold text-emerald-600 transition hover:bg-emerald-50 dark:border-emerald-400 dark:text-emerald-200 dark:hover:bg-emerald-900/30"
                           >
-                            Join waitlist
+                            Join the waitlist
                           </button>
                         )}
                       </div>
-                      {!tableIsAvailable && !slotIsFull && (
-                        <p className="text-xs text-amber-600 dark:text-amber-300">
-                          This table is linked to another reservation right now. Choose any table highlighted in emerald to proceed.
-                        </p>
-                      )}
-                    </div>
-                  ) : (
-                    <p className="text-xs text-slate-500 dark:text-slate-400">Tap a table on the plan to view features and availability.</p>
-                  )}
-                </div>
+                    )}
+                  </div>
+                )
               ) : (
                 <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">No slots available for this service. Try another date or period.</p>
               )}

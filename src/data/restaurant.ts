@@ -6,12 +6,141 @@ import type {
   TableZone,
   TimeSlotAvailability,
 } from '@/types/restaurant'
+import type {
+  ReservationDietaryRequirement,
+  ReservationOccasion,
+  ReservationPolicy,
+  WaitlistNotificationPreference,
+} from '@/types/restaurant-reservation'
 
 interface OptionMeta<T> {
   value: T
   label: string
   description: string
 }
+
+export const reservationDietaryOptions: OptionMeta<ReservationDietaryRequirement>[] = [
+  {
+    value: 'vegetarian',
+    label: 'Vegetarian',
+    description: 'Meat-free dishes prepared separately to avoid cross-contamination.',
+  },
+  {
+    value: 'vegan',
+    label: 'Vegan',
+    description: 'Plant-based courses with dairy alternatives prepared in-house.',
+  },
+  {
+    value: 'gluten_free',
+    label: 'Gluten-free',
+    description: 'Coeliac-safe preparation with dedicated pastry and fryer equipment.',
+  },
+  {
+    value: 'dairy_free',
+    label: 'Dairy-free',
+    description: 'No butter or cream — oat and coconut alternatives available.',
+  },
+  {
+    value: 'nut_allergy',
+    label: 'Nut allergy',
+    description: 'Kitchen notified to ensure no nut traces in any course.',
+  },
+  {
+    value: 'halal',
+    label: 'Halal',
+    description: 'Certified suppliers with advance notice for halal proteins.',
+  },
+  {
+    value: 'kosher',
+    label: 'Kosher',
+    description: 'Chef liaison to coordinate with local kosher catering partner.',
+  },
+  {
+    value: 'low_sodium',
+    label: 'Low sodium',
+    description: 'Reduced salt preparation with herb-forward seasoning.',
+  },
+  {
+    value: 'pregnancy_friendly',
+    label: 'Pregnancy friendly',
+    description: 'Unpasteurised cheeses and raw elements removed from the menu.',
+  },
+]
+
+export const reservationOccasionOptions: OptionMeta<ReservationOccasion>[] = [
+  {
+    value: 'none',
+    label: 'No special occasion',
+    description: 'A relaxed meal without any additional touches required.',
+  },
+  {
+    value: 'birthday',
+    label: 'Birthday',
+    description: 'Complimentary dessert plate and candles for the guest of honour.',
+  },
+  {
+    value: 'anniversary',
+    label: 'Anniversary',
+    description: 'Romantic table styling with keepsake menu cards.',
+  },
+  {
+    value: 'engagement',
+    label: 'Engagement',
+    description: 'Coordination for ring presentation and celebratory bubbles.',
+  },
+  {
+    value: 'honeymoon',
+    label: 'Honeymoon',
+    description: 'Signature cocktails and personalised welcome message.',
+  },
+  {
+    value: 'business',
+    label: 'Business meeting',
+    description: 'Discreet service pace with AV support if required.',
+  },
+  {
+    value: 'other',
+    label: 'Other celebration',
+    description: 'Share details so our hosts can tailor the experience.',
+  },
+]
+
+export const reservationPolicies: ReservationPolicy[] = [
+  {
+    title: 'Arrival window',
+    description: 'Tables are held for 15 minutes past your booking time before being released to the waitlist.',
+  },
+  {
+    title: 'Dining duration',
+    description: 'Reservations are scheduled for the quoted experience length to honour subsequent guests.',
+  },
+  {
+    title: 'Cancellation',
+    description: 'Cancellations within 12 hours incur a £25 per guest fee to cover preparation costs.',
+  },
+  {
+    title: 'Dietary disclosures',
+    description: 'Please share allergies at least 24 hours ahead so our culinary team can prepare safely.',
+  },
+]
+
+export const waitlistNotificationOptions: OptionMeta<WaitlistNotificationPreference>[] = [
+  {
+    value: 'email',
+    label: 'Email alerts',
+    description: 'Receive an email as soon as a table becomes available.',
+  },
+  {
+    value: 'sms',
+    label: 'SMS message',
+    description: 'A text message will be sent to confirm when your table is ready.',
+  },
+  {
+    value: 'both',
+    label: 'Email & SMS',
+    description: 'Get notified via both channels so you never miss your turn.',
+  },
+]
 
 export const tableZoneOptions: OptionMeta<TableZone>[] = [
   {
