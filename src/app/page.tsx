@@ -313,8 +313,14 @@ export default function Home() {
               </p>
               <div className="flex flex-wrap gap-4">
                 <a
-                  href="/rooms"
+                  href="/booking"
                   className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-emerald-300"
+                >
+                  Book Now
+                </a>
+                <a
+                  href="/rooms"
+                  className="rounded-full border border-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300 transition hover:bg-emerald-400/10"
                 >
                   Browse Rooms
                 </a>

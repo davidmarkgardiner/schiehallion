@@ -1,10 +1,13 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import NavUserProfile from '@/components/NavUserProfile'
 import RoomList from '@/components/rooms/RoomList'
 import AvailabilityCalendar from '@/components/rooms/AvailabilityCalendar'
+import ShoppingCart from '@/components/booking/ShoppingCart'
+import { useCartStore } from '@/store/cartStore'
 import { Room, RoomType } from '@/types/hotel'
 
 interface DateRange {
@@ -13,7 +16,9 @@ interface DateRange {
 }
 
 export default function RoomsPage() {
+  const router = useRouter()
   const { user } = useAuth()
+  const { getCartSummary, addItem } = useCartStore()
   const [selectedDates, setSelectedDates] = useState<DateRange>({
     startDate: null,
     endDate: null
@@ -22,6 +27,9 @@ export default function RoomsPage() {
   const [guests, setGuests] = useState(2)
   const [showCalendar, setShowCalendar] = useState(false)
   const [selectedRoom, setSelectedRoom] = useState<Room | null>(null)
+  const [showCart, setShowCart] = useState(false)
+
+  const cartSummary = getCartSummary()
 
   const formatDateForAPI = (date: Date): string => {
     return date.toISOString().split('T')[0]
@@ -29,8 +37,49 @@ export default function RoomsPage() {
 
   const handleRoomSelect = (room: Room) => {
     setSelectedRoom(room)
-    // In a real app, this would navigate to booking flow
-    console.log('Selected room:', room)
+  }
+
+  const handleAddToCart = (room: Room) => {
+    if (!selectedDates.startDate || !selectedDates.endDate) {
+      alert('Please select check-in and check-out dates first')
+      return
+    }
+
+    const checkInDate = formatDateForAPI(selectedDates.startDate)
+    const checkOutDate = formatDateForAPI(selectedDates.endDate)
+    const startDate = new Date(checkInDate)
+    const endDate = new Date(checkOutDate)
+    const numberOfNights = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24))
+    const packageType = 'room-only'
+    const packageOption = { type: packageType, name: 'Room Only', description: 'Accommodation only', priceAdjustment: 0, includes: ['Daily housekeeping', 'WiFi'] }
+    const totalRoomCost = room.pricing.basePrice * numberOfNights
+    const totalPackageCost = 0
+
+    addItem({
+      room,
+      checkInDate,
+      checkOutDate,
+      numberOfNights,
+      guests,
+      packageType,
+      packageOption,
+      roomRate: room.pricing.basePrice,
+      packageRate: 0,
+      totalRoomCost,
+      totalPackageCost,
+      totalCost: totalRoomCost + totalPackageCost
+    })
+
+    setSelectedRoom(null)
+    setShowCart(true)
+  }
+
+  const handleProceedToBooking = () => {
+    router.push('/booking')
+  }
+
+  const formatPrice = (priceInPence: number): string => {
+    return `£${(priceInPence / 100).toFixed(2)}`
   }
 
   const clearDates = () => {
@@ -77,7 +126,20 @@ export default function RoomsPage() {
                 <a href="/#experiences" className="text-slate-300 hover:text-white transition-colors">Experiences</a>
               </div>
             </div>
-            <NavUserProfile />
+            <div className="flex items-center gap-4">
+              {/* Cart indicator */}
+              {cartSummary.itemCount > 0 && (
+                <button
+                  onClick={() => setShowCart(true)}
+                  className="relative rounded-full bg-emerald-400/20 border border-emerald-400/30 px-4 py-2 text-emerald-300 hover:bg-emerald-400/30 transition"
+                >
+                  <span className="text-sm font-medium">
+                    Cart ({cartSummary.itemCount}) - {formatPrice(cartSummary.total)}
+                  </span>
+                </button>
+              )}
+              <NavUserProfile />
+            </div>
           </nav>
         </div>
       </header>
@@ -258,22 +320,35 @@ export default function RoomsPage() {
                 </div>
               </div>
               
-              <div className="pt-4 border-t border-white/10">
+              <div className="pt-4 border-t border-white/10 space-y-3">
                 <button
-                  onClick={() => {
-                    // In a real app, navigate to booking flow
-                    alert('Booking flow would start here!')
-                    setSelectedRoom(null)
-                  }}
+                  onClick={() => handleAddToCart(selectedRoom)}
                   className="w-full rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-emerald-300"
                 >
-                  Book This Room
+                  Add to Cart
+                </button>
+                <button
+                  onClick={() => {
+                    handleAddToCart(selectedRoom)
+                    // Auto-proceed to booking after adding to cart
+                    setTimeout(() => handleProceedToBooking(), 500)
+                  }}
+                  className="w-full rounded-full border border-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300 transition hover:bg-emerald-400/10"
+                >
+                  Book Now
                 </button>
               </div>
             </div>
           </div>
         </div>
       )}
+
+      {/* Shopping Cart Modal */}
+      <ShoppingCart
+        isOpen={showCart}
+        onClose={() => setShowCart(false)}
+        onProceedToBooking={handleProceedToBooking}
+      />
     </main>
   )
 }
