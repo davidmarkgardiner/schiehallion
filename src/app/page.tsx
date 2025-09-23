@@ -5,6 +5,8 @@ import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import LoginForm from '@/components/LoginForm'
 import SiteNavigation from '@/components/navigation/SiteNavigation'
+import NavUserProfile from '@/components/NavUserProfile'
+import ConciergeChatWidget from '@/components/concierge/ConciergeChatWidget'
 
 const landingSections = [
   { label: 'Rooms Overview', href: '/#rooms' },
@@ -625,6 +627,8 @@ export default function Home() {
           <p>Part of the Nano Banana hospitality stack initiative.</p>
         </div>
       </footer>
+
+      <ConciergeChatWidget />
     </main>
   )
 }
