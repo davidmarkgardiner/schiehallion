@@ -317,7 +317,7 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
           <div className="lg:col-span-1">
             <h3 className="text-lg font-medium text-white mb-4">Available Rooms</h3>
 
-            <Droppable droppableId="available-rooms">
+            <Droppable droppableId="available-rooms" isDropDisabled={false}>
               {(provided, snapshot) => (
                 <div
                   ref={provided.innerRef}
@@ -385,22 +385,28 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
               {calendarDays.map((day, index) => {
                 const isDropTarget = `date-${day.dateString}` === dragOverDate
 
+                const isDropDisabled = day.isBlocked || !day.isCurrentMonth
+
                 return (
-                  <Droppable key={day.dateString} droppableId={`date-${day.dateString}`}>
+                  <Droppable
+                    key={day.dateString}
+                    droppableId={`date-${day.dateString}`}
+                    isDropDisabled={isDropDisabled}
+                  >
                     {(provided, snapshot) => (
                       <div
                         ref={provided.innerRef}
                         {...provided.droppableProps}
                         className={`
-                          relative aspect-square p-1 text-xs transition-all cursor-pointer
+                          relative aspect-square p-1 text-xs transition-all
                           rounded-lg border-2 border-dashed
                           ${day.isBlocked
-                            ? 'border-transparent bg-slate-800/50 text-slate-600'
-                            : snapshot.isDraggingOver
-                              ? 'border-emerald-400 bg-emerald-400/20 scale-105'
-                              : day.isCurrentMonth
-                                ? 'border-white/10 bg-white/5 text-white hover:bg-white/10'
-                                : 'border-transparent bg-slate-800/30 text-slate-500'
+                            ? 'border-transparent bg-slate-800/50 text-slate-600 cursor-not-allowed'
+                            : !day.isCurrentMonth
+                              ? 'border-transparent bg-slate-800/30 text-slate-500 cursor-not-allowed'
+                              : snapshot.isDraggingOver
+                                ? 'border-emerald-400 bg-emerald-400/20 scale-105 cursor-pointer'
+                                : 'border-white/10 bg-white/5 text-white hover:bg-white/10 cursor-pointer'
                           }
                           ${day.isPeak ? 'ring-1 ring-orange-400/30' : ''}
                         `}
