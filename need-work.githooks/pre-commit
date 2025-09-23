@@ -81,7 +81,7 @@ echo "Checking for potential secrets..."
 STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM)
 for file in $STAGED_FILES; do
     # Check for potential API keys, passwords, etc.
-    SECRETS=$(grep -E '(api[_-]?key|apikey|api_secret|password|passwd|pwd|secret|private[_-]?key|token|FIREBASE_|STRIPE_|GEMINI_|OPENAI_)[\s]*=[\s]*["\'][^"\']+["\']' "$file" 2>/dev/null)
+    SECRETS=$(grep -E '\(api[_-]?key|apikey|api_secret|password|passwd|pwd|secret|private[_-]?key|token|FIREBASE_|STRIPE_|GEMINI_|OPENAI_\)[\s]*=[\s]*["\'"'"'][^"'"'"']+["\'"'"']' "$file" 2>/dev/null)
     if [ ! -z "$SECRETS" ]; then
         echo -e "${RED}❌ Potential secrets found in $file${NC}"
         echo "$SECRETS"
