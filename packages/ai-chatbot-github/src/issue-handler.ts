@@ -1,37 +1,104 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Octokit } from '@octokit/rest'
-import OpenAI from 'openai'
 import type { IssueReportRequest, IssueReportMetadata } from './types'
 
-// Initialize OpenAI (conditionally)
-let openai: OpenAI | null = null
-if (process.env.OPENAI_API_KEY) {
-  openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+async function requestOpenAICompletion(prompt: string) {
+  const apiKey = process.env.OPENAI_API_KEY
+
+  if (!apiKey) {
+    return null
+  }
+
+  const payload = {
+    model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You are a technical issue analyst who expands user reports into actionable GitHub issues with clear structure.',
+      },
+      { role: 'user', content: prompt },
+    ],
+    max_tokens: 1000,
+    temperature: 0.3,
+  }
+
+  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+    },
+    body: JSON.stringify(payload),
   })
+
+  if (!response.ok) {
+    const errorText = await response.text()
+    throw new Error(`OpenAI request failed: ${errorText}`)
+  }
+
+  const data = await response.json()
+  const expandedContent = data?.choices?.[0]?.message?.content
+
+  return typeof expandedContent === 'string' ? expandedContent : null
 }
 
-// Initialize Octokit
-const octokit = new Octokit({
-  auth: process.env.GITHUB_TOKEN
-})
+async function createGitHubIssue({
+  owner,
+  repo,
+  token,
+  title,
+  body,
+  labels,
+}: {
+  owner: string
+  repo: string
+  token: string
+  title: string
+  body: string
+  labels?: string[]
+}) {
+  const url = `https://api.github.com/repos/${owner}/${repo}/issues`
+  const payload: Record<string, unknown> = {
+    title,
+    body,
+  }
+
+  if (labels && labels.length) {
+    payload.labels = labels
+  }
+
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/vnd.github+json',
+      Authorization: `Bearer ${token}`,
+      'User-Agent': 'ai-chatbot-github',
+    },
+    body: JSON.stringify(payload),
+  })
+
+  const data = await response.json()
+
+  if (!response.ok) {
+    const message = typeof data?.message === 'string' ? data.message : 'GitHub issue creation failed.'
+    throw new Error(message)
+  }
+
+  return data as { number: number; html_url: string }
+}
 
 // Enhanced issue template with AI expansion
 async function expandUserFeedback(userPrompt: string, conversationId?: string, userAgent?: string) {
   try {
     // Check if OpenAI is available
-    if (!openai) {
-      console.log('OpenAI not available, using structured template fallback')
-      return createStructuredIssue(userPrompt, conversationId, userAgent)
-    }
-
-    const prompt = `You are a technical issue analyst. A user has reported a problem with our application. Please expand their brief description into a well-structured GitHub issue with the following sections:
+    const prompt = `A user reported a problem with our application. Expand their feedback into a GitHub issue with these sections:
 
 ## Problem Summary
 [Clear, concise summary of the issue]
 
 ## Steps to Reproduce
-[Numbered list of specific steps]
+[Numbered steps to replicate]
 
 ## Expected Behavior
 [What should happen]
@@ -40,26 +107,22 @@ async function expandUserFeedback(userPrompt: string, conversationId?: string, u
 [What actually happens]
 
 ## Additional Context
-[Any technical details, error messages, or other relevant information]
+[Technical details, error messages, environment info]
 
 ## Priority Assessment
-[Low/Medium/High based on the issue description]
+[Low/Medium/High with justification]
 
 ## Suggested Solution Approach
-[Brief technical suggestion for how this might be addressed]
+[Brief implementation considerations]
 
-User's original feedback: "${userPrompt}"
+User's original feedback: "${userPrompt}"`
 
-Please provide a comprehensive, professional issue description while maintaining the user's core concerns. Focus on making it actionable for developers.`
+    const expandedContent = await requestOpenAICompletion(prompt)
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4",
-      messages: [{ role: "user", content: prompt }],
-      max_tokens: 1000,
-      temperature: 0.3
-    })
-
-    const expandedContent = completion.choices[0]?.message?.content || userPrompt
+    if (!expandedContent) {
+      console.log('OpenAI not available, using structured template fallback')
+      return createStructuredIssue(userPrompt, conversationId, userAgent)
+    }
 
     // Add metadata section
     const metadata = [
@@ -213,22 +276,25 @@ export async function handleIssueReport(request: NextRequest | Request) {
       issueBody = buildIssueBody(payload)
     }
 
-    const response = await octokit.rest.issues.create({
-      owner: owner,
-      repo: repo,
+    const issue = await createGitHubIssue({
+      owner,
+      repo,
+      token,
       title: payload.title,
       body: issueBody,
       labels: isSimpleDescription
         ? ['user-feedback', 'ai-enhanced', 'needs-triage']
-        : (payload.category ? [payload.category] : undefined),
+        : payload.category
+          ? [payload.category]
+          : undefined,
     })
 
-    console.log(`✅ GitHub issue created: #${response.data.number}`)
+    console.log(`✅ GitHub issue created: #${issue.number}`)
 
     return NextResponse.json({
       success: true,
-      issueNumber: response.data.number,
-      issueUrl: response.data.html_url,
+      issueNumber: issue.number,
+      issueUrl: issue.html_url,
     })
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Unknown error'

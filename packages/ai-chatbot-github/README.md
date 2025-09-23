@@ -12,11 +12,8 @@ A reusable Node.js chatbot package that provides LLM-powered conversations with 
 
 ## Installation
 
-1. Copy the `packages/ai-chatbot-github` folder to your project
-2. Install dependencies:
-```bash
-npm install @octokit/rest @google/generative-ai openai
-```
+1. Copy the `packages/ai-chatbot-github` folder to your project.
+2. Ensure your runtime supports the Fetch API (Node.js 18+ or Next.js 14/15) for outbound API calls.
 
 ## Environment Variables
 
