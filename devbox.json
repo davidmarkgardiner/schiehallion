@@ -16,26 +16,6 @@
     "detect-secrets"
   ],
   "shell": {
-    // "init_hook": [
-    //   "echo '🔐 Loading secrets with Teller...'",
-    //   "if command -v teller >/dev/null 2>&1; then",
-    //   "  echo '📡 Fetching secrets from Google Cloud...'",
-    //   "  eval $(teller env 2>/dev/null || echo 'echo \"⚠️  Teller configuration issue - check .teller.yml\"')",
-    //   "  echo '✅ Secrets loaded: DOCKER_USERNAME, ELEVENLABS_API_KEY, BRAVE_API_KEY, FIRECRAWL_API_KEY'",
-    //   "else",
-    //   "  echo '❌ Teller not available'",
-    //   "fi",
-    //   "echo '🔍 Running security scan with detect-secrets...'",
-    //   "if command -v detect-secrets >/dev/null 2>&1; then",
-    //   "  if [ ! -f .secrets.baseline ]; then",
-    //   "    echo '📝 Creating secrets baseline...'",
-    //   "    detect-secrets scan --all-files > .secrets.baseline 2>/dev/null",
-    //   "  fi",
-    //   "  detect-secrets scan --all-files --baseline .secrets.baseline && echo '✅ No secrets detected in codebase'",
-    //   "else",
-    //   "  echo '❌ detect-secrets not available'",
-    //   "fi"
-    // ],
     "scripts": {
       "load-secrets": "eval $(teller env)",
       "show-secrets": "teller env",

@@ -1,13 +1,13 @@
 ---
 name: fire-init-agent
-description: setep firebase project with auth and deb
+description: setep firebase project with auth and db
 tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-mcp, taskmaster-ai, firebase
 ---
-
 
 # Next.js + Firebase Hello World Deployment Checklist
 
 ## Prerequisites
+
 - [ ] Node.js installed (v18 or higher recommended)
 - [ ] npm or yarn package manager
 - [ ] Firebase CLI installed (`npm install -g firebase-tools`)
@@ -18,6 +18,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 ## 1. Firebase Setup
 
 ### Firebase Console
+
 - [ ] Create a new Firebase project at [console.firebase.google.com](https://console.firebase.google.com)
 - [ ] Note down your project ID
 - [ ] Enable Authentication
@@ -33,6 +34,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
   - [ ] Copy the Firebase configuration object
 
 ### Firebase CLI
+
 - [ ] Login to Firebase CLI: `firebase login`
 - [ ] Initialize Firebase in your project directory: `firebase init`
   - [ ] Select Firestore
@@ -47,6 +49,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 ## 2. Next.js Project Setup
 
 ### Initialize Project
+
 - [ ] Create Next.js app: `npx create-next-app@latest hello-world-firebase`
 - [ ] Navigate to project: `cd hello-world-firebase`
 - [ ] Install Firebase SDK: `npm install firebase`
@@ -56,6 +59,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
   ```
 
 ### Project Structure
+
 - [ ] Create `/lib` directory for Firebase configuration
 - [ ] Create `/components` directory for reusable components
 - [ ] Create `/context` directory for auth context (if using)
@@ -63,6 +67,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 ## 3. Firebase Configuration in Next.js
 
 ### Environment Variables
+
 - [ ] Create `.env.local` file in root directory
 - [ ] Add Firebase configuration:
   ```
@@ -76,6 +81,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 - [ ] Add `.env.local` to `.gitignore`
 
 ### Firebase Initialization
+
 - [ ] Create `/lib/firebase.js` file
 - [ ] Initialize Firebase app
 - [ ] Export auth and db instances
@@ -84,6 +90,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 ## 4. Implement Features
 
 ### Authentication
+
 - [ ] Create sign-up component
 - [ ] Create login component
 - [ ] Create logout functionality
@@ -92,6 +99,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 - [ ] Test authentication flow
 
 ### Database Integration
+
 - [ ] Create data model/schema
 - [ ] Implement CRUD operations:
   - [ ] Create/Add documents
@@ -102,6 +110,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 - [ ] Test database operations
 
 ### Hello World Page
+
 - [ ] Create main page with "Hello World" message
 - [ ] Display user info if authenticated
 - [ ] Show sample data from Firestore
@@ -110,12 +119,14 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 ## 5. Security & Optimization
 
 ### Security Rules
+
 - [ ] Update Firestore security rules in `firestore.rules`
 - [ ] Update authentication settings if needed
 - [ ] Test security rules using Firebase emulator
 - [ ] Deploy rules: `firebase deploy --only firestore:rules`
 
 ### Performance
+
 - [ ] Implement lazy loading for Firebase imports
 - [ ] Add loading states for async operations
 - [ ] Implement error handling
@@ -124,6 +135,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 ## 6. Testing
 
 ### Local Testing
+
 - [ ] Run development server: `npm run dev`
 - [ ] Test all authentication flows
 - [ ] Test all database operations
@@ -131,6 +143,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 - [ ] Test error scenarios
 
 ### Firebase Emulator (Optional)
+
 - [ ] Install emulator: `firebase init emulators`
 - [ ] Start emulator: `firebase emulators:start`
 - [ ] Test with emulator data
@@ -138,19 +151,15 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 ## 7. Build & Deploy
 
 ### Build Process
+
 - [ ] Update `next.config.js` for static export (if using Firebase Hosting):
   ```javascript
   module.exports = {
-    output: 'export',
-  }
+    output: "export",
+  };
   ```
 - [ ] Build application: `npm run build`
 - [ ] Test production build locally: `npm run start`
-
-
-
-
-
 
 ## Common Issues & Solutions
 
@@ -161,6 +170,7 @@ tools: Read, Write, MultiEdit, Bash, context7, playwright, shadcn-ui, firecrawl-
 - [ ] **Performance issues**: Review Firebase usage and implement caching
 
 ## Resources
+
 - [Next.js Documentation](https://nextjs.org/docs)
 - [Firebase Documentation](https://firebase.google.com/docs)
 - [Firebase CLI Reference](https://firebase.google.com/docs/cli)

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Post-merge hook to handle dependency updates and migrations
+echo "🔄 Running post-merge tasks..."
+
+# Colors
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+# Install/update dependencies if package.json changed
+if git diff HEAD@{1} --stat -- package.json | grep -q package.json; then
+    echo -e "${YELLOW}📦 package.json changed. Updating dependencies...${NC}"
+    npm install
+fi
+
+# Run database migrations if they exist
+if [ -d "migrations" ] && git diff HEAD@{1} --stat -- migrations/ | grep -q migrations; then
+    echo -e "${YELLOW}🗄️  Database migrations detected${NC}"
+    echo "Run migrations with: npm run migrate"
+fi
+
+# Clear caches
+echo "Clearing caches..."
+npm run clear-cache 2>/dev/null || echo "No cache clear script found"
+
+echo -e "${GREEN}✅ Post-merge tasks completed${NC}"

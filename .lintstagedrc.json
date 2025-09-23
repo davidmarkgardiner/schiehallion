@@ -1,0 +1,14 @@
+{
+  "*.{js,jsx,ts,tsx}": [
+    "eslint --fix",
+    "prettier --write",
+    "jest --bail --findRelatedTests"
+  ],
+  "*.{css,scss,less}": ["prettier --write"],
+  "*.{json,md,yml,yaml}": ["prettier --write"],
+  "*.{graphql,gql}": ["prettier --write"],
+  "firestore.rules": [
+    "firebase emulators:exec --only firestore 'echo Rules valid' --project demo-project"
+  ],
+  "package.json": ["npm audit fix --audit-level=high"]
+}

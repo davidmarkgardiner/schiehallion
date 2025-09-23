@@ -1,16 +1,28 @@
 {
-  "name": "firebase-template",
+  "name": "schiehallion",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "prepare": "husky install",
+    "pre-commit": ".githooks/pre-commit",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\"",
+    "type-check": "tsc --noEmit",
+    "test:related": "jest --bail --findRelatedTests",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "validate": "npm run lint && npm run type-check && npm run test",
+    "clear-cache": "rm -rf .next && rm -rf node_modules/.cache"
   },
   "dependencies": {
     "dotenv": "^17.2.2",
     "firebase": "^10.7.1",
+    "firebase-admin": "^13.5.0",
     "google-auth-library": "^10.3.0",
     "next": "15.1.0",
     "react": "^18.2.0",

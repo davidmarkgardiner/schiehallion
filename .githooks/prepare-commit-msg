@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Prepare commit message with AI assistance
+# This hook can suggest commit messages based on staged changes
+
+COMMIT_MSG_FILE=$1
+COMMIT_SOURCE=$2
+
+# Only run for new commits (not amends or merges)
+if [ -z "$COMMIT_SOURCE" ]; then
+    # Get staged changes summary
+    STAGED_DIFF=$(git diff --cached --stat)
+    STAGED_FILES=$(git diff --cached --name-only)
+    
+    # Analyze the type of changes
+    if echo "$STAGED_FILES" | grep -q "\.test\.\|\.spec\."; then
+        TYPE="test"
+        SCOPE="tests"
+    elif echo "$STAGED_FILES" | grep -q "^docs/\|README\|\.md$"; then
+        TYPE="docs"
+        SCOPE="documentation"
+    elif echo "$STAGED_FILES" | grep -q "^src/components/"; then
+        TYPE="feat"
+        SCOPE="ui"
+    elif echo "$STAGED_FILES" | grep -q "^src/app/api/"; then
+        TYPE="feat"
+        SCOPE="api"
+    elif echo "$STAGED_FILES" | grep -q "package.*\.json\|\.config\."; then
+        TYPE="chore"
+        SCOPE="deps"
+    else
+        TYPE="feat"
+        SCOPE="general"
+    fi
+    
+    # Add template to commit message
+    cat > "$COMMIT_MSG_FILE" << TEMPLATE
+# $TYPE($SCOPE): <summary of changes>
+#
+# Staged files:
+$(echo "$STAGED_FILES" | sed 's/^/# - /')
+#
+# Commit message format:
+# <type>(<scope>): <subject>
+#
+# Types: feat, fix, docs, style, refactor, test, chore, perf, ci, build
+# 
+# Remember to:
+# - Reference JIRA ticket (SCHH-XXX) for features/fixes
+# - Keep subject line under 50 characters
+# - Use imperative mood ("add" not "adds" or "added")
+# 
+# Example: feat(booking): add multi-room cart functionality SCHH-014
+TEMPLATE
+fi

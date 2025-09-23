@@ -1,0 +1,14 @@
+# <type>(<scope>): <subject> SCHH-XXX
+
+# <body>
+# Explain what and why, not how
+
+# <footer>
+# Closes: #issue
+# Breaking Changes: description
+
+# Types: feat|fix|docs|style|refactor|test|chore|perf|ci|build|revert
+# Scope: booking|restaurant|admin|auth|ai|payments|ui|api|db
+# Subject: imperative mood, max 50 chars
+# Body: wrap at 72 chars
+# Footer: references, breaking changes
