@@ -3,25 +3,25 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+  color-scheme: dark;
+  --gradient-start: 12 33 66;
+  --gradient-mid: 15 23 42;
+  --gradient-end: 2 6 23;
+  --text-primary: 226 232 240;
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
+  min-height: 100vh;
+  color: rgb(var(--text-primary));
+  background:
+    radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.12), transparent 55%),
+    radial-gradient(circle at 80% 0%, rgba(56, 189, 248, 0.1), transparent 45%),
+    linear-gradient(
       to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+      rgb(var(--gradient-start) / 0.95),
+      rgb(var(--gradient-mid) / 0.95) 40%,
+      rgb(var(--gradient-end) / 1)
+    );
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
 }

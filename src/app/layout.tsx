@@ -6,8 +6,9 @@ import { AuthProvider } from '@/context/AuthContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Firebase Hello World',
-  description: 'A simple Next.js app with Firebase integration',
+  title: 'Schiehallion Hotel · Highland Hospitality Reimagined',
+  description:
+    'First-pass experience map for the Schiehallion Hotel digital platform, covering rooms, dining, local adventures, and the supporting tech stack.',
 }
 
 export default function RootLayout({
