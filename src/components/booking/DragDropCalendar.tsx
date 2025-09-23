@@ -317,7 +317,7 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
           <div className="lg:col-span-1">
             <h3 className="text-lg font-medium text-white mb-4">Available Rooms</h3>
 
-            <Droppable droppableId="available-rooms" isDropDisabled={false}>
+            <Droppable droppableId="available-rooms" isDropDisabled={false} isCombineEnabled={false} ignoreContainerClipping={false}>
               {(provided, snapshot) => (
                 <div
                   ref={provided.innerRef}
@@ -392,6 +392,8 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
                     key={day.dateString}
                     droppableId={`date-${day.dateString}`}
                     isDropDisabled={isDropDisabled}
+                    isCombineEnabled={false}
+                    ignoreContainerClipping={true}
                   >
                     {(provided, snapshot) => (
                       <div

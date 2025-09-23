@@ -76,7 +76,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
     remove: removeDietary
   } = useFieldArray({
     control,
-    name: 'preferences.dietaryRequirements' as any
+    name: 'preferences.dietaryRequirements' as const
   })
 
   const {
@@ -85,7 +85,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
     remove: removeAccessibility
   } = useFieldArray({
     control,
-    name: 'preferences.accessibilityNeeds' as any
+    name: 'preferences.accessibilityNeeds' as const
   })
 
   const steps: { key: FormStep; title: string; description: string }[] = [

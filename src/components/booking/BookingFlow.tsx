@@ -15,6 +15,7 @@ import ShoppingCart from './ShoppingCart'
 import GuestInfoForm from './GuestInfoForm'
 import PackageSelection from './PackageSelection'
 import DragDropCalendar from './DragDropCalendar'
+import { PaymentStep } from '@/components/payment/PaymentStep'
 
 interface BookingFlowProps {
   initialStep?: BookingFlowState['currentStep']
@@ -35,6 +36,8 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
   const [bookingReference, setBookingReference] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [showCart, setShowCart] = useState(false)
+  const [bookingIds, setBookingIds] = useState<string[]>([])
+  const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null)
 
   const cartSummary = getCartSummary()
 
@@ -59,11 +62,8 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
     setCurrentStep('package-selection')
   }
 
-  const handlePackageSelectionComplete = () => {
-    setCurrentStep('payment')
-  }
-
-  const handleCompleteBooking = async () => {
+  const handlePackageSelectionComplete = async () => {
+    // Create bookings before payment
     if (!user || !guestInfo || cartSummary.itemCount === 0) {
       setError('Missing required information for booking.')
       return
@@ -73,9 +73,9 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
     setError(null)
 
     try {
-      const bookings = []
+      const createdBookingIds = []
 
-      // Create a booking for each cart item
+      // Create bookings in pending-payment status
       for (const item of cartSummary.items) {
         const bookingData = {
           guestUserId: user.uid,
@@ -133,7 +133,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
             status: 'pending-payment' as const,
             timestamp: Timestamp.now(),
             changedBy: user.uid,
-            notes: 'Booking created'
+            notes: 'Booking created, awaiting payment'
           }],
           checkInTime: guestInfo.arrival.estimatedArrivalTime
             ? Timestamp.fromDate(new Date(`${item.checkInDate} ${guestInfo.arrival.estimatedArrivalTime}`))
@@ -155,26 +155,38 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
         }
 
         const bookingId = await BookingService.createBooking(bookingData)
-        bookings.push(bookingId)
+        createdBookingIds.push(bookingId)
       }
 
-      // Generate a group booking reference if multiple bookings
-      const groupReference = bookings.length > 1
-        ? `SCH-GROUP-${Date.now()}`
-        : await BookingService.getBooking(bookings[0]).then(booking => booking?.bookingReference)
-
-      setBookingReference(groupReference || bookings[0])
-      setCurrentStep('confirmation')
-
-      // Clear the cart after successful booking
-      clearCart()
-
+      setBookingIds(createdBookingIds)
+      setCurrentStep('payment')
     } catch (err) {
       console.error('Booking creation failed:', err)
       setError(err instanceof Error ? err.message : 'Failed to create booking. Please try again.')
     } finally {
       setIsLoading(false)
     }
+  }
+
+  const handlePaymentSuccess = async (paymentIntentIdReceived: string) => {
+    setPaymentIntentId(paymentIntentIdReceived)
+
+    // Generate a group booking reference if multiple bookings
+    const groupReference = bookingIds.length > 1
+      ? `SCH-GROUP-${Date.now()}`
+      : await BookingService.getBooking(bookingIds[0]).then(booking => booking?.bookingReference)
+
+    setBookingReference(groupReference || bookingIds[0])
+    setCurrentStep('confirmation')
+
+    // Clear the cart after successful payment
+    clearCart()
+  }
+
+  const handlePaymentError = (errorMessage: string) => {
+    setError(errorMessage)
+    // Optionally redirect to error page
+    router.push(`/booking/payment/failed?error=${encodeURIComponent(errorMessage)}&payment_intent=${paymentIntentId || ''}`)
   }
 
   const formatPrice = (priceInPence: number): string => {
@@ -245,114 +257,14 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
 
       case 'payment':
         return (
-          <div className="max-w-2xl mx-auto">
-            <div className="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-sm p-8">
-              <h2 className="text-2xl font-semibold text-white mb-6">
-                Complete Your Booking
-              </h2>
-
-              {/* Booking Summary */}
-              <div className="space-y-4 mb-8">
-                <h3 className="text-lg font-medium text-white">Booking Summary</h3>
-
-                {cartSummary.items.map((item, index) => (
-                  <div key={item.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <div>
-                        <h4 className="text-white font-medium capitalize">
-                          {item.room.type} Room - {item.room.roomNumber}
-                        </h4>
-                        <p className="text-slate-400 text-sm">
-                          {new Date(item.checkInDate).toLocaleDateString()} - {new Date(item.checkOutDate).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <span className="text-emerald-300 font-medium">
-                        {formatPrice(item.totalCost)}
-                      </span>
-                    </div>
-                    <div className="text-sm text-slate-400">
-                      {item.numberOfNights} nights • {item.guests} guests • {item.packageOption.name}
-                    </div>
-                  </div>
-                ))}
-
-                <div className="border-t border-white/10 pt-4 space-y-2">
-                  <div className="flex justify-between text-slate-300">
-                    <span>Subtotal:</span>
-                    <span>{formatPrice(cartSummary.subtotal)}</span>
-                  </div>
-                  {cartSummary.groupDiscount > 0 && (
-                    <div className="flex justify-between text-emerald-300">
-                      <span>Group Discount:</span>
-                      <span>-{formatPrice(cartSummary.groupDiscount)}</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between text-slate-300">
-                    <span>VAT (10%):</span>
-                    <span>{formatPrice(cartSummary.taxes)}</span>
-                  </div>
-                  <div className="flex justify-between text-xl font-semibold text-white border-t border-white/10 pt-2">
-                    <span>Total:</span>
-                    <span>{formatPrice(cartSummary.total)}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Guest Information Summary */}
-              {guestInfo && (
-                <div className="mb-8">
-                  <h3 className="text-lg font-medium text-white mb-4">Guest Information</h3>
-                  <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                    <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div>
-                        <span className="text-slate-400">Name:</span>
-                        <div className="text-white">
-                          {guestInfo.personalInfo.firstName} {guestInfo.personalInfo.lastName}
-                        </div>
-                      </div>
-                      <div>
-                        <span className="text-slate-400">Email:</span>
-                        <div className="text-white">{guestInfo.personalInfo.email}</div>
-                      </div>
-                      <div>
-                        <span className="text-slate-400">Phone:</span>
-                        <div className="text-white">{guestInfo.personalInfo.phone}</div>
-                      </div>
-                      {guestInfo.arrival.estimatedArrivalTime && (
-                        <div>
-                          <span className="text-slate-400">Arrival:</span>
-                          <div className="text-white">{guestInfo.arrival.estimatedArrivalTime}</div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {error && (
-                <div className="mb-6 p-4 rounded-xl bg-red-500/20 border border-red-500/30">
-                  <p className="text-red-300 text-sm">{error}</p>
-                </div>
-              )}
-
-              {/* Action Buttons */}
-              <div className="flex gap-4">
-                <button
-                  onClick={() => setCurrentStep('package-selection')}
-                  className="flex-1 py-3 rounded-full border border-white/20 text-slate-300 hover:bg-white/5 transition"
-                >
-                  Back
-                </button>
-                <button
-                  onClick={handleCompleteBooking}
-                  disabled={isLoading}
-                  className="flex-1 py-3 rounded-full bg-emerald-400 text-slate-950 font-semibold hover:bg-emerald-300 transition disabled:opacity-50"
-                >
-                  {isLoading ? 'Processing...' : 'Complete Booking'}
-                </button>
-              </div>
-            </div>
-          </div>
+          <PaymentStep
+            cartSummary={cartSummary}
+            guestInfo={guestInfo!}
+            bookingIds={bookingIds}
+            onPaymentSuccess={handlePaymentSuccess}
+            onPaymentError={handlePaymentError}
+            onBack={() => setCurrentStep('package-selection')}
+          />
         )
 
       case 'confirmation':
