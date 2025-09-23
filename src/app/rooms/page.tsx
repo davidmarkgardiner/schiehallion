@@ -90,13 +90,13 @@ export default function RoomsPage() {
 
   if (!user) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex items-center justify-center p-4">
+      <main className="min-h-screen bg-gradient-to-br from-lundies-ivory via-lundies-linen to-lundies-stone flex items-center justify-center p-4">
         <div className="max-w-md w-full text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">Access Required</h1>
-          <p className="text-slate-400 mb-6">Please log in to view rooms and make bookings</p>
+          <h1 className="text-3xl font-bold text-lundies-charcoal mb-2">Access Required</h1>
+          <p className="text-lundies-moss mb-6">Please log in to view rooms and make bookings</p>
           <Link
             href="/"
-            className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-emerald-300"
+            className="rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-lundies-heather/80"
           >
             Go to Login
           </Link>
@@ -106,15 +106,15 @@ export default function RoomsPage() {
   }
 
   return (
-    <main className="relative overflow-hidden bg-slate-950 text-slate-100 min-h-screen">
+    <main className="relative overflow-hidden bg-lundies-ivory text-lundies-charcoal min-h-screen">
       {/* Background decoration */}
       <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-[-10%] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-emerald-500/10 blur-[120px]" />
-        <div className="absolute right-[-10%] top-1/3 h-[24rem] w-[24rem] rounded-full bg-sky-500/10 blur-[120px]" />
+        <div className="absolute left-1/2 top-[-10%] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-lundies-heather/30 blur-[160px]" />
+        <div className="absolute right-[-10%] top-1/3 h-[24rem] w-[24rem] rounded-full bg-lundies-sand/30 blur-[160px]" />
       </div>
 
       {/* Header */}
-      <header className="border-b border-white/10 bg-slate-950/80 backdrop-blur-sm">
+      <header className="border-b border-lundies-stone/60 bg-white/80 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-6 py-4">
           <SiteNavigation
             layout="standard"
@@ -122,7 +122,7 @@ export default function RoomsPage() {
               cartSummary.itemCount > 0 ? (
                 <button
                   onClick={() => setShowCart(true)}
-                  className="rounded-full border border-emerald-400/30 bg-emerald-400/20 px-4 py-2 text-emerald-300 transition hover:bg-emerald-400/30"
+                  className="rounded-full border border-lundies-heather/60 bg-lundies-heather/20 px-4 py-2 text-lundies-moss transition hover:bg-lundies-heather/30"
                 >
                   <span className="text-sm font-medium">
                     Cart ({cartSummary.itemCount}) - {formatPrice(cartSummary.total)}
@@ -140,11 +140,11 @@ export default function RoomsPage() {
         <div className="mb-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300 mb-2">Room Selection</p>
-              <h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-lundies-moss mb-2">Room Selection</p>
+              <h1 className="text-4xl font-semibold leading-tight text-lundies-charcoal sm:text-5xl">
                 Find Your Perfect Stay
               </h1>
-              <p className="mt-4 text-lg text-slate-300 max-w-2xl">
+              <p className="mt-4 text-lg text-lundies-peat max-w-2xl">
                 Discover our collection of thoughtfully designed rooms and suites, each offering unique Highland views 
                 and modern amenities for an unforgettable Perthshire experience.
               </p>
@@ -152,27 +152,27 @@ export default function RoomsPage() {
             
             {/* Quick Search Controls */}
             <div className="flex-shrink-0">
-              <div className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4 min-w-[300px]">
-                <h3 className="text-lg font-semibold text-white">Quick Search</h3>
+              <div className="rounded-3xl border border-lundies-stone/60 bg-white/80 p-6 space-y-4 min-w-[300px]">
+                <h3 className="text-lg font-semibold text-lundies-charcoal">Quick Search</h3>
                 
                 {/* Date Selection */}
                 <div className="space-y-3">
                   <button
                     onClick={() => setShowCalendar(!showCalendar)}
-                    className="w-full rounded-2xl border border-white/20 bg-black/30 px-4 py-3 text-left transition hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                    className="w-full rounded-2xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-left transition hover:bg-white/80 focus:outline-none focus:ring-2 focus:ring-lundies-heather"
                   >
                     {selectedDates.startDate ? (
                       <div>
-                        <div className="text-sm text-slate-300">Selected Dates</div>
-                        <div className="text-white">
+                        <div className="text-sm text-lundies-peat">Selected Dates</div>
+                        <div className="text-lundies-charcoal">
                           {selectedDates.startDate.toLocaleDateString()}
                           {selectedDates.endDate && ` - ${selectedDates.endDate.toLocaleDateString()}`}
                         </div>
                       </div>
                     ) : (
                       <div>
-                        <div className="text-sm text-slate-300">Check-in & Check-out</div>
-                        <div className="text-slate-400">Select your dates</div>
+                        <div className="text-sm text-lundies-peat">Check-in & Check-out</div>
+                        <div className="text-lundies-moss">Select your dates</div>
                       </div>
                     )}
                   </button>
@@ -180,7 +180,7 @@ export default function RoomsPage() {
                   {selectedDates.startDate && (
                     <button
                       onClick={clearDates}
-                      className="w-full text-sm text-emerald-300 hover:text-emerald-200 transition-colors"
+                      className="w-full text-sm text-lundies-moss hover:text-lundies-charcoal transition-colors"
                     >
                       Clear dates
                     </button>
@@ -189,11 +189,11 @@ export default function RoomsPage() {
 
                 {/* Guests */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Guests</label>
+                  <label className="block text-sm font-medium text-lundies-peat mb-2">Guests</label>
                   <select
                     value={guests}
                     onChange={(e) => setGuests(parseInt(e.target.value))}
-                    className="w-full rounded-2xl border border-white/20 bg-black/30 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                    className="w-full rounded-2xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-2 text-lundies-charcoal focus:outline-none focus:ring-2 focus:ring-lundies-heather"
                   >
                     <option value="1">1 Guest</option>
                     <option value="2">2 Guests</option>
@@ -205,11 +205,11 @@ export default function RoomsPage() {
 
                 {/* Room Type */}
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Room Type</label>
+                  <label className="block text-sm font-medium text-lundies-peat mb-2">Room Type</label>
                   <select
                     value={selectedRoomType || ''}
                     onChange={(e) => setSelectedRoomType(e.target.value as RoomType || undefined)}
-                    className="w-full rounded-2xl border border-white/20 bg-black/30 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                    className="w-full rounded-2xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-2 text-lundies-charcoal focus:outline-none focus:ring-2 focus:ring-lundies-heather"
                   >
                     <option value="">All Room Types</option>
                     <option value="standard">Standard Room</option>
@@ -226,12 +226,12 @@ export default function RoomsPage() {
 
         {/* Calendar Modal */}
         {showCalendar && (
-          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-lundies-peat/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
             <div className="max-w-2xl w-full max-h-[90vh] overflow-y-auto">
               <div className="relative">
                 <button
                   onClick={() => setShowCalendar(false)}
-                  className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center"
+                  className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/80 text-lundies-charcoal hover:bg-white transition-colors flex items-center justify-center"
                 >
                   ×
                 </button>
@@ -262,59 +262,59 @@ export default function RoomsPage() {
 
       {/* Selected Room Modal */}
       {selectedRoom && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 bg-slate-900/95 p-6">
+        <div className="fixed inset-0 bg-lundies-peat/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl border border-lundies-stone/60 bg-white/95 p-6">
             <div className="flex items-start justify-between mb-6">
               <div>
-                <h3 className="text-2xl font-semibold text-white">
+                <h3 className="text-2xl font-semibold text-lundies-charcoal">
                   {selectedRoom.type.charAt(0).toUpperCase() + selectedRoom.type.slice(1)} Room
                 </h3>
-                <p className="text-emerald-300">Room {selectedRoom.roomNumber}</p>
+                <p className="text-lundies-moss">Room {selectedRoom.roomNumber}</p>
               </div>
               <button
                 onClick={() => setSelectedRoom(null)}
-                className="w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-white/80 text-lundies-charcoal hover:bg-white transition-colors flex items-center justify-center"
               >
                 ×
               </button>
             </div>
             
             <div className="space-y-4">
-              <p className="text-slate-300">{selectedRoom.description}</p>
+              <p className="text-lundies-peat">{selectedRoom.description}</p>
               
               <div className="grid grid-cols-2 gap-4 text-sm">
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Max Guests:</span>
-                    <span className="text-white">{selectedRoom.maxOccupancy}</span>
+                    <span className="text-lundies-moss">Max Guests:</span>
+                    <span className="text-lundies-charcoal">{selectedRoom.maxOccupancy}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Size:</span>
-                    <span className="text-white">{selectedRoom.size}m²</span>
+                    <span className="text-lundies-moss">Size:</span>
+                    <span className="text-lundies-charcoal">{selectedRoom.size}m²</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">View:</span>
-                    <span className="text-white capitalize">{selectedRoom.view}</span>
+                    <span className="text-lundies-moss">View:</span>
+                    <span className="text-lundies-charcoal capitalize">{selectedRoom.view}</span>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Floor:</span>
-                    <span className="text-white">{selectedRoom.floor}</span>
+                    <span className="text-lundies-moss">Floor:</span>
+                    <span className="text-lundies-charcoal">{selectedRoom.floor}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-slate-400">Price:</span>
-                    <span className="text-emerald-300 font-semibold">
+                    <span className="text-lundies-moss">Price:</span>
+                    <span className="text-lundies-moss font-semibold">
                       £{(selectedRoom.pricing.basePrice / 100).toFixed(2)}/night
                     </span>
                   </div>
                 </div>
               </div>
               
-              <div className="pt-4 border-t border-white/10 space-y-3">
+              <div className="pt-4 border-t border-lundies-stone/60 space-y-3">
                 <button
                   onClick={() => handleAddToCart(selectedRoom)}
-                  className="w-full rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-emerald-300"
+                  className="w-full rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-lundies-heather/80"
                 >
                   Add to Cart
                 </button>
@@ -324,7 +324,7 @@ export default function RoomsPage() {
                     // Auto-proceed to booking after adding to cart
                     setTimeout(() => handleProceedToBooking(), 500)
                   }}
-                  className="w-full rounded-full border border-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-300 transition hover:bg-emerald-400/10"
+                  className="w-full rounded-full border border-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-moss transition hover:bg-lundies-heather/10"
                 >
                   Book Now
                 </button>

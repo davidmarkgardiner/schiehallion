@@ -171,8 +171,8 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
     return (
       <div className="flex items-center justify-center py-12">
         <div className="text-center">
-          <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <div className="text-slate-300">Loading rooms...</div>
+          <div className="w-8 h-8 border-2 border-lundies-heather border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="text-lundies-peat">Loading rooms...</div>
         </div>
       </div>
     )
@@ -184,7 +184,7 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
         <div className="text-red-400 mb-4">{error}</div>
         <button
           onClick={() => window.location.reload()}
-          className="rounded-full bg-emerald-400 px-6 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-300 transition-colors"
+          className="rounded-full bg-lundies-heather px-6 py-2 text-sm font-semibold text-lundies-charcoal hover:bg-lundies-heather/80 transition-colors"
         >
           Retry
         </button>
@@ -197,11 +197,11 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
       {/* Header with controls */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-semibold text-white">
+          <h2 className="text-2xl font-semibold text-lundies-charcoal">
             {filteredRooms.length} Room{filteredRooms.length !== 1 ? 's' : ''} Available
           </h2>
           {(checkInDate && checkOutDate) && (
-            <div className="text-sm text-slate-300">
+            <div className="text-sm text-lundies-peat">
               {new Date(checkInDate).toLocaleDateString()} - {new Date(checkOutDate).toLocaleDateString()}
               {guests && ` • ${guests} guest${guests !== 1 ? 's' : ''}`}
             </div>
@@ -217,13 +217,13 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
           />
           
           {/* View Mode Toggle */}
-          <div className="flex items-center rounded-full border border-white/20 bg-white/5 p-1">
+          <div className="flex items-center rounded-full border border-lundies-stone/60 bg-white/80 p-1">
             <button
               onClick={() => setViewMode('grid')}
               className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
                 viewMode === 'grid'
-                  ? 'bg-white/20 text-white'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-white/80 text-lundies-charcoal'
+                  : 'text-lundies-peat hover:text-lundies-charcoal'
               }`}
             >
               Grid
@@ -232,8 +232,8 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
               onClick={() => setViewMode('list')}
               className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
                 viewMode === 'list'
-                  ? 'bg-white/20 text-white'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-white/80 text-lundies-charcoal'
+                  : 'text-lundies-peat hover:text-lundies-charcoal'
               }`}
             >
               List
@@ -246,8 +246,8 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
       {filteredRooms.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-xl font-semibold text-white mb-2">No rooms match your criteria</h3>
-          <p className="text-slate-300 mb-6">
+          <h3 className="text-xl font-semibold text-lundies-charcoal mb-2">No rooms match your criteria</h3>
+          <p className="text-lundies-peat mb-6">
             Try adjusting your filters or date range to see more options.
           </p>
           <button
@@ -256,7 +256,7 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
               features: {},
               sortBy: 'price-low',
             })}
-            className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-emerald-300 transition-colors"
+            className="rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold text-lundies-charcoal hover:bg-lundies-heather/80 transition-colors"
           >
             Clear All Filters
           </button>

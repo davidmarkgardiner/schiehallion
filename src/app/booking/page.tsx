@@ -50,10 +50,10 @@ export default function BookingPage() {
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex items-center justify-center">
+      <main className="min-h-screen bg-gradient-to-br from-lundies-charcoal to-lundies-peat flex items-center justify-center">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mb-4"></div>
-          <p className="text-slate-400">Loading available rooms...</p>
+          <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-lundies-heather mb-4"></div>
+          <p className="text-lundies-stone">Loading available rooms...</p>
         </div>
       </main>
     )

@@ -136,21 +136,21 @@ export default function ConciergeChatWidget() {
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
       {isOpen && (
-        <div className="w-[320px] sm:w-[360px] rounded-3xl border border-emerald-400/30 bg-slate-950/95 shadow-2xl backdrop-blur-lg">
-          <header className="flex items-start justify-between gap-2 rounded-t-3xl bg-gradient-to-r from-emerald-500/30 to-slate-900 px-5 py-4">
+        <div className="w-[320px] sm:w-[360px] rounded-3xl border border-lundies-heather/50 bg-white/95 shadow-2xl backdrop-blur-lg">
+          <header className="flex items-start justify-between gap-2 rounded-t-3xl bg-gradient-to-r from-lundies-heather/50 to-lundies-sand/40 px-5 py-4">
             <div>
-              <p className="text-xs uppercase tracking-[0.35em] text-emerald-200">AI Concierge</p>
-              <h2 className="text-lg font-semibold text-white">Schiehallion at your service</h2>
-              <p className="text-xs text-emerald-100/80">Multi-lingual guidance powered by our local knowledge base.</p>
+              <p className="text-xs uppercase tracking-[0.35em] text-lundies-moss">AI Concierge</p>
+              <h2 className="text-lg font-semibold text-lundies-charcoal">Schiehallion at your service</h2>
+              <p className="text-xs text-lundies-peat">Multi-lingual guidance powered by our local knowledge base.</p>
             </div>
             <select
               aria-label="Concierge language"
-              className="rounded-full border border-emerald-400/40 bg-black/40 px-3 py-1 text-xs text-emerald-100 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              className="rounded-full border border-lundies-heather/60 bg-white/70 px-3 py-1 text-xs text-lundies-charcoal focus:outline-none focus:ring-2 focus:ring-lundies-heather"
               value={language}
               onChange={event => setLanguage(event.target.value as SupportedLanguage)}
             >
               {SUPPORTED_LANGUAGES.map(option => (
-                <option key={option} value={option} className="bg-slate-900 text-slate-100">
+                <option key={option} value={option} className="bg-white text-lundies-charcoal">
                   {languageLabels[option]}
                 </option>
               ))}
@@ -158,30 +158,30 @@ export default function ConciergeChatWidget() {
           </header>
 
           <div className="space-y-3 px-5 py-4">
-            <div className="h-72 overflow-y-auto rounded-2xl border border-white/10 bg-black/40 p-3">
+            <div className="h-72 overflow-y-auto rounded-2xl border border-lundies-stone/60 bg-lundies-linen p-3">
               <div className="flex flex-col gap-3">
                 {messages.map(message => (
                   <div key={message.id} className={`flex ${message.role === 'assistant' ? 'justify-start' : 'justify-end'}`}>
                     <div
                       className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm leading-relaxed shadow-md ${
                         message.role === 'assistant'
-                          ? 'border border-emerald-400/30 bg-gradient-to-br from-slate-900/90 to-slate-950/90 text-emerald-100'
-                          : 'bg-emerald-400 text-slate-950'
+                          ? 'border border-lundies-heather/50 bg-white text-lundies-peat'
+                          : 'bg-lundies-heather text-lundies-charcoal'
                       }`}
                     >
                       <p>{message.content}</p>
                       {message.details && message.details.length > 0 && (
-                        <ul className="mt-2 space-y-1 text-xs text-emerald-100/80">
+                        <ul className="mt-2 space-y-1 text-xs text-lundies-peat">
                           {message.details.map((detail, index) => (
                             <li key={index} className="flex items-start gap-2">
-                              <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-emerald-400" />
+                              <span className="mt-1 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-lundies-heather" />
                               <span>{detail}</span>
                             </li>
                           ))}
                         </ul>
                       )}
                       {message.followUps && message.followUps.length > 0 && (
-                        <div className="mt-2 space-y-1 text-xs italic text-emerald-200/80">
+                        <div className="mt-2 space-y-1 text-xs italic text-lundies-moss">
                           {message.followUps.map((followUp, index) => (
                             <p key={index}>{followUp}</p>
                           ))}
@@ -193,7 +193,7 @@ export default function ConciergeChatWidget() {
                             <a
                               key={action.url}
                               href={action.url}
-                              className="rounded-full border border-emerald-400/40 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-200 transition hover:bg-emerald-400/20"
+                              className="rounded-full border border-lundies-heather/50 bg-lundies-heather/20 px-3 py-1 text-xs font-semibold text-lundies-charcoal transition hover:bg-lundies-heather/30"
                             >
                               {action.label}
                             </a>
@@ -206,9 +206,9 @@ export default function ConciergeChatWidget() {
 
                 {isProcessing && (
                   <div className="flex justify-start">
-                    <div className="rounded-2xl border border-emerald-400/20 bg-slate-900/80 px-4 py-3 text-sm text-emerald-100">
+                    <div className="rounded-2xl border border-lundies-heather/50 bg-white px-4 py-3 text-sm text-lundies-peat">
                       <span className="inline-flex items-center gap-2">
-                        <span className="h-2 w-2 animate-pulse rounded-full bg-emerald-400" />
+                        <span className="h-2 w-2 animate-pulse rounded-full bg-lundies-heather" />
                         Typing recommendations…
                       </span>
                     </div>
@@ -225,7 +225,7 @@ export default function ConciergeChatWidget() {
                     key={reply.id}
                     type="button"
                     onClick={() => handleQuickReply(reply)}
-                    className="rounded-full border border-emerald-400/30 bg-transparent px-3 py-1 text-xs text-emerald-200 transition hover:bg-emerald-400/20"
+                    className="rounded-full border border-lundies-heather/50 bg-transparent px-3 py-1 text-xs text-lundies-moss transition hover:bg-lundies-heather/20"
                   >
                     {reply.label}
                   </button>
@@ -233,23 +233,23 @@ export default function ConciergeChatWidget() {
               </div>
             )}
 
-            <div className="rounded-2xl border border-white/10 bg-black/40 p-3">
+            <div className="rounded-2xl border border-lundies-stone/60 bg-white/90 p-3">
               <textarea
-                className="h-20 w-full resize-none rounded-xl border border-white/10 bg-transparent px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                className="h-20 w-full resize-none rounded-xl border border-lundies-stone/60 bg-transparent px-3 py-2 text-sm text-lundies-charcoal placeholder:text-lundies-peat focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather"
                 placeholder={inputPlaceholder}
                 value={input}
                 onChange={event => setInput(event.target.value)}
                 onKeyDown={handleKeyDown}
               />
               <div className="mt-3 flex items-center justify-between">
-                <span className="text-[10px] uppercase tracking-[0.35em] text-emerald-200">
+                <span className="text-[10px] uppercase tracking-[0.35em] text-lundies-moss">
                   Gemini + OpenAI · Hospitality tuned
                 </span>
                 <button
                   type="button"
                   onClick={handleSubmit}
                   disabled={isProcessing}
-                  className="rounded-full bg-emerald-400 px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-slate-950 transition hover:bg-emerald-300 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="rounded-full bg-lundies-heather px-4 py-2 text-xs font-semibold uppercase tracking-[0.25em] text-lundies-charcoal transition hover:bg-lundies-heather/80 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   Send
                 </button>
@@ -262,9 +262,9 @@ export default function ConciergeChatWidget() {
       <button
         type="button"
         onClick={toggleOpen}
-        className="flex items-center gap-3 rounded-full border border-emerald-400/40 bg-gradient-to-r from-emerald-500 to-emerald-400 px-5 py-3 text-sm font-semibold text-slate-950 shadow-xl transition hover:from-emerald-400 hover:to-emerald-300"
+        className="flex items-center gap-3 rounded-full border border-lundies-heather/60 bg-gradient-to-r from-lundies-heather to-lundies-sand px-5 py-3 text-sm font-semibold text-lundies-charcoal shadow-xl transition hover:from-lundies-heather/90 hover:to-lundies-sand/90"
       >
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-slate-950/20 text-lg">✨</span>
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/70 text-lg">✨</span>
         {isOpen ? 'Hide concierge' : 'Ask our concierge'}
       </button>
     </div>

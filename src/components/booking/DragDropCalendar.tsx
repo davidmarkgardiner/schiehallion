@@ -48,7 +48,7 @@ const DraggableRoomCard: React.FC<DraggableRoomCardProps> = ({ room, index, gues
           className={`
             rounded-2xl border p-4 transition-all cursor-grab active:cursor-grabbing
             ${snapshot.isDragging
-              ? 'border-emerald-400 bg-emerald-400/20 shadow-2xl shadow-emerald-400/30 scale-105'
+              ? 'border-lundies-heather bg-lundies-heather/20 shadow-2xl shadow-lundies-heather/30 scale-105'
               : 'border-white/10 bg-white/5 hover:bg-white/10'
             }
             ${snapshot.isDragging ? 'rotate-3' : ''}
@@ -59,17 +59,17 @@ const DraggableRoomCard: React.FC<DraggableRoomCardProps> = ({ room, index, gues
               <h3 className="text-white font-medium capitalize text-sm">
                 {room.type} Room
               </h3>
-              <p className="text-emerald-300 text-xs">Room {room.roomNumber}</p>
+              <p className="text-lundies-heather text-xs">Room {room.roomNumber}</p>
             </div>
             <div className="text-right">
               <p className="text-white font-semibold text-sm">
                 {formatPrice(room.pricing.basePrice)}
               </p>
-              <p className="text-slate-400 text-xs">per night</p>
+              <p className="text-lundies-stone text-xs">per night</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-2 text-xs text-slate-400 mb-2">
+          <div className="grid grid-cols-2 gap-2 text-xs text-lundies-stone mb-2">
             <div>Max: {room.maxOccupancy}</div>
             <div>{room.size}m²</div>
             <div className="capitalize">{room.view} view</div>
@@ -79,7 +79,7 @@ const DraggableRoomCard: React.FC<DraggableRoomCardProps> = ({ room, index, gues
           {/* Room features */}
           <div className="flex flex-wrap gap-1">
             {room.features.wifi && (
-              <span className="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs">
+              <span className="px-2 py-1 rounded-full bg-lundies-heather/20 text-lundies-heather text-xs">
                 WiFi
               </span>
             )}
@@ -97,7 +97,7 @@ const DraggableRoomCard: React.FC<DraggableRoomCardProps> = ({ room, index, gues
 
           {/* Drag hint */}
           {!snapshot.isDragging && (
-            <div className="mt-2 text-center text-xs text-slate-500">
+            <div className="mt-2 text-center text-xs text-lundies-stone">
               Drag to calendar
             </div>
           )}
@@ -312,25 +312,25 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
 
   return (
     <DragDropContext onDragEnd={handleDragEnd}>
-      <div className="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-sm p-6">
+      <div className="rounded-3xl border border-white/10 bg-lundies-charcoal/80 backdrop-blur-sm p-6">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-semibold text-white">
               Drag & Drop Booking
             </h2>
-            <p className="text-slate-400">
+            <p className="text-lundies-stone">
               Drag rooms to your preferred dates
             </p>
           </div>
 
           {/* Package Selection */}
           <div className="text-right">
-            <label className="block text-sm text-slate-400 mb-2">Package Type</label>
+            <label className="block text-sm text-lundies-stone mb-2">Package Type</label>
             <select
               value={selectedPackage}
               onChange={(e) => setSelectedPackage(e.target.value as PackageType)}
-              className="rounded-xl border border-white/20 bg-black/30 px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              className="rounded-xl border border-white/20 bg-black/30 px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-lundies-heather"
             >
               {Object.entries(PACKAGE_OPTIONS).map(([key, option]) => (
                 <option key={key} value={key}>
@@ -354,14 +354,14 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
                   className={`
                     space-y-3 min-h-[200px] p-4 rounded-2xl border-2 border-dashed transition-colors
                     ${snapshot.isDraggingOver
-                      ? 'border-emerald-400 bg-emerald-400/10'
+                      ? 'border-lundies-heather bg-lundies-heather/10'
                       : 'border-white/20'
                     }
                   `}
                 >
                   {availableRooms.length === 0 ? (
                     <div className="text-center py-8">
-                      <p className="text-slate-400">No rooms available for selected criteria</p>
+                      <p className="text-lundies-stone">No rooms available for selected criteria</p>
                     </div>
                   ) : (
                     availableRooms.map((room, index) => (
@@ -403,7 +403,7 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
             {/* Day Headers */}
             <div className="grid grid-cols-7 gap-1 mb-2">
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                <div key={`header-${day}`} className="text-center text-xs font-medium text-slate-400 py-2">
+                <div key={`header-${day}`} className="text-center text-xs font-medium text-lundies-stone py-2">
                   {day}
                 </div>
               ))}
@@ -432,11 +432,11 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
                           relative aspect-square p-1 text-xs transition-all
                           rounded-lg border-2 border-dashed
                           ${day.isBlocked
-                            ? 'border-transparent bg-slate-800/50 text-slate-600 cursor-not-allowed'
+                            ? 'border-transparent bg-lundies-charcoal/50 text-lundies-stone cursor-not-allowed'
                             : !day.isCurrentMonth
-                              ? 'border-transparent bg-slate-800/30 text-slate-500 cursor-not-allowed'
+                              ? 'border-transparent bg-lundies-charcoal/30 text-lundies-stone cursor-not-allowed'
                               : snapshot.isDraggingOver
-                                ? 'border-emerald-400 bg-emerald-400/20 scale-105 cursor-pointer'
+                                ? 'border-lundies-heather bg-lundies-heather/20 scale-105 cursor-pointer'
                                 : 'border-white/10 bg-white/5 text-white hover:bg-white/10 cursor-pointer'
                           }
                           ${day.isPeak ? 'ring-1 ring-orange-400/30' : ''}
@@ -452,12 +452,12 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
                           {day.isCurrentMonth && !day.isBlocked && (
                             <>
                               {day.availability !== undefined && (
-                                <div className="text-center text-xs text-emerald-300">
+                                <div className="text-center text-xs text-lundies-heather">
                                   {day.availability} avail
                                 </div>
                               )}
                               {day.price && (
-                                <div className="text-center text-xs text-slate-400">
+                                <div className="text-center text-xs text-lundies-stone">
                                   {formatPrice(day.price)}
                                 </div>
                               )}
@@ -466,8 +466,8 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
 
                           {snapshot.isDraggingOver && (
                             <div className="absolute inset-0 flex items-center justify-center">
-                              <div className="w-6 h-6 rounded-full bg-emerald-400 flex items-center justify-center">
-                                <span className="text-slate-900 text-xs font-bold">+</span>
+                              <div className="w-6 h-6 rounded-full bg-lundies-heather flex items-center justify-center">
+                                <span className="text-lundies-charcoal text-xs font-bold">+</span>
                               </div>
                             </div>
                           )}
@@ -483,16 +483,16 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
             {/* Legend */}
             <div className="flex flex-wrap gap-4 mt-4 text-xs">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-emerald-400/20 border border-emerald-400"></div>
-                <span className="text-slate-400">Available</span>
+                <div className="w-3 h-3 rounded bg-lundies-heather/20 border border-lundies-heather"></div>
+                <span className="text-lundies-stone">Available</span>
               </div>
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded bg-slate-800 border border-slate-600"></div>
-                <span className="text-slate-400">Blocked</span>
+                <div className="w-3 h-3 rounded bg-lundies-charcoal border border-lundies-stone"></div>
+                <span className="text-lundies-stone">Blocked</span>
               </div>
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded bg-orange-400/20 border border-orange-400"></div>
-                <span className="text-slate-400">Peak Season</span>
+                <span className="text-lundies-stone">Peak Season</span>
               </div>
             </div>
           </div>
@@ -500,8 +500,8 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
 
         {loading && (
           <div className="text-center py-4">
-            <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-400"></div>
-            <p className="text-slate-400 mt-2">Loading availability...</p>
+            <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-lundies-heather"></div>
+            <p className="text-lundies-stone mt-2">Loading availability...</p>
           </div>
         )}
       </div>
