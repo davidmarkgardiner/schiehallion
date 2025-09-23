@@ -1,17 +1,18 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import LoginForm from '@/components/LoginForm'
-import NavUserProfile from '@/components/NavUserProfile'
+import SiteNavigation from '@/components/navigation/SiteNavigation'
 
-const navItems = [
-  { label: 'Rooms', href: '#rooms' },
-  { label: 'Dining', href: '#dining' },
-  { label: 'Experiences', href: '#experiences' },
-  { label: 'Technology', href: '#technology' },
-  { label: 'Operations', href: '#operations' },
-  { label: 'Connect', href: '#contact' },
+const landingSections = [
+  { label: 'Rooms Overview', href: '/#rooms' },
+  { label: 'Dining Journey', href: '/#dining' },
+  { label: 'Experiences', href: '/#experiences' },
+  { label: 'Technology', href: '/#technology' },
+  { label: 'Operations', href: '/#operations' },
+  { label: 'Connect', href: '/#contact' },
 ]
 
 const heroStats = [
@@ -274,31 +275,17 @@ export default function Home() {
 
       <header className="relative">
         <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 pb-20 pt-12 sm:pt-16">
-          <nav className="flex flex-wrap items-center justify-between gap-6 text-sm text-slate-200">
-            <a href="#top" className="font-semibold tracking-wide text-slate-100">
-              Schiehallion Hotel
-            </a>
-            <div className="flex items-center gap-6">
-              <div className="flex flex-wrap items-center gap-4">
-                {navItems.map((item) => (
-                  <a
-                    key={item.label}
-                    href={item.href}
-                    className="rounded-full px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-slate-300 transition hover:bg-white/10 hover:text-white"
-                  >
-                    {item.label}
-                  </a>
-                ))}
-                <a
-                  href="/rooms"
-                  className="rounded-full px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-emerald-300 transition hover:bg-white/10 hover:text-white"
-                >
-                  Browse Rooms
-                </a>
-              </div>
-              <NavUserProfile />
-            </div>
-          </nav>
+          <SiteNavigation
+            sectionLinks={landingSections}
+            actionSlot={
+              <Link
+                href="/rooms"
+                className="rounded-full px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-emerald-300 transition hover:bg-white/10 hover:text-white"
+              >
+                Browse Rooms
+              </Link>
+            }
+          />
 
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="space-y-8">

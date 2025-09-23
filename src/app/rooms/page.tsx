@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
-import NavUserProfile from '@/components/NavUserProfile'
+import SiteNavigation from '@/components/navigation/SiteNavigation'
 import RoomList from '@/components/rooms/RoomList'
 import AvailabilityCalendar from '@/components/rooms/AvailabilityCalendar'
 import ShoppingCart from '@/components/booking/ShoppingCart'
@@ -115,33 +115,21 @@ export default function RoomsPage() {
       {/* Header */}
       <header className="border-b border-white/10 bg-slate-950/80 backdrop-blur-sm">
         <div className="mx-auto max-w-7xl px-6 py-4">
-          <nav className="flex items-center justify-between">
-            <div className="flex items-center gap-6">
-              <Link href="/" className="font-semibold tracking-wide text-slate-100">
-                Schiehallion Hotel
-              </Link>
-              <div className="hidden sm:flex items-center gap-4 text-sm">
-                <Link href="/#rooms" className="text-slate-300 hover:text-white transition-colors">Overview</Link>
-                <Link href="/rooms" className="text-emerald-300 font-medium">Rooms</Link>
-                <Link href="/#dining" className="text-slate-300 hover:text-white transition-colors">Dining</Link>
-                <Link href="/#experiences" className="text-slate-300 hover:text-white transition-colors">Experiences</Link>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              {/* Cart indicator */}
-              {cartSummary.itemCount > 0 && (
+          <SiteNavigation
+            layout="standard"
+            actionSlot={
+              cartSummary.itemCount > 0 ? (
                 <button
                   onClick={() => setShowCart(true)}
-                  className="relative rounded-full bg-emerald-400/20 border border-emerald-400/30 px-4 py-2 text-emerald-300 hover:bg-emerald-400/30 transition"
+                  className="rounded-full border border-emerald-400/30 bg-emerald-400/20 px-4 py-2 text-emerald-300 transition hover:bg-emerald-400/30"
                 >
                   <span className="text-sm font-medium">
                     Cart ({cartSummary.itemCount}) - {formatPrice(cartSummary.total)}
                   </span>
                 </button>
-              )}
-              <NavUserProfile />
-            </div>
-          </nav>
+              ) : null
+            }
+          />
         </div>
       </header>
 

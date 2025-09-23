@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import {
   accessibilityOptions,
@@ -12,6 +13,7 @@ import {
 import { RestaurantReservationConfirmation } from '@/components/restaurant/RestaurantReservationConfirmation'
 import { RestaurantReservationForm } from '@/components/restaurant/RestaurantReservationForm'
 import { WaitlistPanel } from '@/components/restaurant/WaitlistPanel'
+import SiteNavigation from '@/components/navigation/SiteNavigation'
 import type {
   AccessibilityFeature,
   RestaurantTable,
@@ -646,8 +648,19 @@ export default function RestaurantGuestExperience() {
     : guestCapacityRange.max
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-16 pt-10 dark:bg-slate-950">
+    <main className="min-h-screen bg-slate-50 pb-16 pt-10 dark:bg-slate-950">
       <div className="mx-auto flex max-w-7xl flex-col gap-10 px-6">
+        <SiteNavigation
+          layout="standard"
+          actionSlot={
+            <Link
+              href="/rooms"
+              className="rounded-full border border-emerald-400/40 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-200 transition hover:bg-emerald-400/10"
+            >
+              View Rooms
+            </Link>
+          }
+        />
         <header className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-900/5 dark:bg-slate-900 dark:ring-white/10">
           <p className="text-sm uppercase tracking-[0.4em] text-slate-500 dark:text-slate-400">The Schiehallion Kitchen</p>
           <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -1095,6 +1108,6 @@ export default function RestaurantGuestExperience() {
           </aside>
         </div>
       </div>
-    </div>
+    </main>
   )
 }
