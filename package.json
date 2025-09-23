@@ -18,7 +18,9 @@
     "test:coverage": "jest --coverage",
     "validate": "npm run lint && npm run type-check && npm run test",
     "clear-cache": "rm -rf .next && rm -rf node_modules/.cache",
-    "setup-test-users": "node scripts/create-test-user.mjs"
+    "setup-test-users": "node scripts/create-test-user.mjs",
+    "seed-hotel-data": "npx tsx scripts/seed-hotel-data.ts",
+    "deploy-firestore": "firebase deploy --only firestore:rules,firestore:indexes"
   },
   "dependencies": {
     "dotenv": "^17.2.2",
@@ -40,6 +42,7 @@
     "eslint-config-next": "15.1.0",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.3.6",
+    "tsx": "^4.20.5",
     "typescript": "^5.3.2"
   }
 }

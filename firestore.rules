@@ -53,7 +53,7 @@ service cloud.firestore {
       allow update, delete: if false; // Audit logs are immutable
     }
 
-    // Guest bookings
+    // Legacy guest bookings (keeping for backwards compatibility)
     match /guestBookings/{bookingId} {
       // Guests can read their own bookings (by email or userId)
       allow read: if isAuthenticated() && (
@@ -70,21 +70,48 @@ service cloud.firestore {
       allow delete: if isAdmin();
     }
 
-    // Hotel rooms (future collection)
+    // SCHH-007: Hotel Rooms Collection
     match /rooms/{roomId} {
+      // All authenticated users can read room information
       allow read: if isAuthenticated();
+      // Only managers and admins can create/update/delete rooms
       allow write: if isManager();
     }
 
-    // Bookings (future collection)
+    // SCHH-008: Hotel Bookings Collection
     match /bookings/{bookingId} {
+      // Guests can read their own bookings (by userId or email)
       allow read: if isAuthenticated() && (
-        request.auth.uid == resource.data.userId ||
+        request.auth.uid == resource.data.guestUserId ||
+        request.auth.token.email == resource.data.guestInfo.email ||
         isStaff()
       );
-      allow create: if isAuthenticated();
+      // All authenticated users can create bookings
+      allow create: if isAuthenticated() && (
+        // Ensure the booking is created by the guest or staff member
+        request.auth.uid == request.resource.data.createdBy ||
+        isStaff()
+      );
+      // Staff can update bookings
       allow update: if isStaff();
+      // Only admins can delete bookings (for data integrity)
       allow delete: if isAdmin();
+    }
+
+    // SCHH-009: Daily Availability Collection
+    match /dailyAvailability/{date} {
+      // All authenticated users can read availability
+      allow read: if isAuthenticated();
+      // Only managers and staff can update availability
+      allow write: if isStaff();
+    }
+
+    // Booking Analytics Collection
+    match /bookingAnalytics/{date} {
+      // Only managers and admins can read analytics
+      allow read: if isManager();
+      // Only system (admin) can write analytics
+      allow write: if isAdmin();
     }
   }
 }
