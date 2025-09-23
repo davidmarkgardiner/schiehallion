@@ -95,6 +95,15 @@ class ImageCacheService {
    */
   getOptimizedUrl(url: string, width?: number, height?: number): string {
     try {
+      // For local images, we can use them directly without optimization
+      if (url.startsWith('/images/rooms/') && !url.includes('localhost')) {
+        // Add cache busting parameter based on day to refresh daily
+        const urlObj = new URL(url, typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
+        const dayOfYear = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
+        urlObj.searchParams.set('v', dayOfYear.toString());
+        return urlObj.toString();
+      }
+
       // Check if this is a generated room image that can be optimized
       if (url.includes('/images/rooms/generated/')) {
         const urlParts = url.split('/');
@@ -102,7 +111,7 @@ class ImageCacheService {
         const roomType = urlParts[urlParts.length - 2];
 
         // Use our optimization API route
-        const optimizeUrl = new URL('/api/room-images/optimize', window.location.origin);
+        const optimizeUrl = new URL('/api/room-images/optimize', typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
         optimizeUrl.searchParams.set('roomType', roomType);
         optimizeUrl.searchParams.set('filename', filename);
 
@@ -114,7 +123,7 @@ class ImageCacheService {
       }
 
       // For other images, add cache busting and basic optimization
-      const urlObj = new URL(url, window.location.origin);
+      const urlObj = new URL(url, typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
 
       if (width) urlObj.searchParams.set('w', width.toString());
       if (height) urlObj.searchParams.set('h', height.toString());

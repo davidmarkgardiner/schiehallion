@@ -1,5 +1,9 @@
-import ImageFallbackTest from '@/components/test/ImageFallbackTest'
+import ImageDebugTest from '@/components/test/ImageDebugTest'
 
 export default function TestImagesPage() {
-  return <ImageFallbackTest />
+  return (
+    <div className="min-h-screen bg-slate-900">
+      <ImageDebugTest />
+    </div>
+  )
 }

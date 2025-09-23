@@ -39,6 +39,7 @@ export function ImageFallback({
   sizes = "(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
 }: ImageFallbackProps) {
   const [imageState, setImageState] = useState<'loading' | 'loaded' | 'error' | 'no-src'>(() => {
+    // If no src is provided, immediately go to no-src state
     return src ? 'loading' : 'no-src'
   })
   const [fallbackAttempted, setFallbackAttempted] = useState(false)
@@ -152,6 +153,27 @@ export function ImageFallback({
 
   // Show actual image if loaded successfully
   if (imageState === 'loaded' && src) {
+    return (
+      <div className={cn("relative overflow-hidden rounded-lg", className)}>
+        <AspectRatio ratio={aspectRatio}>
+          <Image
+            src={src}
+            alt={alt}
+            fill
+            className="object-cover transition-opacity duration-500"
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+            priority={priority}
+            sizes={sizes}
+            quality={90}
+          />
+        </AspectRatio>
+      </div>
+    )
+  }
+
+  // Show image if we have a source but haven't tried to load it yet
+  if (src && (imageState === 'loading' || imageState === 'no-src')) {
     return (
       <div className={cn("relative overflow-hidden rounded-lg", className)}>
         <AspectRatio ratio={aspectRatio}>

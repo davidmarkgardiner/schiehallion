@@ -26,7 +26,8 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
   const allImages = useMemo(() => {
     const originalImages = room.images || []
     const generatedImages = imagesByRoomType[room.type] || []
-    return [...originalImages, ...generatedImages]
+    // Filter out any empty or falsy image URLs
+    return [...originalImages, ...generatedImages].filter(img => img && img.length > 0)
   }, [room.images, room.type, imagesByRoomType])
 
   const nextImage = useCallback(() => {

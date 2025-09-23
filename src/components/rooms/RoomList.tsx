@@ -49,13 +49,16 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
                 // Preload images in background
                 imageCacheService.preloadRoomImages(roomType as RoomType, imageUrls);
               }
+              // If no images are found, we still want to continue without error
             }
           } catch (err) {
             console.warn(`Failed to preload images for ${roomType}:`, err);
+            // Continue with other room types even if one fails
           }
         }
       } catch (err) {
         console.warn('Failed to preload room images:', err);
+        // Don't fail the entire preload process if there's an error
       }
     };
   }, []);

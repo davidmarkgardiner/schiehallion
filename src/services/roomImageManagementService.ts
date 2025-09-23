@@ -174,6 +174,14 @@ class RoomImageManagementService {
         activeImages[img.roomType].push(optimizedUrl);
       });
 
+    // Ensure all room types have an entry even if empty
+    const roomTypes: RoomType[] = ['standard', 'deluxe', 'suite', 'family', 'accessible'];
+    roomTypes.forEach(type => {
+      if (!activeImages[type]) {
+        activeImages[type] = [];
+      }
+    });
+
     return activeImages as Record<RoomType, string[]>;
   }
 

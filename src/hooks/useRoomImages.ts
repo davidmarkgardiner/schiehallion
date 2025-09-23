@@ -45,7 +45,17 @@ export function useRoomImages(options: UseRoomImagesOptions = {}): UseRoomImages
   };
 
   const getAllActiveImageUrls = (): Record<RoomType, string[]> => {
-    return roomImageManagementService.getActiveImagesForRoomTypes();
+    const activeImages = roomImageManagementService.getActiveImagesForRoomTypes();
+    
+    // Ensure all room types have an entry even if empty
+    const roomTypes: RoomType[] = ['standard', 'deluxe', 'suite', 'family', 'accessible'];
+    roomTypes.forEach(type => {
+      if (!activeImages[type]) {
+        activeImages[type] = [];
+      }
+    });
+    
+    return activeImages;
   };
 
   // Load images when roomType changes
@@ -86,11 +96,14 @@ export function useActiveRoomImages(): {
     const loadActiveImages = async () => {
       try {
         setError(null);
+        
+        // Get images from localStorage gallery first
         const activeImages = roomImageManagementService.getActiveImagesForRoomTypes();
         setImagesByRoomType(activeImages);
 
         // Also try to fetch from API for any new images
         const roomTypes: RoomType[] = ['standard', 'deluxe', 'suite', 'family', 'accessible'];
+        const updatedImagesByRoomType = { ...activeImages };
 
         for (const roomType of roomTypes) {
           try {
@@ -98,13 +111,12 @@ export function useActiveRoomImages(): {
             if (response.ok) {
               const { images } = await response.json();
               if (images.length > 0) {
-                // Check if we have newer images that aren't in localStorage yet
-                const storedImages = roomImageManagementService.getActiveImagesForRoomTypes();
-                const currentUrls = storedImages[roomType] || [];
-                const newUrls = images.map((img: any) => img.url);
-
-                // If there are new images, we might want to update the local storage
-                // For now, just use the existing active images
+                // Use the API images directly since they exist in the file system
+                const imageUrls = images.map((img: any) => img.url);
+                updatedImagesByRoomType[roomType] = imageUrls;
+              } else {
+                // If no images from API, ensure the array is empty
+                updatedImagesByRoomType[roomType] = [];
               }
             }
           } catch (err) {
@@ -112,6 +124,9 @@ export function useActiveRoomImages(): {
             console.warn(`Failed to fetch images for ${roomType}:`, err);
           }
         }
+
+        // Update state with images from API
+        setImagesByRoomType(updatedImagesByRoomType);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load images');
       } finally {
