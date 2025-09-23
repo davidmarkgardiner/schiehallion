@@ -6,7 +6,7 @@ test.describe("Epic 4: Room Display & Search", () => {
 
   // Helper function to login
   async function login(page: any) {
-    await page.goto("http://localhost:3002/", {
+    await page.goto("http://localhost:3000/", {
       waitUntil: "domcontentloaded",
       timeout: 15000
     });
@@ -56,7 +56,7 @@ test.describe("Epic 4: Room Display & Search", () => {
     await login(page);
 
     // Navigate to rooms page
-    await page.goto("http://localhost:3002/rooms", {
+    await page.goto("http://localhost:3000/rooms", {
       waitUntil: "domcontentloaded",
       timeout: 15000
     });
@@ -124,7 +124,7 @@ test.describe("Epic 4: Room Display & Search", () => {
 
     // Login and navigate to rooms
     await login(page);
-    await page.goto("http://localhost:3002/rooms", {
+    await page.goto("http://localhost:3000/rooms", {
       waitUntil: "domcontentloaded",
       timeout: 15000
     });
@@ -212,7 +212,7 @@ test.describe("Epic 4: Room Display & Search", () => {
 
     // Login and navigate to rooms
     await login(page);
-    await page.goto("http://localhost:3002/rooms", {
+    await page.goto("http://localhost:3000/rooms", {
       waitUntil: "domcontentloaded",
       timeout: 15000
     });
@@ -367,7 +367,7 @@ test.describe("Epic 4: Room Display & Search", () => {
     await login(page);
 
     // Navigate to rooms
-    await page.goto("http://localhost:3002/rooms", { waitUntil: "networkidle" });
+    await page.goto("http://localhost:3000/rooms", { waitUntil: "networkidle" });
 
     // Wait for page to load
     await expect(page.locator('h1:has-text("Find Your Perfect Stay")')).toBeVisible({ timeout: 10000 });
