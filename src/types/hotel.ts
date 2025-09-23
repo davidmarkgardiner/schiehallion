@@ -298,7 +298,13 @@ export const COLLECTIONS = {
   DAILY_AVAILABILITY: 'dailyAvailability',
   BOOKING_ANALYTICS: 'bookingAnalytics',
   USERS: 'users',
-  AUDIT_LOGS: 'auditLogs'
+  AUDIT_LOGS: 'auditLogs',
+  // Restaurant Collections
+  RESTAURANT_TABLES: 'restaurantTables',
+  SERVICE_PERIODS: 'servicePeriods',
+  TABLE_RESERVATIONS: 'tableReservations',
+  TIME_SLOT_AVAILABILITY: 'timeSlotAvailability',
+  RESTAURANT_ANALYTICS: 'restaurantAnalytics'
 } as const
 
 // Epic 5: Booking Flow Types
@@ -399,5 +405,287 @@ export interface BookingFlowState {
 export const RTDB_PATHS = {
   AVAILABILITY: 'availability',
   BOOKING_LOCKS: 'bookingLocks', // Temporary locks during booking process
-  OCCUPANCY_STATUS: 'occupancyStatus'
+  OCCUPANCY_STATUS: 'occupancyStatus',
+  // Restaurant Real-time Paths
+  TABLE_AVAILABILITY: 'tableAvailability',
+  TABLE_STATUS: 'tableStatus',
+  RESERVATION_LOCKS: 'reservationLocks'
 } as const
+
+// ===================================================================
+// Epic 7: Restaurant Table Management Types
+// ===================================================================
+
+// Import restaurant types
+import type {
+  RestaurantTable,
+  ServicePeriod,
+  TimeSlotAvailability,
+  TableZone,
+  TableFeature,
+  AccessibilityFeature,
+  TableStatus,
+  SlotStatus,
+  SlotSpecialEvent,
+  RestaurantTablePosition
+} from './restaurant'
+
+// Re-export restaurant types
+export type {
+  RestaurantTable,
+  ServicePeriod,
+  TimeSlotAvailability,
+  TableZone,
+  TableFeature,
+  AccessibilityFeature,
+  TableStatus,
+  SlotStatus,
+  SlotSpecialEvent,
+  RestaurantTablePosition
+}
+
+// Restaurant Reservation Types
+export type ReservationStatus =
+  | 'pending'
+  | 'confirmed'
+  | 'seated'
+  | 'completed'
+  | 'cancelled'
+  | 'no-show'
+
+export type PartyType = 'regular' | 'celebration' | 'business' | 'anniversary' | 'birthday'
+
+export interface RestaurantGuest {
+  firstName: string
+  lastName: string
+  email: string
+  phone: string
+  dietaryRequirements?: string[]
+  accessibilityNeeds?: AccessibilityFeature[]
+  specialRequests?: string
+}
+
+export interface RestaurantReservation {
+  id: string
+  reservationReference: string // Human-readable (e.g., RST-2024-001)
+
+  // Guest Information
+  guestUserId?: string // Link to authenticated user
+  primaryGuest: RestaurantGuest
+  additionalGuests?: RestaurantGuest[]
+  partySize: number
+  partyType?: PartyType
+
+  // Table Assignment
+  tableIds: string[] // Support for combined tables
+  servicePeriodId: string
+  timeSlotId: string
+
+  // Timing
+  reservationDate: Timestamp // Date of the reservation
+  reservationTime: string // HH:mm
+  durationMinutes: number
+  estimatedEndTime: string // HH:mm
+
+  // Status and Tracking
+  status: ReservationStatus
+  statusHistory: {
+    status: ReservationStatus
+    timestamp: Timestamp
+    changedBy: string
+    notes?: string
+  }[]
+
+  // Service Information
+  seatedTime?: Timestamp
+  actualEndTime?: Timestamp
+
+  // Special Requirements
+  specialRequests?: string[]
+  celebrationNotes?: string
+  staffNotes?: string[]
+
+  // Source and Channel
+  source: 'direct' | 'phone' | 'walk-in' | 'hotel-guest' | 'partner'
+  sourceReference?: string
+
+  // Timestamps
+  createdAt: Timestamp
+  updatedAt: Timestamp
+  createdBy: string
+  lastUpdatedBy: string
+}
+
+// Restaurant Analytics
+export interface RestaurantAnalytics {
+  date: string // YYYY-MM-DD
+  servicePeriodId: string
+
+  // Reservation Metrics
+  totalReservations: number
+  walkedReservations: number
+  cancelledReservations: number
+  noShowReservations: number
+
+  // Table Utilization
+  tableUtilizationRate: number // Percentage
+  averagePartySize: number
+  turnoverRate: number // Tables per service period
+
+  // Timing Metrics
+  averageServiceDuration: number // Minutes
+  onTimeSeatingRate: number // Percentage
+  averageWaitTime: number // Minutes
+
+  // Revenue Metrics (if integrated with POS)
+  averageSpendPerPerson?: number
+  totalRevenue?: number
+
+  // Guest Demographics
+  guestsByType: {
+    [partyType in PartyType]: number
+  }
+
+  // Special Events Impact
+  specialEventMetrics?: {
+    eventName: string
+    reservationIncrease: number
+    averagePartyIncrease: number
+  }
+}
+
+// Table Availability Snapshot for Real-time Updates
+export interface TableAvailabilitySnapshot {
+  [date: string]: { // YYYY-MM-DD
+    [timeSlotId: string]: {
+      availableTableIds: string[]
+      reservedTableIds: string[]
+      heldTableIds: string[]
+      capacityAvailable: number
+      lastUpdated: number // Unix timestamp
+    }
+  }
+}
+
+// Floor Plan Configuration for Admin
+export interface FloorPlanConfig {
+  id: string
+  name: string
+  version: number
+  isActive: boolean
+
+  // Layout Settings
+  width: number
+  height: number
+  backgroundImage?: string
+
+  // Zone Definitions
+  zones: {
+    [zone in TableZone]: {
+      bounds: {
+        x: number
+        y: number
+        width: number
+        height: number
+      }
+      color: string
+      isActive: boolean
+    }
+  }
+
+  // Metadata
+  createdAt: Timestamp
+  updatedAt: Timestamp
+  createdBy: string
+  notes?: string
+}
+
+// Service Period Override for Special Events
+export interface ServicePeriodOverride {
+  id: string
+  servicePeriodId: string
+  date: string // YYYY-MM-DD
+
+  // Override Settings
+  name?: string
+  startTime?: string
+  endTime?: string
+  lastSeatingTime?: string
+  maxPartySize?: number
+  zonesOpen?: TableZone[]
+
+  // Special Event Info
+  eventName: string
+  eventDescription?: string
+  specialInstructions?: string
+
+  // Capacity Adjustments
+  capacityMultiplier?: number // 1.0 = normal, 1.2 = 20% increase
+  reservedTables?: string[] // Tables held for VIP/events
+
+  createdAt: Timestamp
+  createdBy: string
+}
+
+// Waitlist Management
+export interface RestaurantWaitlist {
+  id: string
+  date: string // YYYY-MM-DD
+  servicePeriodId: string
+  preferredTimeSlotId?: string
+
+  // Guest Information
+  guestInfo: RestaurantGuest
+  partySize: number
+  flexibleTiming: boolean // Whether guest accepts other time slots
+  maxWaitTime: number // Minutes willing to wait
+
+  // Status
+  status: 'active' | 'notified' | 'seated' | 'cancelled' | 'expired'
+  priority: number // Higher = more priority
+
+  // Tracking
+  notificationsSent: number
+  lastNotifiedAt?: Timestamp
+  estimatedWaitTime?: number // Minutes
+
+  createdAt: Timestamp
+  updatedAt: Timestamp
+}
+
+// Restaurant Validation Types
+export interface RestaurantReservationValidation {
+  isValid: boolean
+  errors: string[]
+  warnings: string[]
+  suggestions?: string[]
+}
+
+export interface TableAvailabilityQuery {
+  date: string // YYYY-MM-DD
+  servicePeriodId: string
+  partySize: number
+  preferredTime?: string // HH:mm
+  accessibilityNeeds?: AccessibilityFeature[]
+  tableFeaturePreferences?: TableFeature[]
+}
+
+export interface TableAvailabilityResult {
+  available: boolean
+  timeSlots: {
+    id: string
+    time: string
+    availableTables: RestaurantTable[]
+    combinedTableOptions?: {
+      tableIds: string[]
+      totalCapacity: number
+      zones: TableZone[]
+    }[]
+    waitTime?: number // If no immediate availability
+  }[]
+  alternativeDates?: string[] // If no availability on requested date
+  waitlistOption?: {
+    estimatedWaitTime: number
+    position: number
+  }
+}

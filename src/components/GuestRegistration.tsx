@@ -205,7 +205,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
               className="mr-2"
             />
             <label htmlFor="wantsAccount" className="text-sm">
-              I'd like to create an account for faster future bookings (optional)
+              I&apos;d like to create an account for faster future bookings (optional)
             </label>
           </div>
 
