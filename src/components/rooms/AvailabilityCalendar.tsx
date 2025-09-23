@@ -287,7 +287,7 @@ export default function AvailabilityCalendar({
       {/* Day Headers */}
       <div className="grid grid-cols-7 gap-1 mb-2">
         {dayNames.map(day => (
-          <div key={day} className="text-center text-xs font-medium text-slate-400 py-2">
+          <div key={`header-${day}`} className="text-center text-xs font-medium text-slate-400 py-2">
             {day}
           </div>
         ))}
@@ -295,7 +295,7 @@ export default function AvailabilityCalendar({
 
       {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-1">
-        {calendarDays.map((day, index) => {
+        {calendarDays.map((day) => {
           const dayClasses = [
             'relative h-16 rounded-lg border transition-all cursor-pointer text-center p-1',
             day.isCurrentMonth ? 'border-white/10' : 'border-white/5',
@@ -307,7 +307,7 @@ export default function AvailabilityCalendar({
 
           return (
             <div
-              key={index}
+              key={day.date.toISOString()}
               className={dayClasses}
               onClick={() => handleDateClick(day.date, day)}
             >

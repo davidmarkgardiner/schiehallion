@@ -96,7 +96,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
                   <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
                     {room.images && room.images.map((_, index) => (
                       <div
-                        key={index}
+                        key={`${room.id}-image-${index}`}
                         className={`w-2 h-2 rounded-full ${
                           index === currentImageIndex ? 'bg-white' : 'bg-white/30'
                         }`}
@@ -215,7 +215,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
                 <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
                   {room.images && room.images.map((_, index) => (
                     <div
-                      key={index}
+                      key={`${room.id}-image-${index}`}
                       className={`w-2 h-2 rounded-full ${
                         index === currentImageIndex ? 'bg-white' : 'bg-white/30'
                       }`}

@@ -143,7 +143,7 @@ const PackageSelection: React.FC<PackageSelectionProps> = ({
           <h4 className="text-sm font-medium text-slate-300 mb-2">Includes:</h4>
           <ul className="space-y-1">
             {packageOption.includes.map((item, index) => (
-              <li key={index} className="text-sm text-slate-400 flex items-start gap-2">
+              <li key={`${packageOption.type}-include-${index}`} className="text-sm text-slate-400 flex items-start gap-2">
                 <span className="text-emerald-400 mt-1">•</span>
                 {item}
               </li>
@@ -287,7 +287,7 @@ const PackageSelection: React.FC<PackageSelectionProps> = ({
 
             <ul className="space-y-2">
               {menuPreviewData[showMenuPreview]?.items.map((item: string, index: number) => (
-                <li key={index} className="text-sm text-slate-300 flex items-start gap-2">
+                <li key={`${showMenuPreview}-item-${index}`} className="text-sm text-slate-300 flex items-start gap-2">
                   <span className="text-emerald-400 mt-1">•</span>
                   {item}
                 </li>

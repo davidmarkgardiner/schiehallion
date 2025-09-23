@@ -374,7 +374,7 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
             {/* Day Headers */}
             <div className="grid grid-cols-7 gap-1 mb-2">
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-                <div key={day} className="text-center text-xs font-medium text-slate-400 py-2">
+                <div key={`header-${day}`} className="text-center text-xs font-medium text-slate-400 py-2">
                   {day}
                 </div>
               ))}
