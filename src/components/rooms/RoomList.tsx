@@ -160,7 +160,7 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
       {/* Header with controls */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
-          <h2 className="text-2xl font-semibold text-white">
+          <h2 className="text-2xl font-semibold text-slate-950">
             {filteredRooms.length} Room{filteredRooms.length !== 1 ? 's' : ''} Available
           </h2>
           {(checkInDate && checkOutDate) && (
@@ -185,8 +185,8 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
               onClick={() => setViewMode('grid')}
               className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
                 viewMode === 'grid'
-                  ? 'bg-white/20 text-white'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-white/20 text-slate-950'
+                  : 'text-slate-300 hover:text-slate-950'
               }`}
             >
               Grid
@@ -195,8 +195,8 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
               onClick={() => setViewMode('list')}
               className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
                 viewMode === 'list'
-                  ? 'bg-white/20 text-white'
-                  : 'text-slate-300 hover:text-white'
+                  ? 'bg-white/20 text-slate-950'
+                  : 'text-slate-300 hover:text-slate-950'
               }`}
             >
               List
@@ -209,7 +209,7 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
       {filteredRooms.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🔍</div>
-          <h3 className="text-xl font-semibold text-white mb-2">No rooms match your criteria</h3>
+          <h3 className="text-xl font-semibold text-slate-950 mb-2">No rooms match your criteria</h3>
           <p className="text-slate-300 mb-6">
             Try adjusting your filters or date range to see more options.
           </p>

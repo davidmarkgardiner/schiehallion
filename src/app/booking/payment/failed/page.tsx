@@ -64,7 +64,7 @@ export default function PaymentFailedPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex items-center justify-center p-4">
         <div className="max-w-md w-full text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">Access Required</h1>
+          <h1 className="text-3xl font-bold text-slate-950 mb-2">Access Required</h1>
           <p className="text-slate-400 mb-6">Please log in to view payment information</p>
           <a
             href="/"
@@ -94,7 +94,7 @@ export default function PaymentFailedPage() {
             </svg>
           </div>
 
-          <h1 className="text-4xl font-semibold text-white mb-4">
+          <h1 className="text-4xl font-semibold text-slate-950 mb-4">
             Payment Failed
           </h1>
 
@@ -123,7 +123,7 @@ export default function PaymentFailedPage() {
         <div className="grid gap-8 lg:grid-cols-2">
           {/* Error Details */}
           <div className="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-sm p-8">
-            <h2 className="text-2xl font-semibold text-white mb-6">What Happened?</h2>
+            <h2 className="text-2xl font-semibold text-slate-950 mb-6">What Happened?</h2>
 
             <div className="space-y-4">
               <div className="rounded-xl bg-red-500/20 border border-red-500/30 p-4">
@@ -132,7 +132,7 @@ export default function PaymentFailedPage() {
               </div>
 
               <div className="space-y-3">
-                <h3 className="text-white font-medium">Common reasons for payment failure:</h3>
+                <h3 className="text-slate-950 font-medium">Common reasons for payment failure:</h3>
                 <ul className="space-y-2 text-sm text-slate-300">
                   <li className="flex items-start gap-2">
                     <span className="text-slate-500 mt-1">•</span>
@@ -164,7 +164,7 @@ export default function PaymentFailedPage() {
 
           {/* Next Steps */}
           <div className="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-sm p-8">
-            <h2 className="text-2xl font-semibold text-white mb-6">Next Steps</h2>
+            <h2 className="text-2xl font-semibold text-slate-950 mb-6">Next Steps</h2>
 
             <div className="space-y-4">
               {/* Retry Payment */}
@@ -185,8 +185,8 @@ export default function PaymentFailedPage() {
 
               {/* Alternative Payment */}
               <div className="p-4 rounded-xl bg-blue-500/20 border border-blue-500/30">
-                <h3 className="text-blue-300 font-medium mb-2">Option 2: Use Different Payment Method</h3>
-                <p className="text-blue-200 text-sm mb-4">
+                <h3 className="text-emerald-300 font-medium mb-2">Option 2: Use Different Payment Method</h3>
+                <p className="text-emerald-200 text-sm mb-4">
                   Try a different card or payment method to complete your booking.
                 </p>
                 <button
@@ -224,14 +224,14 @@ export default function PaymentFailedPage() {
 
             {/* Support Contact Info */}
             <div className="mt-8 p-4 rounded-xl bg-slate-800/50 border border-white/10">
-              <h4 className="text-white font-medium mb-3">Need Immediate Help?</h4>
+              <h4 className="text-slate-950 font-medium mb-3">Need Immediate Help?</h4>
               <div className="space-y-2 text-sm">
                 <div className="flex items-center gap-2">
                   <svg className="w-4 h-4 text-slate-400" fill="currentColor" viewBox="0 0 20 20">
                     <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
                     <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
                   </svg>
-                  <a href="mailto:reservations@schiehallion.co.uk" className="text-slate-300 hover:text-white">
+                  <a href="mailto:reservations@schiehallion.co.uk" className="text-slate-300 hover:text-slate-950">
                     reservations@schiehallion.co.uk
                   </a>
                 </div>

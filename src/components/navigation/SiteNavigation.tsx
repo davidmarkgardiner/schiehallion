@@ -33,15 +33,15 @@ const baseSectionClasses =
 const palettes = {
   landing: {
     primary: {
-      active: 'bg-white/20 text-white shadow-sm',
-      inactive: 'text-slate-300 hover:bg-white/10 hover:text-white',
+      active: 'bg-white/20 text-slate-950 shadow-sm',
+      inactive: 'text-slate-300 hover:bg-white/10 hover:text-slate-950',
     },
-    section: 'text-slate-400 hover:text-white',
+    section: 'text-slate-400 hover:text-slate-950',
   },
   standard: {
     primary: {
-      active: 'bg-slate-800 text-white shadow-sm',
-      inactive: 'text-slate-300 hover:bg-slate-800/60 hover:text-white',
+      active: 'bg-slate-800 text-slate-950 shadow-sm',
+      inactive: 'text-slate-300 hover:bg-slate-800/60 hover:text-slate-950',
     },
     section: 'text-slate-400 hover:text-slate-200',
   },
@@ -78,7 +78,7 @@ export default function SiteNavigation({
   return (
     <div className={`flex flex-col gap-4 text-slate-200 ${className}`}>
       <div className="flex flex-col gap-4 md:grid md:grid-cols-[auto,1fr,auto] md:items-center">
-        <Link href="/" className="font-semibold tracking-wide text-white">
+        <Link href="/" className="font-semibold tracking-wide text-slate-950">
           Schiehallion Hotel
         </Link>
 

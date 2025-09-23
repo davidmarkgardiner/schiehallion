@@ -48,9 +48,9 @@ export function RestaurantReservationConfirmation({
         <div className="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-4 py-1 text-sm font-semibold text-emerald-700 dark:bg-emerald-500/20 dark:text-emerald-200">
           Reservation confirmed
         </div>
-        <h3 className="text-2xl font-semibold text-slate-900 dark:text-white">Thank you, {guestName}</h3>
+        <h3 className="text-2xl font-semibold text-slate-900 dark:text-slate-950">Thank you, {guestName}</h3>
         <p className="text-sm text-slate-600 dark:text-slate-300">
-          We have held <span className="font-semibold text-slate-900 dark:text-white">{tableLabel}</span> in the {zoneLabel} zone on {dateLabel}.
+          We have held <span className="font-semibold text-slate-900 dark:text-slate-950">{tableLabel}</span> in the {zoneLabel} zone on {dateLabel}.
           Your booking reference is <span className="font-semibold">{record.reference}</span>.
         </p>
       </header>

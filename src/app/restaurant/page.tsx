@@ -665,7 +665,7 @@ export default function RestaurantGuestExperience() {
           <p className="text-sm uppercase tracking-[0.4em] text-slate-500 dark:text-slate-400">The Schiehallion Kitchen</p>
           <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <h1 className="text-3xl font-semibold text-slate-900 dark:text-white md:text-4xl">
+              <h1 className="text-3xl font-semibold text-slate-900 dark:text-slate-950 md:text-4xl">
                 Choose your table, time, and tasting journey
               </h1>
               <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
@@ -715,7 +715,7 @@ export default function RestaurantGuestExperience() {
                       onClick={() => setActivePeriodId(period.id)}
                       className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition ${
                         period.id === activePeriodId
-                          ? 'bg-emerald-600 text-white shadow-sm'
+                          ? 'bg-emerald-600 text-slate-950 shadow-sm'
                           : 'border border-slate-300 text-slate-500 hover:border-emerald-400 hover:text-emerald-600 dark:border-slate-700 dark:text-slate-400'
                       }`}
                     >
@@ -816,7 +816,7 @@ export default function RestaurantGuestExperience() {
                           const state = resolveTableState(table, availableSet, selectedTableId)
                           const accessibilityBadges = table.accessibility.map((key) => accessibilityIcons[key])
                           const className = state.isAvailable
-                            ? 'bg-emerald-500 text-white border-emerald-400'
+                            ? 'bg-emerald-500 text-slate-950 border-emerald-400'
                             : table.status === 'reserved'
                             ? 'bg-rose-100 text-rose-700 border-rose-400'
                             : table.status === 'held'
@@ -868,7 +868,7 @@ export default function RestaurantGuestExperience() {
 
                   {hoveredTable && (
                     <div className="pointer-events-none absolute bottom-4 left-4 max-w-[260px] rounded-xl border border-slate-200 bg-white/95 p-4 text-xs text-slate-600 shadow-lg backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-300">
-                      <p className="text-sm font-semibold text-slate-900 dark:text-white">{hoveredTable.label}</p>
+                      <p className="text-sm font-semibold text-slate-900 dark:text-slate-950">{hoveredTable.label}</p>
                       <p className="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">
                         {formatZoneLabel(hoveredTable.zone)} · Default {hoveredTable.capacity.default} seats
                       </p>
@@ -891,7 +891,7 @@ export default function RestaurantGuestExperience() {
 
           <aside className="space-y-6">
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Reservation Summary</h2>
+              <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-950">Reservation Summary</h2>
               {selectedSlot ? (
                 reservationStep === 'confirmation' && confirmationRecord && selectedTable ? (
                   <RestaurantReservationConfirmation
@@ -906,7 +906,7 @@ export default function RestaurantGuestExperience() {
                 ) : (
                   <div className="mt-4 space-y-6 text-sm text-slate-600 dark:text-slate-300">
                     <div>
-                      <p className="text-lg font-semibold text-slate-900 dark:text-white">{reservationTimeRange}</p>
+                      <p className="text-lg font-semibold text-slate-900 dark:text-slate-950">{reservationTimeRange}</p>
                       <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
                         {reservationDurationLabel} · Last booking {selectedSlot.lastBookingCutoff}
                       </p>
@@ -933,7 +933,7 @@ export default function RestaurantGuestExperience() {
                       <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/60">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-base font-semibold text-slate-900 dark:text-white">Table {selectedTable.label}</p>
+                            <p className="text-base font-semibold text-slate-900 dark:text-slate-950">Table {selectedTable.label}</p>
                             <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
                               {selectedZoneLabel} · Seats {selectedTable.capacity.min}–{selectedTable.capacity.max}
                             </p>
@@ -941,7 +941,7 @@ export default function RestaurantGuestExperience() {
                           <span
                             className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
                               tableIsAvailable
-                                ? 'bg-emerald-600 text-white'
+                                ? 'bg-emerald-600 text-slate-950'
                                 : 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-200'
                             }`}
                           >
@@ -1019,7 +1019,7 @@ export default function RestaurantGuestExperience() {
                               disabled={!canReserve}
                               className={`w-full rounded-lg px-4 py-2 text-sm font-semibold transition ${
                                 canReserve
-                                  ? 'bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500'
+                                  ? 'bg-emerald-600 text-slate-950 shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500'
                                   : 'cursor-not-allowed bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
                               }`}
                             >
@@ -1053,7 +1053,7 @@ export default function RestaurantGuestExperience() {
             </div>
 
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Time Slot Management</h2>
+              <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-950">Time Slot Management</h2>
               <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                 Live availability by service. Select a slot to reveal matching tables and estimated dining duration.
               </p>
@@ -1074,7 +1074,7 @@ export default function RestaurantGuestExperience() {
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div>
-                          <p className="text-base font-semibold text-slate-900 dark:text-white">
+                          <p className="text-base font-semibold text-slate-900 dark:text-slate-950">
                             {formatTimeLabel(slot.time)} · {addMinutesToTime(slot.time, slot.durationMinutes)}
                           </p>
                           <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">

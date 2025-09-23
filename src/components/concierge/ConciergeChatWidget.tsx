@@ -140,7 +140,7 @@ export default function ConciergeChatWidget() {
           <header className="flex items-start justify-between gap-2 rounded-t-3xl bg-gradient-to-r from-emerald-500/30 to-slate-900 px-5 py-4">
             <div>
               <p className="text-xs uppercase tracking-[0.35em] text-emerald-200">AI Concierge</p>
-              <h2 className="text-lg font-semibold text-white">Schiehallion at your service</h2>
+              <h2 className="text-lg font-semibold text-slate-950">Schiehallion at your service</h2>
               <p className="text-xs text-emerald-100/80">Multi-lingual guidance powered by our local knowledge base.</p>
             </div>
             <select
@@ -235,7 +235,7 @@ export default function ConciergeChatWidget() {
 
             <div className="rounded-2xl border border-white/10 bg-black/40 p-3">
               <textarea
-                className="h-20 w-full resize-none rounded-xl border border-white/10 bg-transparent px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-400"
+                className="h-20 w-full resize-none rounded-xl border border-white/10 bg-transparent px-3 py-2 text-sm text-slate-950 placeholder:text-slate-500 focus:border-emerald-400 focus:outline-none focus:ring-1 focus:ring-emerald-400"
                 placeholder={inputPlaceholder}
                 value={input}
                 onChange={event => setInput(event.target.value)}

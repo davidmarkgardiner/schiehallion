@@ -50,7 +50,7 @@ export default function UserProfile() {
         <span className={`px-2 py-1 text-xs font-semibold rounded-full ${
           userProfile.role === 'admin' ? 'bg-red-100 text-red-800' :
           userProfile.role === 'manager' ? 'bg-yellow-100 text-yellow-800' :
-          userProfile.role === 'staff' ? 'bg-blue-100 text-blue-800' :
+          userProfile.role === 'staff' ? 'bg-sky-100 text-sky-700' :
           'bg-green-100 text-green-800'
         }`}>
           {userProfile.role.toUpperCase()}
@@ -70,7 +70,7 @@ export default function UserProfile() {
                 type="text"
                 value={profileData.firstName}
                 onChange={(e) => setProfileData(prev => ({ ...prev, firstName: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
             <div>
@@ -79,7 +79,7 @@ export default function UserProfile() {
                 type="text"
                 value={profileData.lastName}
                 onChange={(e) => setProfileData(prev => ({ ...prev, lastName: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
             <div>
@@ -88,7 +88,7 @@ export default function UserProfile() {
                 type="tel"
                 value={profileData.phone}
                 onChange={(e) => setProfileData(prev => ({ ...prev, phone: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
               />
             </div>
           </div>
@@ -116,18 +116,18 @@ export default function UserProfile() {
       {/* Role-specific actions */}
       {hasPermission('VIEW_ALL_BOOKINGS') && (
         <div className="mb-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-          <h3 className="font-medium text-blue-900 dark:text-blue-300 mb-2">Staff Actions</h3>
+          <h3 className="font-medium text-emerald-700 dark:text-emerald-300 mb-2">Staff Actions</h3>
           <div className="space-y-2">
             <a
               href="/admin/dashboard"
-              className="block text-sm text-blue-700 dark:text-blue-300 hover:text-blue-900 dark:hover:text-blue-100"
+              className="block text-sm text-emerald-600 dark:text-emerald-300 hover:text-emerald-700 dark:hover:text-emerald-200"
             >
               → Access Admin Dashboard
             </a>
             {hasPermission('VIEW_REPORTS') && (
               <a
                 href="/admin/reports"
-                className="block text-sm text-blue-700 dark:text-blue-300 hover:text-blue-900 dark:hover:text-blue-100"
+                className="block text-sm text-emerald-600 dark:text-emerald-300 hover:text-emerald-700 dark:hover:text-emerald-200"
               >
                 → View Reports
               </a>
@@ -143,13 +143,13 @@ export default function UserProfile() {
             <button
               onClick={handleSaveProfile}
               disabled={loading}
-              className="flex-1 py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+              className="flex-1 py-2 px-4 bg-green-600 text-slate-950 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
             >
               {loading ? 'Saving...' : 'Save'}
             </button>
             <button
               onClick={handleCancel}
-              className="flex-1 py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="flex-1 py-2 px-4 bg-gray-600 text-slate-950 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               Cancel
             </button>
@@ -157,7 +157,7 @@ export default function UserProfile() {
         ) : (
           <button
             onClick={() => setIsEditing(true)}
-            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full py-2 px-4 bg-emerald-400 text-slate-950 rounded-md hover:bg-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           >
             Edit Profile
           </button>
@@ -165,7 +165,7 @@ export default function UserProfile() {
 
         <button
           onClick={logout}
-          className="w-full py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+          className="w-full py-2 px-4 bg-red-600 text-slate-950 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
         >
           Logout
         </button>

@@ -64,14 +64,14 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-white/10">
           <div>
-            <h2 className="text-2xl font-semibold text-white">Shopping Cart</h2>
+            <h2 className="text-2xl font-semibold text-slate-950">Shopping Cart</h2>
             <p className="text-slate-400">
               {cartSummary.itemCount} {cartSummary.itemCount === 1 ? 'room' : 'rooms'} selected
             </p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-white/10 text-slate-950 hover:bg-white/20 transition-colors flex items-center justify-center"
           >
             ×
           </button>
@@ -86,7 +86,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 12H6L5 9z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-white mb-2">Your cart is empty</h3>
+              <h3 className="text-lg font-medium text-slate-950 mb-2">Your cart is empty</h3>
               <p className="text-slate-400">
                 Drag rooms to your preferred dates or browse our room selection to get started.
               </p>
@@ -125,7 +125,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
                 <span>{formatPrice(cartSummary.taxes)}</span>
               </div>
 
-              <div className="flex justify-between text-xl font-semibold text-white border-t border-white/10 pt-3">
+              <div className="flex justify-between text-xl font-semibold text-slate-950 border-t border-white/10 pt-3">
                 <span>Total:</span>
                 <span>{formatPrice(cartSummary.total)}</span>
               </div>
@@ -187,7 +187,7 @@ const CartItemRow: React.FC<CartItemRowProps> = ({ item, onRemove, onPackageChan
     <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
-          <h3 className="text-white font-medium capitalize">
+          <h3 className="text-slate-950 font-medium capitalize">
             {item.room.type} Room
           </h3>
           <p className="text-emerald-300 text-sm">Room {item.room.roomNumber}</p>
@@ -207,19 +207,19 @@ const CartItemRow: React.FC<CartItemRowProps> = ({ item, onRemove, onPackageChan
       <div className="grid grid-cols-2 gap-4 text-sm mb-3">
         <div>
           <p className="text-slate-400">Check-in</p>
-          <p className="text-white">{formatDate(item.checkInDate)}</p>
+          <p className="text-slate-950">{formatDate(item.checkInDate)}</p>
         </div>
         <div>
           <p className="text-slate-400">Check-out</p>
-          <p className="text-white">{formatDate(item.checkOutDate)}</p>
+          <p className="text-slate-950">{formatDate(item.checkOutDate)}</p>
         </div>
         <div>
           <p className="text-slate-400">Guests</p>
-          <p className="text-white">{item.guests}</p>
+          <p className="text-slate-950">{item.guests}</p>
         </div>
         <div>
           <p className="text-slate-400">Nights</p>
-          <p className="text-white">{item.numberOfNights}</p>
+          <p className="text-slate-950">{item.numberOfNights}</p>
         </div>
       </div>
 
@@ -229,7 +229,7 @@ const CartItemRow: React.FC<CartItemRowProps> = ({ item, onRemove, onPackageChan
         <select
           value={item.packageType}
           onChange={(e) => onPackageChange(e.target.value as keyof typeof PACKAGE_OPTIONS)}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-3 py-2 text-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
         >
           {Object.entries(PACKAGE_OPTIONS).map(([key, option]) => (
             <option key={key} value={key}>
@@ -251,7 +251,7 @@ const CartItemRow: React.FC<CartItemRowProps> = ({ item, onRemove, onPackageChan
             <span>{formatPrice(item.totalPackageCost)}</span>
           </div>
         )}
-        <div className="flex justify-between text-white font-medium border-t border-white/10 pt-1">
+        <div className="flex justify-between text-slate-950 font-medium border-t border-white/10 pt-1">
           <span>Total:</span>
           <span>{formatPrice(item.totalCost)}</span>
         </div>

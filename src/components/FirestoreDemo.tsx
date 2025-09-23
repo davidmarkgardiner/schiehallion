@@ -94,12 +94,12 @@ export default function FirestoreDemo() {
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
             placeholder="Enter a message..."
-            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
           />
           <button
             type="submit"
             disabled={loading}
-            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+            className="px-4 py-2 bg-emerald-400 text-slate-950 rounded-md hover:bg-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:opacity-50"
           >
             {loading ? 'Adding...' : 'Add'}
           </button>
@@ -122,7 +122,7 @@ export default function FirestoreDemo() {
                 {user.uid === message.userId && (
                   <button
                     onClick={() => deleteMessage(message.id)}
-                    className="ml-2 px-2 py-1 text-xs bg-red-600 text-white rounded hover:bg-red-700"
+                    className="ml-2 px-2 py-1 text-xs bg-red-600 text-slate-950 rounded hover:bg-red-700"
                   >
                     Delete
                   </button>
@@ -135,7 +135,7 @@ export default function FirestoreDemo() {
 
       <button
         onClick={fetchMessages}
-        className="mt-4 px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+        className="mt-4 px-4 py-2 bg-gray-600 text-slate-950 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
       >
         Refresh Messages
       </button>

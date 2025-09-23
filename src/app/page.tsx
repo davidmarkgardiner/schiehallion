@@ -258,7 +258,7 @@ export default function Home() {
       <main className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex items-center justify-center p-4">
         <div className="max-w-md w-full">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-white mb-2">Schiehallion Hotel</h1>
+            <h1 className="text-3xl font-bold text-slate-950 mb-2">Schiehallion Hotel</h1>
             <p className="text-slate-400">Highland hospitality reimagined</p>
           </div>
           <LoginForm />
@@ -282,7 +282,7 @@ export default function Home() {
             actionSlot={
               <Link
                 href="/rooms"
-                className="rounded-full px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-emerald-300 transition hover:bg-white/10 hover:text-white"
+                className="rounded-full px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-emerald-300 transition hover:bg-white/10 hover:text-slate-950"
               >
                 Browse Rooms
               </Link>
@@ -292,7 +292,7 @@ export default function Home() {
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
             <div className="space-y-8">
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300">Highland hospitality reimagined</p>
-              <h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl lg:text-6xl">
+              <h1 className="text-4xl font-semibold leading-tight text-slate-950 sm:text-5xl lg:text-6xl">
                 A modern booking journey for Aberfeldy’s landmark hotel
               </h1>
               <p className="max-w-xl text-base text-slate-300 sm:text-lg">
@@ -315,13 +315,13 @@ export default function Home() {
                 </a>
                 <a
                   href="#rooms"
-                  className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:border-white hover:bg-white/10"
+                  className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:border-white hover:bg-white/10"
                 >
                   Room Overview
                 </a>
                 <a
                   href="#technology"
-                  className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:border-white hover:bg-white/10"
+                  className="rounded-full border border-white/20 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:border-white hover:bg-white/10"
                 >
                   View Platform Plan
                 </a>
@@ -329,7 +329,7 @@ export default function Home() {
             </div>
             <div className="grid gap-6 rounded-3xl border border-white/10 bg-white/5 p-8 shadow-xl backdrop-blur">
               <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-white">Why this matters</h2>
+                <h2 className="text-xl font-semibold text-slate-950">Why this matters</h2>
                 <p className="text-sm text-slate-200">
                   Designed for mobile-first bookings, high repeat guests, and story-driven marketing campaigns. This canvas sets the
                   tone for visual design, content hierarchy, and future interactive prototypes.
@@ -339,7 +339,7 @@ export default function Home() {
                 {heroStats.map((stat) => (
                   <div key={stat.label} className="rounded-2xl bg-black/30 p-4 text-center shadow-inner">
                     <dt className="text-xs uppercase tracking-[0.3em] text-slate-400">{stat.label}</dt>
-                    <dd className="mt-2 text-2xl font-semibold text-white">{stat.value}</dd>
+                    <dd className="mt-2 text-2xl font-semibold text-slate-950">{stat.value}</dd>
                   </div>
                 ))}
               </dl>
@@ -364,7 +364,7 @@ export default function Home() {
             {roomShowcase.map((room) => (
               <article key={room.name} className="flex flex-col gap-5 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg">
                 <div>
-                  <h3 className="text-2xl font-semibold text-white">{room.name}</h3>
+                  <h3 className="text-2xl font-semibold text-slate-950">{room.name}</h3>
                   <p className="text-sm uppercase tracking-[0.25em] text-emerald-200">{room.vibe}</p>
                 </div>
                 <p className="text-sm text-slate-200">{room.notes}</p>
@@ -412,7 +412,7 @@ export default function Home() {
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {diningMoments.map((moment) => (
               <article key={moment.title} className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-xl font-semibold text-white">{moment.title}</h3>
+                <h3 className="text-xl font-semibold text-slate-950">{moment.title}</h3>
                 <p className="text-sm text-slate-200">{moment.description}</p>
                 <ul className="mt-auto space-y-2 text-sm text-emerald-100">
                   {moment.highlights.map((item) => (
@@ -457,7 +457,7 @@ export default function Home() {
             {experienceHighlights.map((experience) => (
               <article key={experience.name} className="rounded-3xl border border-white/10 bg-white/5 p-6">
                 <div className="flex items-baseline justify-between gap-4">
-                  <h3 className="text-xl font-semibold text-white">{experience.name}</h3>
+                  <h3 className="text-xl font-semibold text-slate-950">{experience.name}</h3>
                   <span className="text-xs uppercase tracking-[0.25em] text-emerald-200">{experience.distance}</span>
                 </div>
                 <p className="mt-4 text-sm text-slate-200">{experience.focus}</p>
@@ -481,7 +481,7 @@ export default function Home() {
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {technologyPillars.map((pillar) => (
               <article key={pillar.title} className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-lg font-semibold text-white">{pillar.title}</h3>
+                <h3 className="text-lg font-semibold text-slate-950">{pillar.title}</h3>
                 <p className="mt-4 text-sm text-slate-200">{pillar.detail}</p>
               </article>
             ))}
@@ -489,7 +489,7 @@ export default function Home() {
           <div className="mt-12 grid gap-6 rounded-3xl border border-white/10 bg-black/30 p-6 md:grid-cols-4">
             {bookingFlow.map((step) => (
               <article key={step.stage} className="flex flex-col gap-4 rounded-2xl border border-white/5 bg-white/5 p-4">
-                <h4 className="text-base font-semibold text-white">{step.stage}</h4>
+                <h4 className="text-base font-semibold text-slate-950">{step.stage}</h4>
                 <p className="text-sm text-slate-200">{step.description}</p>
                 <ul className="mt-auto space-y-1 text-xs text-emerald-100">
                   {step.touchpoints.map((touchpoint) => (
@@ -513,7 +513,7 @@ export default function Home() {
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {conciergeFeatures.map((feature) => (
               <article key={feature.title} className="rounded-3xl border border-emerald-400/20 bg-emerald-400/10 p-6 text-emerald-50">
-                <h3 className="text-lg font-semibold text-white">{feature.title}</h3>
+                <h3 className="text-lg font-semibold text-slate-950">{feature.title}</h3>
                 <p className="mt-3 text-sm text-emerald-100">{feature.description}</p>
               </article>
             ))}
@@ -531,7 +531,7 @@ export default function Home() {
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {operationsHighlights.map((panel) => (
               <article key={panel.title} className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-lg font-semibold text-white">{panel.title}</h3>
+                <h3 className="text-lg font-semibold text-slate-950">{panel.title}</h3>
                 <ul className="space-y-2 text-sm text-slate-200">
                   {panel.bullets.map((bullet) => (
                     <li key={bullet} className="rounded-full bg-white/5 px-3 py-2">
@@ -556,7 +556,7 @@ export default function Home() {
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {integrationPartners.map((partner) => (
               <article key={partner.name} className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-lg font-semibold text-white">{partner.name}</h3>
+                <h3 className="text-lg font-semibold text-slate-950">{partner.name}</h3>
                 <p className="mt-2 text-sm text-slate-200">{partner.focus}</p>
                 <div className="mt-4 flex flex-wrap gap-2 text-xs uppercase tracking-[0.25em] text-slate-400">
                   <span className="rounded-full bg-white/5 px-3 py-1">Priority · {partner.priority}</span>
@@ -578,7 +578,7 @@ export default function Home() {
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {milestones.map((milestone) => (
               <article key={milestone.phase} className="rounded-3xl border border-white/10 bg-white/5 p-6">
-                <h3 className="text-lg font-semibold text-white">{milestone.phase}</h3>
+                <h3 className="text-lg font-semibold text-slate-950">{milestone.phase}</h3>
                 <p className="mt-3 text-sm text-slate-200">{milestone.detail}</p>
               </article>
             ))}
@@ -604,7 +604,7 @@ export default function Home() {
             </div>
             <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
               <p className="text-xs uppercase tracking-[0.25em] text-emerald-200">Call</p>
-              <p className="mt-3 text-lg font-semibold text-white">01887 820421</p>
+              <p className="mt-3 text-lg font-semibold text-slate-950">01887 820421</p>
               <p className="mt-2 text-xs text-slate-300">Front desk · 24/7</p>
             </div>
             <div className="rounded-3xl border border-white/10 bg-white/5 p-6">

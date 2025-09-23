@@ -281,12 +281,12 @@ export default function ChatbotWidget() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs uppercase tracking-wide text-emerald-300/80">Virtual concierge</p>
-                <h2 className="text-lg font-semibold text-white">How can I help?</h2>
+                <h2 className="text-lg font-semibold text-slate-950">How can I help?</h2>
               </div>
               <button
                 type="button"
                 onClick={toggleWidget}
-                className="rounded-full p-2 text-slate-400 transition hover:bg-white/10 hover:text-white"
+                className="rounded-full p-2 text-slate-400 transition hover:bg-white/10 hover:text-slate-950"
                 aria-label="Close concierge"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none">
@@ -414,7 +414,7 @@ export default function ChatbotWidget() {
                       value={issueTitle}
                       onChange={(event) => setIssueTitle(event.target.value)}
                       placeholder="Summarise the feedback"
-                      className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none"
+                      className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-slate-950 focus:border-emerald-400 focus:outline-none"
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-3">
@@ -426,7 +426,7 @@ export default function ChatbotWidget() {
                         id="issue-severity"
                         value={issueSeverity}
                         onChange={(event) => setIssueSeverity(event.target.value as 'low' | 'medium' | 'high')}
-                        className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none"
+                        className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-slate-950 focus:border-emerald-400 focus:outline-none"
                       >
                         <option value="low">Low</option>
                         <option value="medium">Medium</option>
@@ -441,7 +441,7 @@ export default function ChatbotWidget() {
                         id="issue-category"
                         value={issueCategory}
                         onChange={(event) => setIssueCategory(event.target.value as 'bug' | 'feedback' | 'feature')}
-                        className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none"
+                        className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-slate-950 focus:border-emerald-400 focus:outline-none"
                       >
                         <option value="bug">Bug</option>
                         <option value="feedback">Feedback</option>
@@ -460,7 +460,7 @@ export default function ChatbotWidget() {
                     onChange={(event) => setIssueDescription(event.target.value)}
                     placeholder="Share the details we should capture in GitHub."
                     rows={3}
-                    className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-white focus:border-emerald-400 focus:outline-none"
+                    className="w-full rounded-xl border border-white/10 bg-slate-900/80 px-3 py-2 text-sm text-slate-950 focus:border-emerald-400 focus:outline-none"
                   />
                 </div>
                 {issueStatus === 'success' && (

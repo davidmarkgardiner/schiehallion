@@ -94,7 +94,7 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
       {/* Filter Toggle Button */}
       <button
         onClick={onToggle}
-        className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+        className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-slate-950 transition hover:bg-white/10"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -113,7 +113,7 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
           <div className="space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">Filter Rooms</h3>
+              <h3 className="text-lg font-semibold text-slate-950">Filter Rooms</h3>
               <button
                 onClick={clearFilters}
                 className="text-sm text-emerald-300 hover:text-emerald-200 transition-colors"
@@ -128,7 +128,7 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
               <select
                 value={filters.sortBy}
                 onChange={(e) => updateFilter('sortBy', e.target.value as RoomFilterState['sortBy'])}
-                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
               >
                 {SORT_OPTIONS.map(option => (
                   <option key={option.value} value={option.value}>
@@ -144,7 +144,7 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
               <select
                 value={filters.roomType || ''}
                 onChange={(e) => updateFilter('roomType', e.target.value || undefined)}
-                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
               >
                 <option value="">Any Type</option>
                 {ROOM_TYPES.map(type => (
@@ -161,7 +161,7 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
               <select
                 value={filters.maxOccupancy || ''}
                 onChange={(e) => updateFilter('maxOccupancy', e.target.value ? parseInt(e.target.value) : undefined)}
-                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
               >
                 <option value="">Any Number</option>
                 <option value="1">1 Guest</option>
@@ -204,7 +204,7 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
               <select
                 value={filters.view || ''}
                 onChange={(e) => updateFilter('view', e.target.value || undefined)}
-                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
               >
                 <option value="">Any View</option>
                 {ROOM_VIEWS.map(view => (
@@ -221,7 +221,7 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
               <select
                 value={filters.bedType || ''}
                 onChange={(e) => updateFilter('bedType', e.target.value || undefined)}
-                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
               >
                 <option value="">Any Bed</option>
                 {BED_TYPES.map(bed => (

@@ -240,20 +240,20 @@ export default function AvailabilityCalendar({
     <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-semibold text-white">Select Dates</h3>
+        <h3 className="text-xl font-semibold text-slate-950">Select Dates</h3>
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigateMonth('prev')}
-            className="w-8 h-8 rounded-full border border-white/20 text-white hover:bg-white/10 transition-colors flex items-center justify-center"
+            className="w-8 h-8 rounded-full border border-white/20 text-slate-950 hover:bg-white/10 transition-colors flex items-center justify-center"
           >
             ←
           </button>
-          <div className="text-lg font-medium text-white min-w-[140px] text-center">
+          <div className="text-lg font-medium text-slate-950 min-w-[140px] text-center">
             {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
           </div>
           <button
             onClick={() => navigateMonth('next')}
-            className="w-8 h-8 rounded-full border border-white/20 text-white hover:bg-white/10 transition-colors flex items-center justify-center"
+            className="w-8 h-8 rounded-full border border-white/20 text-slate-950 hover:bg-white/10 transition-colors flex items-center justify-center"
           >
             →
           </button>
@@ -302,7 +302,7 @@ export default function AvailabilityCalendar({
             day.isBlocked ? 'cursor-not-allowed opacity-50' : 'hover:bg-white/10',
             day.isSelected ? 'bg-emerald-400/20 border-emerald-400/40' : '',
             day.isInRange ? 'bg-emerald-400/10' : '',
-            !day.isCurrentMonth ? 'text-slate-500' : 'text-white',
+            !day.isCurrentMonth ? 'text-slate-500' : 'text-slate-950',
           ].filter(Boolean).join(' ')
 
           return (
@@ -365,7 +365,7 @@ export default function AvailabilityCalendar({
 
       {loading && (
         <div className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-3xl flex items-center justify-center">
-          <div className="text-white">Loading availability...</div>
+          <div className="text-slate-950">Loading availability...</div>
         </div>
       )}
     </div>

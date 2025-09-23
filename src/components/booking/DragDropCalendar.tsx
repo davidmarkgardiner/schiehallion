@@ -55,13 +55,13 @@ const DraggableRoomCard: React.FC<DraggableRoomCardProps> = ({ room, index, gues
         >
           <div className="flex items-start justify-between mb-2">
             <div>
-              <h3 className="text-white font-medium capitalize text-sm">
+              <h3 className="text-slate-950 font-medium capitalize text-sm">
                 {room.type} Room
               </h3>
               <p className="text-emerald-300 text-xs">Room {room.roomNumber}</p>
             </div>
             <div className="text-right">
-              <p className="text-white font-semibold text-sm">
+              <p className="text-slate-950 font-semibold text-sm">
                 {formatPrice(room.pricing.basePrice)}
               </p>
               <p className="text-slate-400 text-xs">per night</p>
@@ -88,7 +88,7 @@ const DraggableRoomCard: React.FC<DraggableRoomCardProps> = ({ room, index, gues
               </span>
             )}
             {room.features.airConditioning && (
-              <span className="px-2 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs">
+              <span className="px-2 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs">
                 AC
               </span>
             )}
@@ -287,7 +287,7 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-2xl font-semibold text-white">
+            <h2 className="text-2xl font-semibold text-slate-950">
               Drag & Drop Booking
             </h2>
             <p className="text-slate-400">
@@ -301,7 +301,7 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
             <select
               value={selectedPackage}
               onChange={(e) => setSelectedPackage(e.target.value as PackageType)}
-              className="rounded-xl border border-white/20 bg-black/30 px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              className="rounded-xl border border-white/20 bg-black/30 px-3 py-2 text-slate-950 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
             >
               {Object.entries(PACKAGE_OPTIONS).map(([key, option]) => (
                 <option key={key} value={key}>
@@ -315,7 +315,7 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Available Rooms */}
           <div className="lg:col-span-1">
-            <h3 className="text-lg font-medium text-white mb-4">Available Rooms</h3>
+            <h3 className="text-lg font-medium text-slate-950 mb-4">Available Rooms</h3>
 
             <Droppable droppableId="available-rooms" isDropDisabled={false} isCombineEnabled={false} ignoreContainerClipping={false}>
               {(provided, snapshot) => (
@@ -354,17 +354,17 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
           <div className="lg:col-span-2">
             {/* Calendar Header */}
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-lg font-medium text-white">{monthName}</h3>
+              <h3 className="text-lg font-medium text-slate-950">{monthName}</h3>
               <div className="flex gap-2">
                 <button
                   onClick={() => navigateMonth('prev')}
-                  className="w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center"
+                  className="w-8 h-8 rounded-full bg-white/10 text-slate-950 hover:bg-white/20 transition-colors flex items-center justify-center"
                 >
                   ‹
                 </button>
                 <button
                   onClick={() => navigateMonth('next')}
-                  className="w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center"
+                  className="w-8 h-8 rounded-full bg-white/10 text-slate-950 hover:bg-white/20 transition-colors flex items-center justify-center"
                 >
                   ›
                 </button>
@@ -408,7 +408,7 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
                               ? 'border-transparent bg-slate-800/30 text-slate-500 cursor-not-allowed'
                               : snapshot.isDraggingOver
                                 ? 'border-emerald-400 bg-emerald-400/20 scale-105 cursor-pointer'
-                                : 'border-white/10 bg-white/5 text-white hover:bg-white/10 cursor-pointer'
+                                : 'border-white/10 bg-white/5 text-slate-950 hover:bg-white/10 cursor-pointer'
                           }
                           ${day.isPeak ? 'ring-1 ring-orange-400/30' : ''}
                         `}

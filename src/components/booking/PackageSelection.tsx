@@ -106,7 +106,7 @@ const PackageSelection: React.FC<PackageSelectionProps> = ({
 
         {/* Package header */}
         <div className="mb-4">
-          <h3 className="text-xl font-semibold text-white mb-2">
+          <h3 className="text-xl font-semibold text-slate-950 mb-2">
             {packageOption.name}
           </h3>
           <p className="text-slate-400 text-sm leading-relaxed">
@@ -159,7 +159,7 @@ const PackageSelection: React.FC<PackageSelectionProps> = ({
               {Object.entries(packageOption.mealTimes).map(([meal, time]) => (
                 <div key={meal} className="flex justify-between text-sm">
                   <span className="text-slate-400 capitalize">{meal}:</span>
-                  <span className="text-white">{time}</span>
+                  <span className="text-slate-950">{time}</span>
                 </div>
               ))}
             </div>
@@ -186,7 +186,7 @@ const PackageSelection: React.FC<PackageSelectionProps> = ({
   return (
     <div className="space-y-6">
       <div className="text-center">
-        <h2 className="text-2xl font-semibold text-white mb-2">
+        <h2 className="text-2xl font-semibold text-slate-950 mb-2">
           Choose Your Package
         </h2>
         <p className="text-slate-400">
@@ -209,7 +209,7 @@ const PackageSelection: React.FC<PackageSelectionProps> = ({
       {/* Terms and conditions */}
       {showTerms && (
         <div className="rounded-2xl border border-white/10 bg-white/5 p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">
+          <h3 className="text-lg font-semibold text-slate-950 mb-4">
             Terms & Conditions
           </h3>
 
@@ -270,12 +270,12 @@ const PackageSelection: React.FC<PackageSelectionProps> = ({
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
           <div className="max-w-md w-full max-h-[80vh] overflow-y-auto rounded-3xl border border-white/10 bg-slate-900/95 backdrop-blur-sm p-6">
             <div className="flex items-start justify-between mb-4">
-              <h3 className="text-xl font-semibold text-white">
+              <h3 className="text-xl font-semibold text-slate-950">
                 {menuPreviewData[showMenuPreview]?.title}
               </h3>
               <button
                 onClick={() => setShowMenuPreview(null)}
-                className="w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-white/10 text-slate-950 hover:bg-white/20 transition-colors flex items-center justify-center"
               >
                 ×
               </button>

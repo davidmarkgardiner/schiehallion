@@ -74,7 +74,7 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-6">
             <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+              <h1 className="text-3xl font-bold text-gray-900 dark:text-slate-950">
                 Admin Dashboard
               </h1>
               <span className="ml-4 px-2 py-1 text-xs font-semibold bg-indigo-100 text-indigo-800 rounded-full">
@@ -87,7 +87,7 @@ export default function AdminDashboard() {
               </span>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="px-4 py-2 bg-red-600 text-slate-950 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
               >
                 Logout
               </button>
@@ -113,7 +113,7 @@ export default function AdminDashboard() {
                     <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
                       Active Staff
                     </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
+                    <dd className="text-lg font-medium text-gray-900 dark:text-slate-950">
                       {staffUsers.length}
                     </dd>
                   </dl>
@@ -135,7 +135,7 @@ export default function AdminDashboard() {
                     <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
                       Recent Actions
                     </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
+                    <dd className="text-lg font-medium text-gray-900 dark:text-slate-950">
                       {auditLogs.length}
                     </dd>
                   </dl>
@@ -157,7 +157,7 @@ export default function AdminDashboard() {
                     <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
                       Session Active
                     </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
+                    <dd className="text-lg font-medium text-gray-900 dark:text-slate-950">
                       30 min
                     </dd>
                   </dl>
@@ -171,7 +171,7 @@ export default function AdminDashboard() {
         {(userProfile.role === 'manager' || userProfile.role === 'admin') && (
           <div className="bg-white dark:bg-gray-800 shadow rounded-lg mb-8">
             <div className="px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-slate-950 mb-4">
                 Staff Management
               </h3>
               <div className="overflow-x-auto">
@@ -195,7 +195,7 @@ export default function AdminDashboard() {
                   <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                     {staffUsers.map((staff) => (
                       <tr key={staff.uid}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-slate-950">
                           {staff.profile.firstName} {staff.profile.lastName}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
@@ -226,7 +226,7 @@ export default function AdminDashboard() {
         {userProfile.role === 'admin' && (
           <div className="bg-white dark:bg-gray-800 shadow rounded-lg">
             <div className="px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-slate-950 mb-4">
                 Recent Audit Logs
               </h3>
               <div className="overflow-x-auto">
@@ -253,10 +253,10 @@ export default function AdminDashboard() {
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                           {log.timestamp?.toLocaleString()}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-slate-950">
                           {log.userId.slice(0, 8)}...
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-slate-950">
                           {log.action}
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">

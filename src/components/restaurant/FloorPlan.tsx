@@ -124,7 +124,7 @@ const TableTooltip = memo(function TableTooltip({
 }: TableTooltipProps) {
   return (
     <div className="pointer-events-none absolute bottom-4 left-4 max-w-[260px] rounded-xl border border-slate-200 bg-white/95 p-4 text-xs text-slate-600 shadow-lg backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-300">
-      <p className="text-sm font-semibold text-slate-900 dark:text-white">{table.label}</p>
+      <p className="text-sm font-semibold text-slate-900 dark:text-slate-950">{table.label}</p>
       <p className="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">
         {formatZoneLabel(table.zone)} · Default {table.capacity.default} seats
       </p>

@@ -83,13 +83,13 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors flex items-center justify-center"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-slate-950 hover:bg-black/70 transition-colors flex items-center justify-center"
                   >
                     ←
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors flex items-center justify-center"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-slate-950 hover:bg-black/70 transition-colors flex items-center justify-center"
                   >
                     →
                   </button>
@@ -120,13 +120,13 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
         <div className="flex-1 space-y-4">
           <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2">
             <div>
-              <h3 className="text-2xl font-semibold text-white">{getRoomTypeDisplay(room.type)}</h3>
+              <h3 className="text-2xl font-semibold text-slate-950">{getRoomTypeDisplay(room.type)}</h3>
               <p className="text-sm uppercase tracking-[0.25em] text-emerald-200">
                 Room {room.roomNumber} • Floor {room.floor} • {room.view} view
               </p>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-semibold text-white">{formatPrice(room.pricing?.basePrice)}</div>
+              <div className="text-2xl font-semibold text-slate-950">{formatPrice(room.pricing?.basePrice)}</div>
               <div className="text-sm text-slate-300">per night</div>
             </div>
           </div>
@@ -137,17 +137,17 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
             <div className="space-y-2">
               <div className="flex items-center justify-between rounded-2xl bg-black/30 px-4 py-2">
                 <span className="font-medium text-slate-300">Occupancy</span>
-                <span className="text-white">{room.maxOccupancy} guests</span>
+                <span className="text-slate-950">{room.maxOccupancy} guests</span>
               </div>
               <div className="flex items-center justify-between rounded-2xl bg-black/30 px-4 py-2">
                 <span className="font-medium text-slate-300">Beds</span>
-                <span className="text-white">{getBedDisplay()}</span>
+                <span className="text-slate-950">{getBedDisplay()}</span>
               </div>
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between rounded-2xl bg-black/30 px-4 py-2">
                 <span className="font-medium text-slate-300">Size</span>
-                <span className="text-white">{room.size}m²</span>
+                <span className="text-slate-950">{room.size}m²</span>
               </div>
               <div className="flex items-center justify-between rounded-2xl bg-black/30 px-4 py-2">
                 <span className="font-medium text-slate-300">Status</span>
@@ -202,13 +202,13 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors flex items-center justify-center"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-slate-950 hover:bg-black/70 transition-colors flex items-center justify-center"
                 >
                   ←
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-white hover:bg-black/70 transition-colors flex items-center justify-center"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/50 text-slate-950 hover:bg-black/70 transition-colors flex items-center justify-center"
                 >
                   →
                 </button>
@@ -238,7 +238,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
       {/* Room Info */}
       <div className="space-y-4">
         <div>
-          <h3 className="text-xl font-semibold text-white">{getRoomTypeDisplay(room.type)}</h3>
+          <h3 className="text-xl font-semibold text-slate-950">{getRoomTypeDisplay(room.type)}</h3>
           <p className="text-sm uppercase tracking-[0.25em] text-emerald-200">
             Room {room.roomNumber} • {room.view} view
           </p>
@@ -246,7 +246,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
 
         <div className="flex items-end justify-between">
           <div>
-            <div className="text-2xl font-semibold text-white">{formatPrice(room.pricing?.basePrice)}</div>
+            <div className="text-2xl font-semibold text-slate-950">{formatPrice(room.pricing?.basePrice)}</div>
             <div className="text-sm text-slate-300">per night</div>
           </div>
           <div className="text-right text-sm text-slate-300">

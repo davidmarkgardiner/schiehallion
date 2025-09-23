@@ -202,7 +202,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
             {...register('personalInfo.firstName', {
               required: 'First name is required'
             })}
-            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
             placeholder="Enter your first name"
           />
           {errors.personalInfo?.firstName && (
@@ -218,7 +218,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
             {...register('personalInfo.lastName', {
               required: 'Last name is required'
             })}
-            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
             placeholder="Enter your last name"
           />
           {errors.personalInfo?.lastName && (
@@ -240,7 +240,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
               message: 'Invalid email address'
             }
           })}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           placeholder="Enter your email address"
         />
         {errors.personalInfo?.email && (
@@ -257,7 +257,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
           {...register('personalInfo.phone', {
             required: 'Phone number is required'
           })}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           placeholder="Enter your phone number"
         />
         {errors.personalInfo?.phone && (
@@ -272,7 +272,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         <input
           type="date"
           {...register('personalInfo.dateOfBirth')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 focus:outline-none focus:ring-2 focus:ring-emerald-400"
         />
       </div>
     </div>
@@ -290,7 +290,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         </label>
         <input
           {...register('address.street')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           placeholder="Enter your street address"
         />
       </div>
@@ -302,7 +302,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
           </label>
           <input
             {...register('address.city')}
-            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
             placeholder="Enter your city"
           />
         </div>
@@ -313,7 +313,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
           </label>
           <input
             {...register('address.postcode')}
-            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
             placeholder="Enter your postcode"
           />
         </div>
@@ -325,7 +325,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         </label>
         <select
           {...register('address.country')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 focus:outline-none focus:ring-2 focus:ring-emerald-400"
         >
           <option value="United Kingdom">United Kingdom</option>
           <option value="Ireland">Ireland</option>
@@ -350,7 +350,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         <textarea
           {...register('preferences.specialRequests')}
           rows={4}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           placeholder="Any special requests for your stay? (e.g., high floor, quiet room, early check-in)"
         />
       </div>
@@ -447,7 +447,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         </label>
         <select
           {...register('arrival.estimatedArrivalTime')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 focus:outline-none focus:ring-2 focus:ring-emerald-400"
         >
           <option value="">Select arrival time</option>
           {arrivalTimes.map((time) => (
@@ -465,7 +465,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         <textarea
           {...register('arrival.specialInstructions')}
           rows={3}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           placeholder="Any special instructions for your arrival? (e.g., transportation needs, parking requirements)"
         />
       </div>
@@ -484,7 +484,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         </label>
         <input
           {...register('emergencyContact.name')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           placeholder="Emergency contact name"
         />
       </div>
@@ -496,7 +496,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         <input
           type="tel"
           {...register('emergencyContact.phone')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           placeholder="Emergency contact phone number"
         />
       </div>
@@ -507,7 +507,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         </label>
         <input
           {...register('emergencyContact.relationship')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-slate-950 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
           placeholder="Relationship to you (e.g., spouse, parent, sibling)"
         />
       </div>
@@ -564,7 +564,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
       {/* Step Content */}
       <div className="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-sm p-8">
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-white mb-2">
+          <h2 className="text-2xl font-semibold text-slate-950 mb-2">
             {currentStepData.title}
           </h2>
           <p className="text-slate-400">

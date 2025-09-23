@@ -28,7 +28,7 @@ export const TableCard = memo(function TableCard({
   formatZoneLabel,
 }: TableCardProps) {
   const className = isAvailable
-    ? 'bg-emerald-500 text-white border-emerald-400'
+    ? 'bg-emerald-500 text-slate-950 border-emerald-400'
     : table.status === 'reserved'
     ? 'bg-rose-100 text-rose-700 border-rose-400'
     : table.status === 'held'

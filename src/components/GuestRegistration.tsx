@@ -100,7 +100,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
             </p>
             <button
               onClick={() => setStep('guest-checkout')}
-              className="w-full py-2 px-4 bg-gray-600 text-white rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
+              className="w-full py-2 px-4 bg-gray-600 text-slate-950 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500"
             >
               Continue as Guest
             </button>
@@ -113,7 +113,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
             </p>
             <button
               onClick={() => setStep('create-account')}
-              className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full py-2 px-4 bg-emerald-400 text-slate-950 rounded-md hover:bg-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-400"
             >
               Create Account
             </button>
@@ -123,7 +123,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600 dark:text-gray-400">
             Already have an account?
-            <button className="text-blue-600 hover:text-blue-800 ml-1">
+            <button className="text-emerald-600 hover:text-emerald-700 ml-1">
               Sign in
             </button>
           </p>
@@ -148,7 +148,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
               required
             />
           </div>
@@ -163,7 +163,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
               name="firstName"
               value={formData.firstName}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
 
@@ -177,7 +177,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
               name="lastName"
               value={formData.lastName}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
 
@@ -191,7 +191,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
 
@@ -212,7 +212,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
+            className="w-full py-2 px-4 bg-green-600 text-slate-950 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 disabled:opacity-50"
           >
             {loading ? 'Processing...' : 'Continue to Booking'}
           </button>
@@ -221,7 +221,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
         <div className="mt-4 text-center">
           <button
             onClick={() => setStep('choice')}
-            className="text-blue-600 hover:text-blue-800 text-sm"
+            className="text-emerald-600 hover:text-emerald-700 text-sm"
           >
             ← Back to options
           </button>
@@ -252,7 +252,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
               required
             />
           </div>
@@ -267,7 +267,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
               required
               minLength={6}
             />
@@ -283,7 +283,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
               required
             />
           </div>
@@ -298,7 +298,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
               name="firstName"
               value={formData.firstName}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
 
@@ -312,7 +312,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
               name="lastName"
               value={formData.lastName}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
 
@@ -326,14 +326,14 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-400 dark:bg-gray-700 dark:border-gray-600"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+            className="w-full py-2 px-4 bg-emerald-400 text-slate-950 rounded-md hover:bg-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-400 disabled:opacity-50"
           >
             {loading ? 'Creating Account...' : 'Create Account & Continue'}
           </button>
@@ -342,7 +342,7 @@ export default function GuestRegistration({ onGuestCheckout, bookingContext }: G
         <div className="mt-4 text-center">
           <button
             onClick={() => setStep('choice')}
-            className="text-blue-600 hover:text-blue-800 text-sm"
+            className="text-emerald-600 hover:text-emerald-700 text-sm"
           >
             ← Back to options
           </button>

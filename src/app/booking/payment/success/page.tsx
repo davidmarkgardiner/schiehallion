@@ -81,7 +81,7 @@ export default function PaymentSuccessPage() {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex items-center justify-center p-4">
         <div className="max-w-md w-full text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">Access Required</h1>
+          <h1 className="text-3xl font-bold text-slate-950 mb-2">Access Required</h1>
           <p className="text-slate-400 mb-6">Please log in to view your payment confirmation</p>
           <a
             href="/"
@@ -116,7 +116,7 @@ export default function PaymentSuccessPage() {
               </svg>
             </div>
 
-            <h1 className="text-3xl font-semibold text-white mb-4">
+            <h1 className="text-3xl font-semibold text-slate-950 mb-4">
               Payment Confirmation Failed
             </h1>
 
@@ -159,7 +159,7 @@ export default function PaymentSuccessPage() {
             </svg>
           </div>
 
-          <h1 className="text-4xl font-semibold text-white mb-4">
+          <h1 className="text-4xl font-semibold text-slate-950 mb-4">
             Payment Successful!
           </h1>
 
@@ -172,7 +172,7 @@ export default function PaymentSuccessPage() {
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Booking Confirmation */}
             <div className="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-sm p-8">
-              <h2 className="text-2xl font-semibold text-white mb-6">Booking Confirmation</h2>
+              <h2 className="text-2xl font-semibold text-slate-950 mb-6">Booking Confirmation</h2>
 
               {paymentDetails.receipt && (
                 <div className="space-y-6">
@@ -192,7 +192,7 @@ export default function PaymentSuccessPage() {
                     <div key={index} className="rounded-xl border border-white/10 bg-white/5 p-4">
                       <div className="flex justify-between items-start mb-2">
                         <div>
-                          <h4 className="text-white font-medium">
+                          <h4 className="text-slate-950 font-medium">
                             {booking.roomId} - Room {booking.roomNumber || 'TBD'}
                           </h4>
                           <p className="text-slate-400 text-sm">
@@ -210,7 +210,7 @@ export default function PaymentSuccessPage() {
                   ))}
 
                   <div className="border-t border-white/10 pt-4">
-                    <div className="flex justify-between text-xl font-semibold text-white">
+                    <div className="flex justify-between text-xl font-semibold text-slate-950">
                       <span>Total Paid:</span>
                       <span>{formatPrice(paymentDetails.receipt.totalAmount)}</span>
                     </div>
@@ -221,7 +221,7 @@ export default function PaymentSuccessPage() {
 
             {/* What's Next */}
             <div className="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-sm p-8">
-              <h2 className="text-2xl font-semibold text-white mb-6">What's Next?</h2>
+              <h2 className="text-2xl font-semibold text-slate-950 mb-6">What's Next?</h2>
 
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
@@ -231,7 +231,7 @@ export default function PaymentSuccessPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-white font-medium">Confirmation Email</h3>
+                    <h3 className="text-slate-950 font-medium">Confirmation Email</h3>
                     <p className="text-slate-400 text-sm">
                       Sent to {user.email} with your booking details and receipt
                     </p>
@@ -245,7 +245,7 @@ export default function PaymentSuccessPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-white font-medium">Calendar Invite</h3>
+                    <h3 className="text-slate-950 font-medium">Calendar Invite</h3>
                     <p className="text-slate-400 text-sm">
                       Add your stay dates to your calendar with hotel details
                     </p>
@@ -259,7 +259,7 @@ export default function PaymentSuccessPage() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="text-white font-medium">Pre-Arrival Contact</h3>
+                    <h3 className="text-slate-950 font-medium">Pre-Arrival Contact</h3>
                     <p className="text-slate-400 text-sm">
                       We'll contact you 48 hours before arrival to confirm details
                     </p>
@@ -268,13 +268,13 @@ export default function PaymentSuccessPage() {
               </div>
 
               <div className="mt-8 p-4 rounded-xl bg-blue-500/20 border border-blue-500/30">
-                <h4 className="text-blue-300 font-medium mb-2">Need to make changes?</h4>
-                <p className="text-blue-200 text-sm mb-3">
+                <h4 className="text-emerald-300 font-medium mb-2">Need to make changes?</h4>
+                <p className="text-emerald-200 text-sm mb-3">
                   Contact us at least 48 hours before your arrival for any modifications.
                 </p>
                 <a
                   href="mailto:reservations@schiehallion.co.uk"
-                  className="text-blue-300 text-sm underline"
+                  className="text-emerald-300 text-sm underline"
                 >
                   reservations@schiehallion.co.uk
                 </a>

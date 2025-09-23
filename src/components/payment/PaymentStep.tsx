@@ -155,7 +155,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
         <div className="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-sm p-8">
           <div className="text-center">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-400 mb-4"></div>
-            <h2 className="text-2xl font-semibold text-white mb-2">
+            <h2 className="text-2xl font-semibold text-slate-950 mb-2">
               Preparing Payment
             </h2>
             <p className="text-slate-300">
@@ -178,7 +178,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
               </svg>
             </div>
 
-            <h2 className="text-2xl font-semibold text-white mb-4">
+            <h2 className="text-2xl font-semibold text-slate-950 mb-4">
               Payment Setup Failed
             </h2>
 
@@ -220,19 +220,19 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
   return (
     <div className="max-w-2xl mx-auto">
       <div className="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-sm p-8">
-        <h2 className="text-2xl font-semibold text-white mb-6">
+        <h2 className="text-2xl font-semibold text-slate-950 mb-6">
           Complete Your Booking
         </h2>
 
         {/* Booking Summary */}
         <div className="space-y-4 mb-8">
-          <h3 className="text-lg font-medium text-white">Booking Summary</h3>
+          <h3 className="text-lg font-medium text-slate-950">Booking Summary</h3>
 
           {cartSummary.items.map((item, index) => (
             <div key={item.id} className="rounded-xl border border-white/10 bg-white/5 p-4">
               <div className="flex justify-between items-start mb-2">
                 <div>
-                  <h4 className="text-white font-medium capitalize">
+                  <h4 className="text-slate-950 font-medium capitalize">
                     {item.room.type} Room - {item.room.roomNumber}
                   </h4>
                   <p className="text-slate-400 text-sm">
@@ -264,7 +264,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
               <span>VAT (10%):</span>
               <span>{formatPrice(cartSummary.taxes)}</span>
             </div>
-            <div className="flex justify-between text-xl font-semibold text-white border-t border-white/10 pt-2">
+            <div className="flex justify-between text-xl font-semibold text-slate-950 border-t border-white/10 pt-2">
               <span>Total:</span>
               <span>{formatPrice(cartSummary.total)}</span>
             </div>

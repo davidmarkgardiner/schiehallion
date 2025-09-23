@@ -91,7 +91,7 @@ export default function RoomsPage() {
     return (
       <main className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex items-center justify-center p-4">
         <div className="max-w-md w-full text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">Access Required</h1>
+          <h1 className="text-3xl font-bold text-slate-950 mb-2">Access Required</h1>
           <p className="text-slate-400 mb-6">Please log in to view rooms and make bookings</p>
           <Link
             href="/"
@@ -140,7 +140,7 @@ export default function RoomsPage() {
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.3em] text-emerald-300 mb-2">Room Selection</p>
-              <h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+              <h1 className="text-4xl font-semibold leading-tight text-slate-950 sm:text-5xl">
                 Find Your Perfect Stay
               </h1>
               <p className="mt-4 text-lg text-slate-300 max-w-2xl">
@@ -152,7 +152,7 @@ export default function RoomsPage() {
             {/* Quick Search Controls */}
             <div className="flex-shrink-0">
               <div className="rounded-3xl border border-white/10 bg-white/5 p-6 space-y-4 min-w-[300px]">
-                <h3 className="text-lg font-semibold text-white">Quick Search</h3>
+                <h3 className="text-lg font-semibold text-slate-950">Quick Search</h3>
                 
                 {/* Date Selection */}
                 <div className="space-y-3">
@@ -163,7 +163,7 @@ export default function RoomsPage() {
                     {selectedDates.startDate ? (
                       <div>
                         <div className="text-sm text-slate-300">Selected Dates</div>
-                        <div className="text-white">
+                        <div className="text-slate-950">
                           {selectedDates.startDate.toLocaleDateString()}
                           {selectedDates.endDate && ` - ${selectedDates.endDate.toLocaleDateString()}`}
                         </div>
@@ -192,7 +192,7 @@ export default function RoomsPage() {
                   <select
                     value={guests}
                     onChange={(e) => setGuests(parseInt(e.target.value))}
-                    className="w-full rounded-2xl border border-white/20 bg-black/30 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                    className="w-full rounded-2xl border border-white/20 bg-black/30 px-4 py-2 text-slate-950 focus:outline-none focus:ring-2 focus:ring-emerald-400"
                   >
                     <option value="1">1 Guest</option>
                     <option value="2">2 Guests</option>
@@ -208,7 +208,7 @@ export default function RoomsPage() {
                   <select
                     value={selectedRoomType || ''}
                     onChange={(e) => setSelectedRoomType(e.target.value as RoomType || undefined)}
-                    className="w-full rounded-2xl border border-white/20 bg-black/30 px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                    className="w-full rounded-2xl border border-white/20 bg-black/30 px-4 py-2 text-slate-950 focus:outline-none focus:ring-2 focus:ring-emerald-400"
                   >
                     <option value="">All Room Types</option>
                     <option value="standard">Standard Room</option>
@@ -230,7 +230,7 @@ export default function RoomsPage() {
               <div className="relative">
                 <button
                   onClick={() => setShowCalendar(false)}
-                  className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center"
+                  className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/10 text-slate-950 hover:bg-white/20 transition-colors flex items-center justify-center"
                 >
                   ×
                 </button>
@@ -265,14 +265,14 @@ export default function RoomsPage() {
           <div className="max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl border border-white/10 bg-slate-900/95 p-6">
             <div className="flex items-start justify-between mb-6">
               <div>
-                <h3 className="text-2xl font-semibold text-white">
+                <h3 className="text-2xl font-semibold text-slate-950">
                   {selectedRoom.type.charAt(0).toUpperCase() + selectedRoom.type.slice(1)} Room
                 </h3>
                 <p className="text-emerald-300">Room {selectedRoom.roomNumber}</p>
               </div>
               <button
                 onClick={() => setSelectedRoom(null)}
-                className="w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-white/10 text-slate-950 hover:bg-white/20 transition-colors flex items-center justify-center"
               >
                 ×
               </button>
@@ -285,21 +285,21 @@ export default function RoomsPage() {
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Max Guests:</span>
-                    <span className="text-white">{selectedRoom.maxOccupancy}</span>
+                    <span className="text-slate-950">{selectedRoom.maxOccupancy}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Size:</span>
-                    <span className="text-white">{selectedRoom.size}m²</span>
+                    <span className="text-slate-950">{selectedRoom.size}m²</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">View:</span>
-                    <span className="text-white capitalize">{selectedRoom.view}</span>
+                    <span className="text-slate-950 capitalize">{selectedRoom.view}</span>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <div className="flex justify-between">
                     <span className="text-slate-400">Floor:</span>
-                    <span className="text-white">{selectedRoom.floor}</span>
+                    <span className="text-slate-950">{selectedRoom.floor}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-slate-400">Price:</span>

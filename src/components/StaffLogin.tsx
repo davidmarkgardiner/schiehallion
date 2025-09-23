@@ -126,7 +126,7 @@ export default function StaffLogin() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Two-Factor Authentication</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-950">Two-Factor Authentication</h2>
             <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">
               Enter the 6-digit code sent to your device
             </p>
@@ -158,7 +158,7 @@ export default function StaffLogin() {
             <button
               type="submit"
               disabled={loading || twoFactorCode.length !== 6}
-              className="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+              className="w-full py-2 px-4 bg-indigo-600 text-slate-950 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
             >
               {loading ? 'Verifying...' : 'Verify & Continue'}
             </button>
@@ -199,7 +199,7 @@ export default function StaffLogin() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Staff Portal</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-slate-950">Staff Portal</h2>
           <p className="text-gray-600 dark:text-gray-400 text-sm">
             Secure access for hotel staff and management
           </p>
@@ -244,7 +244,7 @@ export default function StaffLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+            className="w-full py-2 px-4 bg-indigo-600 text-slate-950 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
           >
             {loading ? 'Signing In...' : 'Sign In'}
           </button>

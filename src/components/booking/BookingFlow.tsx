@@ -199,7 +199,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
         return (
           <div className="space-y-8">
             <div className="text-center">
-              <h1 className="text-4xl font-semibold text-white mb-4">
+              <h1 className="text-4xl font-semibold text-slate-950 mb-4">
                 Build Your Perfect Stay
               </h1>
               <p className="text-lg text-slate-300 max-w-2xl mx-auto">
@@ -277,7 +277,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
                 </svg>
               </div>
 
-              <h2 className="text-3xl font-semibold text-white mb-4">
+              <h2 className="text-3xl font-semibold text-slate-950 mb-4">
                 Booking Confirmed!
               </h2>
 
@@ -337,7 +337,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex items-center justify-center p-4">
         <div className="max-w-md w-full text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">Access Required</h1>
+          <h1 className="text-3xl font-bold text-slate-950 mb-2">Access Required</h1>
           <p className="text-slate-400 mb-6">Please log in to start booking your Highland getaway</p>
           <a
             href="/"
@@ -367,8 +367,8 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
                 Schiehallion Hotel
               </a>
               <div className="hidden sm:flex items-center gap-4 text-sm">
-                <a href="/#rooms" className="text-slate-300 hover:text-white transition-colors">Overview</a>
-                <a href="/rooms" className="text-slate-300 hover:text-white transition-colors">Rooms</a>
+                <a href="/#rooms" className="text-slate-300 hover:text-slate-950 transition-colors">Overview</a>
+                <a href="/rooms" className="text-slate-300 hover:text-slate-950 transition-colors">Rooms</a>
                 <span className="text-emerald-300 font-medium">Booking</span>
               </div>
             </div>
