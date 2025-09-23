@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from 'react'
 import { DailyAvailability, RoomType } from '@/types/hotel'
-import { AvailabilityService } from '@/lib/firebase/hotel-service'
+import { AvailabilityService } from '@/lib/firebase/hotel-service-mock'
 
 interface DateRange {
   startDate: Date | null

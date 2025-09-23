@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { useAuth } from '@/context/AuthContext'
 import NavUserProfile from '@/components/NavUserProfile'
 import RoomList from '@/components/rooms/RoomList'
@@ -43,12 +44,12 @@ export default function RoomsPage() {
         <div className="max-w-md w-full text-center">
           <h1 className="text-3xl font-bold text-white mb-2">Access Required</h1>
           <p className="text-slate-400 mb-6">Please log in to view rooms and make bookings</p>
-          <a
+          <Link
             href="/"
             className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-emerald-300"
           >
             Go to Login
-          </a>
+          </Link>
         </div>
       </main>
     )
@@ -67,14 +68,14 @@ export default function RoomsPage() {
         <div className="mx-auto max-w-7xl px-6 py-4">
           <nav className="flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <a href="/" className="font-semibold tracking-wide text-slate-100">
+              <Link href="/" className="font-semibold tracking-wide text-slate-100">
                 Schiehallion Hotel
-              </a>
+              </Link>
               <div className="hidden sm:flex items-center gap-4 text-sm">
-                <a href="/#rooms" className="text-slate-300 hover:text-white transition-colors">Overview</a>
-                <a href="/rooms" className="text-emerald-300 font-medium">Rooms</a>
-                <a href="/#dining" className="text-slate-300 hover:text-white transition-colors">Dining</a>
-                <a href="/#experiences" className="text-slate-300 hover:text-white transition-colors">Experiences</a>
+                <Link href="/#rooms" className="text-slate-300 hover:text-white transition-colors">Overview</Link>
+                <Link href="/rooms" className="text-emerald-300 font-medium">Rooms</Link>
+                <Link href="/#dining" className="text-slate-300 hover:text-white transition-colors">Dining</Link>
+                <Link href="/#experiences" className="text-slate-300 hover:text-white transition-colors">Experiences</Link>
               </div>
             </div>
             <NavUserProfile />

@@ -8,8 +8,6 @@ export default function NavUserProfile() {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
-  if (!user || !userProfile) return null
-
   // Close dropdown when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -21,6 +19,8 @@ export default function NavUserProfile() {
     document.addEventListener('mousedown', handleClickOutside)
     return () => document.removeEventListener('mousedown', handleClickOutside)
   }, [])
+
+  if (!user || !userProfile) return null
 
   const getRoleBadgeColor = (role: string) => {
     switch (role) {

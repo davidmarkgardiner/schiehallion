@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { Room } from '@/types/hotel'
 import RoomCard from './RoomCard'
 import RoomFilters, { RoomFilterState } from './RoomFilters'
-import { RoomService } from '@/lib/firebase/hotel-service'
+import { RoomService } from '@/lib/firebase/hotel-service-mock'
 
 type ViewMode = 'grid' | 'list'
 

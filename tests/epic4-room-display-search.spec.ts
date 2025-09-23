@@ -34,7 +34,7 @@ test.describe("Epic 4: Room Display & Search", () => {
         page.waitForSelector('text=Welcome', { timeout: 8000 }),
         // Or check that login form is gone
         page.waitForFunction(() => {
-          const emailField = document.querySelector('input[type="email"]');
+          const emailField = document.querySelector('input[type="email"]') as HTMLElement;
           return !emailField || !emailField.offsetParent;
         }, {}, { timeout: 8000 })
       ]);
