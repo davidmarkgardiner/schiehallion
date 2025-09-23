@@ -60,18 +60,18 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full max-h-[90vh] overflow-hidden rounded-3xl border border-white/10 bg-slate-900/95 backdrop-blur-sm">
+      <div className="max-w-2xl w-full max-h-[90vh] overflow-hidden rounded-3xl border border-lundies-stone/60 bg-white/95 backdrop-blur-sm">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-white/10">
+        <div className="flex items-center justify-between p-6 border-b border-lundies-stone/60">
           <div>
-            <h2 className="text-2xl font-semibold text-white">Shopping Cart</h2>
-            <p className="text-slate-400">
+            <h2 className="text-2xl font-semibold text-lundies-charcoal">Shopping Cart</h2>
+            <p className="text-lundies-peat">
               {cartSummary.itemCount} {cartSummary.itemCount === 1 ? 'room' : 'rooms'} selected
             </p>
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-white/10 text-white hover:bg-white/20 transition-colors flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-lundies-stone/60 text-lundies-charcoal hover:bg-lundies-stone/40 transition-colors flex items-center justify-center"
           >
             ×
           </button>
@@ -81,13 +81,13 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
         <div className="flex-1 overflow-y-auto p-6 space-y-4 max-h-[50vh]">
           {cartSummary.items.length === 0 ? (
             <div className="text-center py-12">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-slate-800 flex items-center justify-center">
-                <svg className="w-8 h-8 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-lundies-stone/40 flex items-center justify-center">
+                <svg className="w-8 h-8 text-lundies-peat" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l-1 12H6L5 9z" />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-white mb-2">Your cart is empty</h3>
-              <p className="text-slate-400">
+              <h3 className="text-lg font-medium text-lundies-charcoal mb-2">Your cart is empty</h3>
+              <p className="text-lundies-peat">
                 Drag rooms to your preferred dates or browse our room selection to get started.
               </p>
             </div>
@@ -107,25 +107,25 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
         {cartSummary.items.length > 0 && (
           <>
             {/* Cart Summary */}
-            <div className="border-t border-white/10 p-6 space-y-3">
-              <div className="flex justify-between text-slate-300">
+            <div className="border-t border-lundies-stone/60 p-6 space-y-3">
+              <div className="flex justify-between text-lundies-peat">
                 <span>Subtotal:</span>
                 <span>{formatPrice(cartSummary.subtotal)}</span>
               </div>
 
               {cartSummary.groupDiscount > 0 && (
-                <div className="flex justify-between text-emerald-300">
+                <div className="flex justify-between text-lundies-moss">
                   <span>Group Discount ({cartSummary.items.length} rooms):</span>
                   <span>-{formatPrice(cartSummary.groupDiscount)}</span>
                 </div>
               )}
 
-              <div className="flex justify-between text-slate-300">
+              <div className="flex justify-between text-lundies-peat">
                 <span>Taxes (10% VAT):</span>
                 <span>{formatPrice(cartSummary.taxes)}</span>
               </div>
 
-              <div className="flex justify-between text-xl font-semibold text-white border-t border-white/10 pt-3">
+              <div className="flex justify-between text-xl font-semibold text-lundies-charcoal border-t border-lundies-stone/60 pt-3">
                 <span>Total:</span>
                 <span>{formatPrice(cartSummary.total)}</span>
               </div>
@@ -135,7 +135,7 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
             <div className="p-6 pt-0 space-y-3">
               <button
                 onClick={onProceedToBooking}
-                className="w-full rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-950 transition hover:bg-emerald-300"
+                className="w-full rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-lundies-heather/80"
               >
                 Proceed to Booking
               </button>
@@ -144,13 +144,13 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
                 <button
                   onClick={handleClearCart}
                   disabled={isClearing}
-                  className="flex-1 rounded-full border border-white/20 px-4 py-2 text-sm text-slate-300 hover:bg-white/5 transition disabled:opacity-50"
+                  className="flex-1 rounded-full border border-lundies-stone/60 px-4 py-2 text-sm text-lundies-peat hover:bg-lundies-stone/20 transition disabled:opacity-50"
                 >
                   {isClearing ? 'Clearing...' : 'Clear Cart'}
                 </button>
                 <button
                   onClick={onClose}
-                  className="flex-1 rounded-full border border-white/20 px-4 py-2 text-sm text-slate-300 hover:bg-white/5 transition"
+                  className="flex-1 rounded-full border border-lundies-stone/60 px-4 py-2 text-sm text-lundies-peat hover:bg-lundies-stone/20 transition"
                 >
                   Continue Shopping
                 </button>
@@ -184,17 +184,17 @@ const CartItemRow: React.FC<CartItemRowProps> = ({ item, onRemove, onPackageChan
   }
 
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
+    <div className="rounded-2xl border border-lundies-stone/60 bg-lundies-stone/20 p-4">
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1">
-          <h3 className="text-white font-medium capitalize">
+          <h3 className="text-lundies-charcoal font-medium capitalize">
             {item.room.type} Room
           </h3>
-          <p className="text-emerald-300 text-sm">Room {item.room.roomNumber}</p>
+          <p className="text-lundies-moss text-sm">Room {item.room.roomNumber}</p>
         </div>
         <button
           onClick={onRemove}
-          className="text-slate-400 hover:text-red-400 transition-colors"
+          className="text-lundies-peat hover:text-red-400 transition-colors"
           title="Remove from cart"
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -206,30 +206,30 @@ const CartItemRow: React.FC<CartItemRowProps> = ({ item, onRemove, onPackageChan
       {/* Stay Details */}
       <div className="grid grid-cols-2 gap-4 text-sm mb-3">
         <div>
-          <p className="text-slate-400">Check-in</p>
+          <p className="text-lundies-peat">Check-in</p>
           <p className="text-white">{formatDate(item.checkInDate)}</p>
         </div>
         <div>
-          <p className="text-slate-400">Check-out</p>
+          <p className="text-lundies-peat">Check-out</p>
           <p className="text-white">{formatDate(item.checkOutDate)}</p>
         </div>
         <div>
-          <p className="text-slate-400">Guests</p>
+          <p className="text-lundies-peat">Guests</p>
           <p className="text-white">{item.guests}</p>
         </div>
         <div>
-          <p className="text-slate-400">Nights</p>
+          <p className="text-lundies-peat">Nights</p>
           <p className="text-white">{item.numberOfNights}</p>
         </div>
       </div>
 
       {/* Package Selection */}
       <div className="mb-3">
-        <label className="block text-sm text-slate-400 mb-2">Package</label>
+        <label className="block text-sm text-lundies-peat mb-2">Package</label>
         <select
           value={item.packageType}
           onChange={(e) => onPackageChange(e.target.value as keyof typeof PACKAGE_OPTIONS)}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-3 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-3 py-2 text-lundies-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-lundies-heather"
         >
           {Object.entries(PACKAGE_OPTIONS).map(([key, option]) => (
             <option key={key} value={key}>
@@ -241,17 +241,17 @@ const CartItemRow: React.FC<CartItemRowProps> = ({ item, onRemove, onPackageChan
 
       {/* Pricing Breakdown */}
       <div className="space-y-1 text-sm">
-        <div className="flex justify-between text-slate-400">
+        <div className="flex justify-between text-lundies-peat">
           <span>Room ({item.numberOfNights} nights):</span>
           <span>{formatPrice(item.totalRoomCost)}</span>
         </div>
         {item.totalPackageCost > 0 && (
-          <div className="flex justify-between text-slate-400">
+          <div className="flex justify-between text-lundies-peat">
             <span>Package ({item.numberOfNights} nights):</span>
             <span>{formatPrice(item.totalPackageCost)}</span>
           </div>
         )}
-        <div className="flex justify-between text-white font-medium border-t border-white/10 pt-1">
+        <div className="flex justify-between text-lundies-charcoal font-medium border-t border-lundies-stone/60 pt-1">
           <span>Total:</span>
           <span>{formatPrice(item.totalCost)}</span>
         </div>

@@ -195,14 +195,14 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
     <div className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-lundies-peat mb-2">
             First Name *
           </label>
           <input
             {...register('personalInfo.firstName', {
               required: 'First name is required'
             })}
-            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
             placeholder="Enter your first name"
           />
           {errors.personalInfo?.firstName && (
@@ -211,14 +211,14 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-lundies-peat mb-2">
             Last Name *
           </label>
           <input
             {...register('personalInfo.lastName', {
               required: 'Last name is required'
             })}
-            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
             placeholder="Enter your last name"
           />
           {errors.personalInfo?.lastName && (
@@ -228,7 +228,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-lundies-peat mb-2">
           Email Address *
         </label>
         <input
@@ -240,7 +240,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
               message: 'Invalid email address'
             }
           })}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
           placeholder="Enter your email address"
         />
         {errors.personalInfo?.email && (
@@ -249,7 +249,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-lundies-peat mb-2">
           Phone Number *
         </label>
         <input
@@ -257,7 +257,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
           {...register('personalInfo.phone', {
             required: 'Phone number is required'
           })}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
           placeholder="Enter your phone number"
         />
         {errors.personalInfo?.phone && (
@@ -266,7 +266,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-lundies-peat mb-2">
           Date of Birth (Optional)
         </label>
         <input
@@ -280,47 +280,47 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
 
   const renderAddress = () => (
     <div className="space-y-4">
-      <p className="text-slate-400 text-sm mb-4">
+      <p className="text-lundies-peat text-sm mb-4">
         Providing your address helps us with check-in and any postal communications.
       </p>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-lundies-peat mb-2">
           Street Address
         </label>
         <input
           {...register('address.street')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
           placeholder="Enter your street address"
         />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-lundies-peat mb-2">
             City
           </label>
           <input
             {...register('address.city')}
-            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
             placeholder="Enter your city"
           />
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-slate-300 mb-2">
+          <label className="block text-sm font-medium text-lundies-peat mb-2">
             Postcode
           </label>
           <input
             {...register('address.postcode')}
-            className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+            className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
             placeholder="Enter your postcode"
           />
         </div>
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-lundies-peat mb-2">
           Country
         </label>
         <select
@@ -344,19 +344,19 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
   const renderPreferences = () => (
     <div className="space-y-6">
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-lundies-peat mb-2">
           Special Requests
         </label>
         <textarea
           {...register('preferences.specialRequests')}
           rows={4}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
           placeholder="Any special requests for your stay? (e.g., high floor, quiet room, early check-in)"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-3">
+        <label className="block text-sm font-medium text-lundies-peat mb-3">
           Dietary Requirements
         </label>
         <div className="space-y-3">
@@ -378,8 +378,8 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
                 className={`
                   px-3 py-2 rounded-full text-sm border transition-colors
                   ${(watch('preferences.dietaryRequirements') || []).includes(option)
-                    ? 'border-emerald-400 bg-emerald-400/20 text-emerald-300'
-                    : 'border-white/20 bg-white/5 text-slate-300 hover:bg-white/10'
+                    ? 'border-lundies-heather bg-lundies-heather/20 text-lundies-moss'
+                    : 'border-lundies-stone/60 bg-lundies-stone/20 text-lundies-peat hover:bg-lundies-stone/40'
                   }
                 `}
               >
@@ -391,7 +391,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-3">
+        <label className="block text-sm font-medium text-lundies-peat mb-3">
           Accessibility Needs
         </label>
         <div className="space-y-3">
@@ -413,8 +413,8 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
                 className={`
                   px-3 py-2 rounded-full text-sm border transition-colors
                   ${(watch('preferences.accessibilityNeeds') || []).includes(option)
-                    ? 'border-emerald-400 bg-emerald-400/20 text-emerald-300'
-                    : 'border-white/20 bg-white/5 text-slate-300 hover:bg-white/10'
+                    ? 'border-lundies-heather bg-lundies-heather/20 text-lundies-moss'
+                    : 'border-lundies-stone/60 bg-lundies-stone/20 text-lundies-peat hover:bg-lundies-stone/40'
                   }
                 `}
               >
@@ -430,9 +430,9 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
           type="checkbox"
           id="marketing-opt-in"
           {...register('preferences.marketingOptIn')}
-          className="w-4 h-4 rounded border-white/20 bg-black/30 text-emerald-400 focus:ring-emerald-400 focus:ring-2"
+          className="w-4 h-4 rounded border-lundies-stone/60 bg-lundies-stone/40 text-lundies-heather focus:ring-lundies-heather focus:ring-2"
         />
-        <label htmlFor="marketing-opt-in" className="text-sm text-slate-300 cursor-pointer">
+        <label htmlFor="marketing-opt-in" className="text-sm text-lundies-peat cursor-pointer">
           I would like to receive special offers and updates about Schiehallion Hotel
         </label>
       </div>
@@ -442,7 +442,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
   const renderArrival = () => (
     <div className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-lundies-peat mb-2">
           Estimated Arrival Time
         </label>
         <select
@@ -459,13 +459,13 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-lundies-peat mb-2">
           Special Instructions
         </label>
         <textarea
           {...register('arrival.specialInstructions')}
           rows={3}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
           placeholder="Any special instructions for your arrival? (e.g., transportation needs, parking requirements)"
         />
       </div>
@@ -474,40 +474,40 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
 
   const renderEmergencyContact = () => (
     <div className="space-y-4">
-      <p className="text-slate-400 text-sm mb-4">
+      <p className="text-lundies-peat text-sm mb-4">
         Emergency contact information helps us assist you better in case of any unforeseen circumstances.
       </p>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-lundies-peat mb-2">
           Contact Name
         </label>
         <input
           {...register('emergencyContact.name')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
           placeholder="Emergency contact name"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-lundies-peat mb-2">
           Contact Phone
         </label>
         <input
           type="tel"
           {...register('emergencyContact.phone')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
           placeholder="Emergency contact phone number"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-slate-300 mb-2">
+        <label className="block text-sm font-medium text-lundies-peat mb-2">
           Relationship
         </label>
         <input
           {...register('emergencyContact.relationship')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
           placeholder="Relationship to you (e.g., spouse, parent, sibling)"
         />
       </div>
@@ -544,8 +544,8 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
               className={`
                 flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium
                 ${index <= currentStepIndex
-                  ? 'bg-emerald-400 text-slate-900'
-                  : 'bg-slate-700 text-slate-400'
+                  ? 'bg-lundies-heather text-lundies-charcoal'
+                  : 'bg-lundies-stone/60 text-lundies-peat'
                 }
               `}
             >
@@ -553,21 +553,21 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
             </div>
           ))}
         </div>
-        <div className="w-full bg-slate-700 rounded-full h-2">
+        <div className="w-full bg-lundies-stone/60 rounded-full h-2">
           <div
-            className="bg-emerald-400 h-2 rounded-full transition-all duration-300"
+            className="bg-lundies-heather h-2 rounded-full transition-all duration-300"
             style={{ width: `${((currentStepIndex + 1) / steps.length) * 100}%` }}
           />
         </div>
       </div>
 
       {/* Step Content */}
-      <div className="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-sm p-8">
+      <div className="rounded-3xl border border-lundies-stone/60 bg-white/90 backdrop-blur-sm p-8">
         <div className="mb-6">
-          <h2 className="text-2xl font-semibold text-white mb-2">
+          <h2 className="text-2xl font-semibold text-lundies-charcoal mb-2">
             {currentStepData.title}
           </h2>
-          <p className="text-slate-400">
+          <p className="text-lundies-peat">
             {currentStepData.description}
           </p>
         </div>
@@ -582,7 +582,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
                 <button
                   type="button"
                   onClick={handlePrevious}
-                  className="px-6 py-3 rounded-full border border-white/20 text-slate-300 hover:bg-white/5 transition"
+                  className="px-6 py-3 rounded-full border border-lundies-stone/60 text-lundies-peat hover:bg-lundies-stone/20 transition"
                 >
                   Previous
                 </button>
@@ -590,7 +590,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
                 <button
                   type="button"
                   onClick={onBack}
-                  className="px-6 py-3 rounded-full border border-white/20 text-slate-300 hover:bg-white/5 transition"
+                  className="px-6 py-3 rounded-full border border-lundies-stone/60 text-lundies-peat hover:bg-lundies-stone/20 transition"
                 >
                   Back to Cart
                 </button>
@@ -600,7 +600,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
             <button
               type="submit"
               disabled={isLoading}
-              className="px-6 py-3 rounded-full bg-emerald-400 text-slate-950 font-semibold hover:bg-emerald-300 transition disabled:opacity-50"
+              className="px-6 py-3 rounded-full bg-lundies-heather text-lundies-charcoal font-semibold hover:bg-lundies-heather/80 transition disabled:opacity-50"
             >
               {isLoading
                 ? 'Processing...'
