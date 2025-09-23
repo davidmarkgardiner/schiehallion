@@ -286,7 +286,7 @@ export default function ChatbotWidget() {
               <button
                 type="button"
                 onClick={toggleWidget}
-                className="rounded-full p-2 text-lundies-peat transition hover:bg-lundies-stone/30 hover:text-lundies-charcoal"
+                className="rounded-full p-2 text-lundies-charcoal transition hover:bg-lundies-stone/30"
                 aria-label="Close concierge"
               >
                 <svg className="h-5 w-5" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" fill="none">
@@ -388,7 +388,7 @@ export default function ChatbotWidget() {
             </form>
           </div>
 
-          <div className="border-t border-lundies-stone/60 bg-lundies-linen px-5 py-4 text-xs text-lundies-peat">
+          <div className="border-t border-lundies-stone/60 bg-lundies-linen px-5 py-4 text-xs text-lundies-charcoal">
             <div className="flex items-center justify-between">
               <button
                 type="button"

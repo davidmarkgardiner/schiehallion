@@ -95,7 +95,7 @@ export default function NavUserProfile() {
                 <a
                   href="/admin/dashboard"
                   onClick={() => setIsOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-sm text-lundies-peat transition hover:bg-lundies-stone/40 hover:text-lundies-charcoal"
+                  className="block rounded-lg px-3 py-2 text-sm text-lundies-charcoal transition hover:bg-lundies-stone/40"
                 >
                   → Access Admin Dashboard
                 </a>
@@ -103,7 +103,7 @@ export default function NavUserProfile() {
                   <a
                     href="/admin/reports"
                     onClick={() => setIsOpen(false)}
-                    className="block rounded-lg px-3 py-2 text-sm text-lundies-peat transition hover:bg-lundies-stone/40 hover:text-lundies-charcoal"
+                    className="block rounded-lg px-3 py-2 text-sm text-lundies-charcoal transition hover:bg-lundies-stone/40"
                   >
                     → View Reports
                   </a>

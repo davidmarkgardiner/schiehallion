@@ -662,7 +662,7 @@ export default function Home() {
         </div>
       </section>
 
-      <footer className="border-t border-lundies-stone/60 bg-lundies-stone/60 py-10 text-xs text-lundies-peat">
+      <footer className="border-t border-lundies-stone/60 bg-lundies-stone/60 py-10 text-xs text-lundies-charcoal">
         <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Schiehallion Hotel · Perthshire, Scotland</p>
           <p>Part of the Nano Banana hospitality stack initiative.</p>
