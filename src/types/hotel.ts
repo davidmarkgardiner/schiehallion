@@ -301,6 +301,100 @@ export const COLLECTIONS = {
   AUDIT_LOGS: 'auditLogs'
 } as const
 
+// Epic 5: Booking Flow Types
+
+// Package types for SCHH-016
+export type PackageType = 'room-only' | 'bed-breakfast' | 'half-board'
+
+export interface PackageOption {
+  type: PackageType
+  name: string
+  description: string
+  priceAdjustment: number // Additional cost per night in pence/cents
+  includes: string[]
+  mealTimes?: {
+    breakfast?: string
+    lunch?: string
+    dinner?: string
+  }
+}
+
+// Shopping cart types for SCHH-014
+export interface CartItem {
+  id: string
+  room: Room
+  checkInDate: string // YYYY-MM-DD
+  checkOutDate: string // YYYY-MM-DD
+  numberOfNights: number
+  guests: number
+  packageType: PackageType
+  packageOption: PackageOption
+  roomRate: number // Rate per night at time of adding to cart
+  packageRate: number // Package cost per night
+  totalRoomCost: number // roomRate * numberOfNights
+  totalPackageCost: number // packageRate * numberOfNights
+  totalCost: number // totalRoomCost + totalPackageCost
+  addedAt: Date
+}
+
+export interface CartSummary {
+  items: CartItem[]
+  subtotal: number
+  groupDiscount: number
+  taxes: number
+  total: number
+  itemCount: number
+}
+
+// Guest information form types for SCHH-015
+export interface GuestFormData {
+  personalInfo: {
+    firstName: string
+    lastName: string
+    email: string
+    phone: string
+    dateOfBirth?: string
+  }
+  address?: {
+    street: string
+    city: string
+    postcode: string
+    country: string
+  }
+  preferences: {
+    specialRequests?: string
+    dietaryRequirements?: string[]
+    accessibilityNeeds?: string[]
+    marketingOptIn: boolean
+  }
+  arrival: {
+    estimatedArrivalTime?: string
+    specialInstructions?: string
+  }
+  emergencyContact?: {
+    name: string
+    phone: string
+    relationship: string
+  }
+}
+
+// Drag and drop types for SCHH-013
+export interface DragDropResult {
+  room: Room
+  targetDate: string
+  packageType: PackageType
+  guests: number
+}
+
+// Booking flow state
+export interface BookingFlowState {
+  currentStep: 'room-selection' | 'guest-info' | 'package-selection' | 'payment' | 'confirmation'
+  cart: CartSummary
+  guestInfo?: GuestFormData
+  paymentMethod?: string
+  bookingReference?: string
+}
+
 // Firebase Realtime Database Paths
 export const RTDB_PATHS = {
   AVAILABILITY: 'availability',
