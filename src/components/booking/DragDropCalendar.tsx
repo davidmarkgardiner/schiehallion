@@ -6,7 +6,8 @@
 import { useState, useEffect, useMemo } from 'react'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 import { DailyAvailability, Room, RoomType, PackageType } from '@/types/hotel'
-import { AvailabilityService } from '@/lib/firebase/hotel-service'
+import { AvailabilityService as LiveAvailabilityService } from '@/lib/firebase/hotel-service'
+import { AvailabilityService as MockAvailabilityService } from '@/lib/firebase/hotel-service-mock'
 import { useCartStore, PACKAGE_OPTIONS } from '@/store/cartStore'
 
 interface DragDropCalendarProps {
@@ -117,6 +118,7 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
   const [loading, setLoading] = useState(false)
   const [selectedPackage, setSelectedPackage] = useState<PackageType>('room-only')
   const [dragOverDate, setDragOverDate] = useState<string | null>(null)
+  const [usingMockAvailability, setUsingMockAvailability] = useState(false)
 
   const { addRoomFromDrop } = useCartStore()
 
@@ -162,22 +164,52 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
         const data: Record<string, DailyAvailability> = {}
 
         const currentDate = new Date(startOfMonth)
+        let fallbackActivated = false
+        let fallbackLogged = false
+
+        const logFallback = (error?: unknown) => {
+          if (fallbackLogged) return
+          console.warn('Falling back to demo availability data for booking calendar.', error)
+          fallbackLogged = true
+        }
+
         while (currentDate <= endOfMonth) {
           const dateStr = currentDate.toISOString().split('T')[0]
-          try {
-            const dayAvailability = await AvailabilityService.getDailyAvailability(dateStr)
-            if (dayAvailability) {
-              data[dateStr] = dayAvailability
+          let dayAvailability: DailyAvailability | null = null
+
+          if (!fallbackActivated) {
+            try {
+              dayAvailability = await LiveAvailabilityService.getDailyAvailability(dateStr)
+              if (!dayAvailability) {
+                fallbackActivated = true
+                logFallback()
+              }
+            } catch (error) {
+              fallbackActivated = true
+              logFallback(error)
             }
-          } catch (error) {
-            console.warn(`Failed to load availability for ${dateStr}:`, error)
           }
+
+          if (fallbackActivated && !dayAvailability) {
+            try {
+              dayAvailability = await MockAvailabilityService.getDailyAvailability(dateStr)
+            } catch (mockError) {
+              console.error(`Failed to load fallback availability for ${dateStr}:`, mockError)
+            }
+          }
+
+          if (dayAvailability) {
+            data[dateStr] = dayAvailability
+          }
+
           currentDate.setDate(currentDate.getDate() + 1)
         }
 
+        setUsingMockAvailability(fallbackActivated)
         setAvailabilityData(data)
       } catch (error) {
         console.error('Failed to load availability data:', error)
+        setAvailabilityData({})
       } finally {
         setLoading(false)
       }
@@ -311,6 +343,12 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
             </select>
           </div>
         </div>
+
+        {usingMockAvailability && (
+          <div className="mb-6 rounded-2xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm text-amber-100">
+            We&apos;re displaying sample availability data while the live calendar loads.
+          </div>
+        )}
 
         <div className="grid lg:grid-cols-3 gap-6">
           {/* Available Rooms */}

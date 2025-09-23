@@ -20,11 +20,13 @@ import { PaymentStep } from '@/components/payment/PaymentStep'
 interface BookingFlowProps {
   initialStep?: BookingFlowState['currentStep']
   availableRooms?: any[]
+  isUsingMockData?: boolean
 }
 
 const BookingFlow: React.FC<BookingFlowProps> = ({
   initialStep = 'room-selection',
-  availableRooms = []
+  availableRooms = [],
+  isUsingMockData = false
 }) => {
   const router = useRouter()
   const { user } = useAuth()
@@ -206,6 +208,12 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
                 Drag rooms to your preferred dates or browse our selection to create your Highland getaway.
               </p>
             </div>
+
+            {isUsingMockData && (
+              <div className="rounded-2xl border border-amber-400/40 bg-amber-400/10 px-4 py-3 text-sm text-amber-100">
+                Live availability isn&apos;t connected right now, so we&apos;re showing demo rooms that you can drag onto the calendar.
+              </div>
+            )}
 
             <DragDropCalendar
               availableRooms={availableRooms}
