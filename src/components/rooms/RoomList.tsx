@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Room } from '@/types/hotel'
+import { Room, RoomType } from '@/types/hotel'
 import RoomCard from './RoomCard'
 import RoomFilters, { RoomFilterState } from './RoomFilters'
 import { RoomService } from '@/lib/firebase/hotel-service-mock'
@@ -13,9 +13,10 @@ interface RoomListProps {
   checkInDate?: string
   checkOutDate?: string
   guests?: number
+  selectedRoomType?: RoomType
 }
 
-export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, guests }: RoomListProps) {
+export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, guests, selectedRoomType }: RoomListProps) {
   const [rooms, setRooms] = useState<Room[]>([])
   const [filteredRooms, setFilteredRooms] = useState<Room[]>([])
   const [loading, setLoading] = useState(true)
@@ -64,9 +65,10 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
   useEffect(() => {
     let filtered = [...rooms]
 
-    // Apply filters
-    if (filters.roomType) {
-      filtered = filtered.filter(room => room.type === filters.roomType)
+    // Apply filters - prioritize external selectedRoomType over internal filter
+    const effectiveRoomType = selectedRoomType || filters.roomType
+    if (effectiveRoomType) {
+      filtered = filtered.filter(room => room.type === effectiveRoomType)
     }
 
     if (filters.maxOccupancy) {
@@ -122,7 +124,7 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
     }
 
     setFilteredRooms(filtered)
-  }, [rooms, filters])
+  }, [rooms, filters, selectedRoomType])
 
   const toggleViewMode = () => {
     setViewMode(prev => prev === 'grid' ? 'list' : 'grid')

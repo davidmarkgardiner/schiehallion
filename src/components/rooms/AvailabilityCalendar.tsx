@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { DailyAvailability, RoomType } from '@/types/hotel'
 import { AvailabilityService } from '@/lib/firebase/hotel-service-mock'
 
@@ -72,6 +72,52 @@ export default function AvailabilityCalendar({
     loadAvailabilityData()
   }, [currentMonth])
 
+  // Helper functions
+  const getAvailabilityCount = useCallback((availability: DailyAvailability | undefined, type?: RoomType): number => {
+    if (!availability) return 0
+
+    if (type && availability.availability[type]) {
+      return availability.availability[type].availableRooms
+    }
+
+    // Return total available rooms across all types
+    return Object.values(availability.availability)
+      .reduce((total, typeAvail) => total + typeAvail.availableRooms, 0)
+  }, [])
+
+  const getPrice = useCallback((availability: DailyAvailability | undefined, type?: RoomType): number | undefined => {
+    if (!availability) return undefined
+
+    if (type && availability.pricing[type]) {
+      return availability.pricing[type].adjustedPrice
+    }
+
+    // Return average price across all types
+    const prices = Object.values(availability.pricing)
+      .filter(p => p.adjustedPrice > 0)
+      .map(p => p.adjustedPrice)
+
+    if (prices.length === 0) return undefined
+    return Math.round(prices.reduce((sum, price) => sum + price, 0) / prices.length)
+  }, [])
+
+  const isPeakSeason = useCallback((date: Date): boolean => {
+    const month = date.getMonth()
+    const day = date.getDate()
+
+    // Summer season (June-August)
+    if (month >= 5 && month <= 7) return true
+
+    // Christmas/New Year period
+    if ((month === 11 && day >= 20) || (month === 0 && day <= 5)) return true
+
+    // Easter period (approximate)
+    // This is a simplified check - in production you'd use a proper Easter calculation
+    if (month === 3) return true
+
+    return false
+  }, [])
+
   // Generate calendar days
   const calendarDays = useMemo(() => {
     const year = currentMonth.getFullYear()
@@ -108,7 +154,6 @@ export default function AvailabilityCalendar({
       const date = new Date(year, month, day)
       const dateStr = date.toISOString().split('T')[0]
       const availability = availabilityData[dateStr]
-      const isToday = date.toDateString() === new Date().toDateString()
       const isPast = date < new Date(new Date().toDateString())
       
       const isSelected = !!(selectedDates.startDate &&
@@ -152,52 +197,7 @@ export default function AvailabilityCalendar({
     }
     
     return days
-  }, [currentMonth, availabilityData, selectedDates, roomType])
-
-  const getAvailabilityCount = (availability: DailyAvailability | undefined, type?: RoomType): number => {
-    if (!availability) return 0
-    
-    if (type && availability.availability[type]) {
-      return availability.availability[type].availableRooms
-    }
-    
-    // Return total available rooms across all types
-    return Object.values(availability.availability)
-      .reduce((total, typeAvail) => total + typeAvail.availableRooms, 0)
-  }
-
-  const getPrice = (availability: DailyAvailability | undefined, type?: RoomType): number | undefined => {
-    if (!availability) return undefined
-    
-    if (type && availability.pricing[type]) {
-      return availability.pricing[type].adjustedPrice
-    }
-    
-    // Return average price across all types
-    const prices = Object.values(availability.pricing)
-      .filter(p => p.adjustedPrice > 0)
-      .map(p => p.adjustedPrice)
-    
-    if (prices.length === 0) return undefined
-    return Math.round(prices.reduce((sum, price) => sum + price, 0) / prices.length)
-  }
-
-  const isPeakSeason = (date: Date): boolean => {
-    const month = date.getMonth()
-    const day = date.getDate()
-    
-    // Summer season (June-August)
-    if (month >= 5 && month <= 7) return true
-    
-    // Christmas/New Year period
-    if ((month === 11 && day >= 20) || (month === 0 && day <= 5)) return true
-    
-    // Easter period (approximate)
-    // This is a simplified check - in production you'd use a proper Easter calculation
-    if (month === 3) return true
-    
-    return false
-  }
+  }, [currentMonth, availabilityData, selectedDates, roomType, getAvailabilityCount, getPrice, isPeakSeason])
 
   const handleDateClick = (date: Date, day: CalendarDay) => {
     if (day.isBlocked) return

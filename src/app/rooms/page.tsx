@@ -205,6 +205,7 @@ export default function RoomsPage() {
           checkInDate={selectedDates.startDate ? formatDateForAPI(selectedDates.startDate) : undefined}
           checkOutDate={selectedDates.endDate ? formatDateForAPI(selectedDates.endDate) : undefined}
           guests={guests}
+          selectedRoomType={selectedRoomType}
         />
       </div>
 

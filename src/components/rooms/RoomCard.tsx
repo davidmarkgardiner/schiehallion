@@ -15,14 +15,21 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
   const [imageError, setImageError] = useState(false)
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % room.images.length)
+    if (room.images && room.images.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % room.images.length)
+    }
   }
 
   const prevImage = () => {
-    setCurrentImageIndex((prev) => (prev - 1 + room.images.length) % room.images.length)
+    if (room.images && room.images.length > 0) {
+      setCurrentImageIndex((prev) => (prev - 1 + room.images.length) % room.images.length)
+    }
   }
 
-  const formatPrice = (price: number) => {
+  const formatPrice = (price: number | undefined) => {
+    if (price === undefined || price === null) {
+      return '£0.00'
+    }
     return `£${(price / 100).toFixed(2)}`
   }
 
@@ -38,6 +45,9 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
   }
 
   const getBedDisplay = () => {
+    if (!room.bedConfiguration || room.bedConfiguration.length === 0) {
+      return 'Not specified'
+    }
     return room.bedConfiguration
       .map(bed => `${bed.count} ${bed.type.replace('-', ' ')}`)
       .join(', ')
@@ -45,6 +55,8 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
 
   const getKeyFeatures = () => {
     const features = []
+    if (!room.features) return features
+
     if (room.features.wifi) features.push('WiFi')
     if (room.features.balcony) features.push('Balcony')
     if (room.features.airConditioning) features.push('AC')
@@ -58,7 +70,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
       <div className="flex flex-col md:flex-row gap-6 rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg hover:bg-white/10 transition-colors">
         {/* Image Gallery */}
         <div className="relative md:w-80 h-48 rounded-2xl overflow-hidden bg-slate-800">
-          {room.images.length > 0 && !imageError ? (
+          {room.images && room.images.length > 0 && !imageError ? (
             <>
               <Image
                 src={room.images[currentImageIndex]}
@@ -67,7 +79,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
                 className="object-cover"
                 onError={() => setImageError(true)}
               />
-              {room.images.length > 1 && (
+              {room.images && room.images.length > 1 && (
                 <>
                   <button
                     onClick={prevImage}
@@ -82,7 +94,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
                     →
                   </button>
                   <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-                    {room.images.map((_, index) => (
+                    {room.images && room.images.map((_, index) => (
                       <div
                         key={index}
                         className={`w-2 h-2 rounded-full ${
@@ -114,7 +126,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
               </p>
             </div>
             <div className="text-right">
-              <div className="text-2xl font-semibold text-white">{formatPrice(room.pricing.basePrice)}</div>
+              <div className="text-2xl font-semibold text-white">{formatPrice(room.pricing?.basePrice)}</div>
               <div className="text-sm text-slate-300">per night</div>
             </div>
           </div>
@@ -177,7 +189,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
     <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-lg hover:bg-white/10 transition-colors">
       {/* Image Gallery */}
       <div className="relative h-48 rounded-2xl overflow-hidden bg-slate-800 mb-4">
-        {room.images.length > 0 && !imageError ? (
+        {room.images && room.images.length > 0 && !imageError ? (
           <>
             <Image
               src={room.images[currentImageIndex]}
@@ -186,7 +198,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
               className="object-cover"
               onError={() => setImageError(true)}
             />
-            {room.images.length > 1 && (
+            {room.images && room.images.length > 1 && (
               <>
                 <button
                   onClick={prevImage}
@@ -201,7 +213,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
                   →
                 </button>
                 <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-                  {room.images.map((_, index) => (
+                  {room.images && room.images.map((_, index) => (
                     <div
                       key={index}
                       className={`w-2 h-2 rounded-full ${
@@ -234,7 +246,7 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
 
         <div className="flex items-end justify-between">
           <div>
-            <div className="text-2xl font-semibold text-white">{formatPrice(room.pricing.basePrice)}</div>
+            <div className="text-2xl font-semibold text-white">{formatPrice(room.pricing?.basePrice)}</div>
             <div className="text-sm text-slate-300">per night</div>
           </div>
           <div className="text-right text-sm text-slate-300">

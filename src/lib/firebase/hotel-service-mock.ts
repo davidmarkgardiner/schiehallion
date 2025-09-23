@@ -28,19 +28,36 @@ const mockRooms: Room[] = [
     features: {
       wifi: true,
       airConditioning: true,
+      heating: true,
       minibar: true,
       safe: true,
       television: true,
+      telephone: true,
       balcony: false,
-      jacuzzi: false,
-      oceanView: false,
-      mountainView: false,
-      cityView: false,
-      gardenView: true
+      bathtub: true,
+      shower: true,
+      hairdryer: true,
+      coffeeMarker: true,
+      workDesk: true,
+      ironingBoard: true,
+      accessibleFeatures: []
     },
+    images: [
+      '/images/rooms/standard-101-1.jpg',
+      '/images/rooms/standard-101-2.jpg',
+      '/images/rooms/standard-101-3.jpg'
+    ],
     pricing: {
       basePrice: 15000, // £150.00
+      seasonalRates: {},
+      weekendSurcharge: 2000,
+      lastMinuteDiscount: 10,
+      extendedStayDiscount: {
+        minNights: 7,
+        discountPercentage: 15
+      }
     },
+    lastMaintenance: createMockTimestamp(new Date('2024-01-01')),
     createdAt: createMockTimestamp(new Date('2024-01-01')),
     updatedAt: createMockTimestamp(new Date('2024-01-01'))
   },
@@ -58,20 +75,37 @@ const mockRooms: Room[] = [
     features: {
       wifi: true,
       airConditioning: true,
+      heating: true,
       minibar: true,
       safe: true,
       television: true,
+      telephone: true,
       balcony: true,
-      fireplace: true,
-      jacuzzi: false,
-      oceanView: false,
-      mountainView: true,
-      cityView: false,
-      gardenView: false
+      bathtub: true,
+      shower: true,
+      hairdryer: true,
+      coffeeMarker: true,
+      workDesk: true,
+      ironingBoard: true,
+      accessibleFeatures: []
     },
+    images: [
+      '/images/rooms/deluxe-102-1.jpg',
+      '/images/rooms/deluxe-102-2.jpg',
+      '/images/rooms/deluxe-102-3.jpg',
+      '/images/rooms/deluxe-102-4.jpg'
+    ],
     pricing: {
       basePrice: 22000, // £220.00
+      seasonalRates: {},
+      weekendSurcharge: 3000,
+      lastMinuteDiscount: 15,
+      extendedStayDiscount: {
+        minNights: 5,
+        discountPercentage: 12
+      }
     },
+    lastMaintenance: createMockTimestamp(new Date('2024-01-01')),
     createdAt: createMockTimestamp(new Date('2024-01-01')),
     updatedAt: createMockTimestamp(new Date('2024-01-01'))
   },
@@ -89,20 +123,38 @@ const mockRooms: Room[] = [
     features: {
       wifi: true,
       airConditioning: true,
+      heating: true,
       minibar: true,
       safe: true,
       television: true,
+      telephone: true,
       balcony: true,
-      fireplace: true,
-      jacuzzi: true,
-      oceanView: false,
-      mountainView: true,
-      cityView: false,
-      gardenView: false
+      bathtub: true,
+      shower: true,
+      hairdryer: true,
+      coffeeMarker: true,
+      workDesk: true,
+      ironingBoard: true,
+      accessibleFeatures: []
     },
+    images: [
+      '/images/rooms/suite-201-1.jpg',
+      '/images/rooms/suite-201-2.jpg',
+      '/images/rooms/suite-201-3.jpg',
+      '/images/rooms/suite-201-4.jpg',
+      '/images/rooms/suite-201-5.jpg'
+    ],
     pricing: {
       basePrice: 35000, // £350.00
+      seasonalRates: {},
+      weekendSurcharge: 5000,
+      lastMinuteDiscount: 20,
+      extendedStayDiscount: {
+        minNights: 4,
+        discountPercentage: 18
+      }
     },
+    lastMaintenance: createMockTimestamp(new Date('2024-01-01')),
     createdAt: createMockTimestamp(new Date('2024-01-01')),
     updatedAt: createMockTimestamp(new Date('2024-01-01'))
   },
@@ -120,19 +172,36 @@ const mockRooms: Room[] = [
     features: {
       wifi: true,
       airConditioning: true,
+      heating: true,
       minibar: true,
       safe: true,
       television: true,
+      telephone: true,
       balcony: false,
-      jacuzzi: false,
-      oceanView: false,
-      mountainView: false,
-      cityView: false,
-      gardenView: true
+      bathtub: true,
+      shower: true,
+      hairdryer: true,
+      coffeeMarker: true,
+      workDesk: true,
+      ironingBoard: true,
+      accessibleFeatures: []
     },
+    images: [
+      '/images/rooms/family-103-1.jpg',
+      '/images/rooms/family-103-2.jpg',
+      '/images/rooms/family-103-3.jpg'
+    ],
     pricing: {
       basePrice: 28000, // £280.00
+      seasonalRates: {},
+      weekendSurcharge: 4000,
+      lastMinuteDiscount: 12,
+      extendedStayDiscount: {
+        minNights: 6,
+        discountPercentage: 15
+      }
     },
+    lastMaintenance: createMockTimestamp(new Date('2024-01-01')),
     createdAt: createMockTimestamp(new Date('2024-01-01')),
     updatedAt: createMockTimestamp(new Date('2024-01-01'))
   },
@@ -150,19 +219,35 @@ const mockRooms: Room[] = [
     features: {
       wifi: true,
       airConditioning: true,
+      heating: true,
       minibar: true,
       safe: true,
       television: true,
+      telephone: true,
       balcony: false,
-      jacuzzi: false,
-      oceanView: false,
-      mountainView: false,
-      cityView: false,
-      gardenView: true
+      bathtub: true,
+      shower: true,
+      hairdryer: true,
+      coffeeMarker: true,
+      workDesk: true,
+      ironingBoard: true,
+      accessibleFeatures: ['wheelchair-accessible', 'hearing-loop', 'visual-aids']
     },
+    images: [
+      '/images/rooms/accessible-104-1.jpg',
+      '/images/rooms/accessible-104-2.jpg'
+    ],
     pricing: {
       basePrice: 16000, // £160.00
+      seasonalRates: {},
+      weekendSurcharge: 2500,
+      lastMinuteDiscount: 8,
+      extendedStayDiscount: {
+        minNights: 7,
+        discountPercentage: 10
+      }
     },
+    lastMaintenance: createMockTimestamp(new Date('2024-01-01')),
     createdAt: createMockTimestamp(new Date('2024-01-01')),
     updatedAt: createMockTimestamp(new Date('2024-01-01'))
   }
