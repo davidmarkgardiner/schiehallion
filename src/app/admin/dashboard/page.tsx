@@ -98,6 +98,55 @@ export default function AdminDashboard() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <button
+            onClick={() => router.push('/admin/image-generation')}
+            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg p-4 text-left transition-all duration-200 transform hover:scale-105 shadow-lg"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-2xl">🎨</div>
+              <svg className="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
+            <h3 className="font-semibold text-lg mb-1">AI Image Studio</h3>
+            <p className="text-sm opacity-90">Generate room, food & scenery images</p>
+          </button>
+
+          <button
+            onClick={() => router.push('/admin/restaurant')}
+            className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white rounded-lg p-4 text-left transition-all duration-200 transform hover:scale-105 shadow-lg"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-2xl">🍽️</div>
+              <svg className="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </div>
+            <h3 className="font-semibold text-lg mb-1">Restaurant</h3>
+            <p className="text-sm opacity-90">Manage tables & reservations</p>
+          </button>
+
+          <div className="bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg p-4 text-left shadow-lg">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-2xl">🏨</div>
+              <div className="text-xs bg-white/20 px-2 py-1 rounded">Coming Soon</div>
+            </div>
+            <h3 className="font-semibold text-lg mb-1">Room Management</h3>
+            <p className="text-sm opacity-90">Handle bookings & availability</p>
+          </div>
+
+          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg p-4 text-left shadow-lg">
+            <div className="flex items-center justify-between mb-2">
+              <div className="text-2xl">📊</div>
+              <div className="text-xs bg-white/20 px-2 py-1 rounded">Coming Soon</div>
+            </div>
+            <h3 className="font-semibold text-lg mb-1">Analytics</h3>
+            <p className="text-sm opacity-90">View reports & insights</p>
+          </div>
+        </div>
+
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">

@@ -1,15 +1,22 @@
 'use client'
 
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect, useMemo, Suspense } from 'react'
 import { Room, RoomType } from '@/types/hotel'
-import RoomCard from './RoomCard'
+import OptimizedRoomCard from './OptimizedRoomCard'
 import RoomFilters, { RoomFilterState } from './RoomFilters'
 import { RoomService } from '@/lib/firebase/hotel-service-mock'
 import { imageCacheService } from '@/services/imageCache'
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { RoomCardSkeleton } from "@/components/ui/room-card-skeleton"
+import { cn } from "@/lib/utils"
 
 type ViewMode = 'grid' | 'list'
 
-interface RoomListProps {
+interface OptimizedRoomListProps {
   onRoomSelect?: (room: Room) => void
   checkInDate?: string
   checkOutDate?: string
@@ -17,13 +24,20 @@ interface RoomListProps {
   selectedRoomType?: RoomType
 }
 
-export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, guests, selectedRoomType }: RoomListProps) {
+export default function OptimizedRoomList({
+  onRoomSelect,
+  checkInDate,
+  checkOutDate,
+  guests,
+  selectedRoomType
+}: OptimizedRoomListProps) {
   const [rooms, setRooms] = useState<Room[]>([])
   const [filteredRooms, setFilteredRooms] = useState<Room[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>('grid')
   const [filtersOpen, setFiltersOpen] = useState(false)
+  const [visibleRange, setVisibleRange] = useState({ start: 0, end: 20 }) // For virtual scrolling
   const [filters, setFilters] = useState<RoomFilterState>({
     priceRange: [5000, 50000], // £50 to £500
     features: {},
@@ -37,8 +51,8 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
         // Get unique room types from loaded rooms
         const roomTypes = [...new Set(roomsData.map(room => room.type))];
 
-        // Fetch and preload images for each room type
-        for (const roomType of roomTypes) {
+        // Fetch and preload images for each room type in parallel
+        const preloadPromises = roomTypes.map(async (roomType) => {
           try {
             const response = await fetch(`/api/room-images/list?roomType=${roomType}`);
             if (response.ok) {
@@ -47,13 +61,15 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
 
               if (imageUrls.length > 0) {
                 // Preload images in background
-                imageCacheService.preloadRoomImages(roomType as RoomType, imageUrls);
+                return imageCacheService.preloadRoomImages(roomType as RoomType, imageUrls);
               }
             }
           } catch (err) {
             console.warn(`Failed to preload images for ${roomType}:`, err);
           }
-        }
+        });
+
+        await Promise.allSettled(preloadPromises);
       } catch (err) {
         console.warn('Failed to preload room images:', err);
       }
@@ -96,7 +112,7 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
   }, [checkInDate, checkOutDate, guests, preloadImagesForRooms])
 
   // Apply filters and sorting
-  useEffect(() => {
+  const sortedAndFilteredRooms = useMemo(() => {
     let filtered = [...rooms]
 
     // Apply filters - prioritize external selectedRoomType over internal filter
@@ -114,13 +130,13 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
     }
 
     if (filters.bedType) {
-      filtered = filtered.filter(room => 
+      filtered = filtered.filter(room =>
         room.bedConfiguration.some(bed => bed.type === filters.bedType)
       )
     }
 
     // Price range filter
-    filtered = filtered.filter(room => 
+    filtered = filtered.filter(room =>
       room.pricing.basePrice >= filters.priceRange[0] &&
       room.pricing.basePrice <= filters.priceRange[1]
     )
@@ -128,7 +144,7 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
     // Features filter
     Object.entries(filters.features).forEach(([feature, required]) => {
       if (required) {
-        filtered = filtered.filter(room => 
+        filtered = filtered.filter(room =>
           room.features[feature as keyof typeof room.features]
         )
       }
@@ -157,19 +173,36 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
         break
     }
 
-    setFilteredRooms(filtered)
+    return filtered
   }, [rooms, filters, selectedRoomType])
 
-  const toggleViewMode = () => {
-    setViewMode(prev => prev === 'grid' ? 'list' : 'grid')
-  }
+  // Update visible range for virtual scrolling
+  useEffect(() => {
+    setVisibleRange({ start: 0, end: Math.min(20, sortedAndFilteredRooms.length) })
+  }, [sortedAndFilteredRooms.length])
+
+  // Get visible rooms for rendering
+  const visibleRooms = useMemo(() => {
+    return sortedAndFilteredRooms.slice(visibleRange.start, visibleRange.end)
+  }, [sortedAndFilteredRooms, visibleRange])
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-          <div className="text-slate-300">Loading rooms...</div>
+      <div className="space-y-6">
+        {/* Header skeleton */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div className="h-8 w-48 bg-white/10 rounded animate-pulse" />
+          <div className="flex items-center gap-4">
+            <div className="h-10 w-32 bg-white/10 rounded animate-pulse" />
+            <div className="h-10 w-24 bg-white/10 rounded animate-pulse" />
+          </div>
+        </div>
+
+        {/* Room cards skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, i) => (
+            <RoomCardSkeleton key={i} viewMode="grid" />
+          ))}
         </div>
       </div>
     )
@@ -177,16 +210,28 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
 
   if (error) {
     return (
-      <div className="text-center py-12">
-        <div className="text-red-400 mb-4">{error}</div>
-        <button
-          onClick={() => window.location.reload()}
-          className="rounded-full bg-emerald-400 px-6 py-2 text-sm font-semibold text-slate-950 hover:bg-emerald-300 transition-colors"
-        >
-          Retry
-        </button>
-      </div>
+      <Alert variant="destructive" className="bg-red-500/20 border-red-500/50">
+        <AlertDescription className="text-red-200">
+          {error}
+          <Button
+            onClick={() => window.location.reload()}
+            className="ml-4 bg-red-500 hover:bg-red-600 text-white"
+            size="sm"
+          >
+            Retry
+          </Button>
+        </AlertDescription>
+      </Alert>
     )
+  }
+
+  const handleLoadMore = () => {
+    if (visibleRange.end < sortedAndFilteredRooms.length) {
+      setVisibleRange(prev => ({
+        ...prev,
+        end: Math.min(prev.end + 20, sortedAndFilteredRooms.length)
+      }))
+    }
   }
 
   return (
@@ -195,16 +240,16 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div className="flex items-center gap-4">
           <h2 className="text-2xl font-semibold text-white">
-            {filteredRooms.length} Room{filteredRooms.length !== 1 ? 's' : ''} Available
+            {sortedAndFilteredRooms.length} Room{sortedAndFilteredRooms.length !== 1 ? 's' : ''} Available
           </h2>
           {(checkInDate && checkOutDate) && (
-            <div className="text-sm text-slate-300">
+            <Badge variant="outline" className="border-emerald-400/30 bg-emerald-400/10 text-emerald-100">
               {new Date(checkInDate).toLocaleDateString()} - {new Date(checkOutDate).toLocaleDateString()}
               {guests && ` • ${guests} guest${guests !== 1 ? 's' : ''}`}
-            </div>
+            </Badge>
           )}
         </div>
-        
+
         <div className="flex items-center gap-4">
           <RoomFilters
             filters={filters}
@@ -212,67 +257,73 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
             isOpen={filtersOpen}
             onToggle={() => setFiltersOpen(!filtersOpen)}
           />
-          
+
           {/* View Mode Toggle */}
-          <div className="flex items-center rounded-full border border-white/20 bg-white/5 p-1">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                viewMode === 'grid'
-                  ? 'bg-white/20 text-white'
-                  : 'text-slate-300 hover:text-white'
-              }`}
-            >
-              Grid
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`rounded-full px-3 py-1 text-sm font-medium transition-colors ${
-                viewMode === 'list'
-                  ? 'bg-white/20 text-white'
-                  : 'text-slate-300 hover:text-white'
-              }`}
-            >
-              List
-            </button>
-          </div>
+          <Tabs value={viewMode} onValueChange={(value) => setViewMode(value as ViewMode)}>
+            <TabsList className="bg-white/5 border border-white/20">
+              <TabsTrigger value="grid" className="data-[state=active]:bg-white/20 data-[state=active]:text-white">
+                Grid
+              </TabsTrigger>
+              <TabsTrigger value="list" className="data-[state=active]:bg-white/20 data-[state=active]:text-white">
+                List
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
         </div>
       </div>
 
       {/* Results */}
-      {filteredRooms.length === 0 ? (
+      {sortedAndFilteredRooms.length === 0 ? (
         <div className="text-center py-12">
           <div className="text-6xl mb-4">🔍</div>
           <h3 className="text-xl font-semibold text-white mb-2">No rooms match your criteria</h3>
           <p className="text-slate-300 mb-6">
             Try adjusting your filters or date range to see more options.
           </p>
-          <button
+          <Button
             onClick={() => setFilters({
               priceRange: [5000, 50000],
               features: {},
               sortBy: 'price-low',
             })}
-            className="rounded-full bg-emerald-400 px-6 py-3 text-sm font-semibold text-slate-950 hover:bg-emerald-300 transition-colors"
+            className="bg-emerald-400 hover:bg-emerald-300 text-slate-950"
           >
             Clear All Filters
-          </button>
+          </Button>
         </div>
       ) : (
-        <div className={`${
-          viewMode === 'grid'
-            ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'
-            : 'space-y-6'
-        }`}>
-          {filteredRooms.map((room) => (
-            <RoomCard
-              key={room.id}
-              room={room}
-              viewMode={viewMode}
-              onSelect={onRoomSelect}
-            />
-          ))}
-        </div>
+        <ScrollArea className="h-[80vh]">
+          <div className={cn(
+            viewMode === 'grid'
+              ? 'grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6'
+              : 'space-y-6'
+          )}>
+            <Suspense fallback={<RoomCardSkeleton viewMode={viewMode} />}>
+              {visibleRooms.map((room, index) => (
+                <OptimizedRoomCard
+                  key={room.id}
+                  room={room}
+                  viewMode={viewMode}
+                  onSelect={onRoomSelect}
+                  priority={index < 3} // Prioritize first 3 images
+                />
+              ))}
+            </Suspense>
+          </div>
+
+          {/* Load More Button */}
+          {visibleRange.end < sortedAndFilteredRooms.length && (
+            <div className="flex justify-center pt-8">
+              <Button
+                onClick={handleLoadMore}
+                variant="outline"
+                className="border-emerald-400/30 bg-emerald-400/10 text-emerald-100 hover:bg-emerald-400/20"
+              >
+                Load More ({sortedAndFilteredRooms.length - visibleRange.end} remaining)
+              </Button>
+            </div>
+          )}
+        </ScrollArea>
       )}
     </div>
   )

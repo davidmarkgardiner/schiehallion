@@ -104,6 +104,14 @@ export default function SiteNavigation({
 
         <div className="order-2 flex items-center justify-end gap-3 md:order-none">
           {actionSlot}
+          {/* Admin Panel Link */}
+          <Link
+            href="/admin"
+            className={`${basePrimaryClasses} ${palette.primary.inactive} text-xs`}
+            title="Admin Panel"
+          >
+            ⚙️ Admin
+          </Link>
           <NavUserProfile />
         </div>
       </div>
