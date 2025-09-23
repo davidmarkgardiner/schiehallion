@@ -123,13 +123,22 @@ export default function LoginForm() {
         </button>
       </div>
 
-      <div className="mt-4 text-center">
+      <div className="mt-4 text-center space-y-2">
         <button
           onClick={() => setIsLogin(!isLogin)}
-          className="text-blue-600 hover:text-blue-800 text-sm"
+          className="text-blue-600 hover:text-blue-800 text-sm block w-full"
         >
           {isLogin ? 'Need an account? Sign up' : 'Already have an account? Login'}
         </button>
+
+        <div className="border-t pt-2">
+          <a
+            href="/admin/login"
+            className="text-indigo-600 hover:text-indigo-800 text-sm"
+          >
+            Staff Portal →
+          </a>
+        </div>
       </div>
     </div>
   )

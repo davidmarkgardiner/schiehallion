@@ -2,16 +2,89 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function getUserRole() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isStaff() {
+      return isAuthenticated() && getUserRole() in ['staff', 'manager', 'admin'];
+    }
+
+    function isManager() {
+      return isAuthenticated() && getUserRole() in ['manager', 'admin'];
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && getUserRole() == 'admin';
+    }
+
+    // Users collection - role-based access
+    match /users/{userId} {
+      // Users can read and write their own profile
+      allow read, write: if isOwner(userId);
+      // Staff can read guest profiles
+      allow read: if isStaff() && get(/databases/$(database)/documents/users/$(userId)).data.role == 'guest';
+      // Managers can read all user profiles
+      allow read: if isManager();
+      // Admins can manage all users
+      allow read, write: if isAdmin();
+    }
+
     // Messages collection - users can read all messages and write their own
     match /messages/{document} {
       allow read: if true;
-      allow create: if request.auth != null && request.auth.uid == request.resource.data.userId;
-      allow update, delete: if request.auth != null && request.auth.uid == resource.data.userId;
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.userId;
+      allow update, delete: if isAuthenticated() && request.auth.uid == resource.data.userId;
     }
 
-    // Users can read and write their own user documents
-    match /users/{userId} {
-      allow read, write: if request.auth != null && request.auth.uid == userId;
+    // Audit logs - admin only
+    match /auditLogs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAuthenticated(); // All authenticated users can create audit logs
+      allow update, delete: if false; // Audit logs are immutable
+    }
+
+    // Guest bookings
+    match /guestBookings/{bookingId} {
+      // Guests can read their own bookings (by email or userId)
+      allow read: if isAuthenticated() && (
+        request.auth.token.email == resource.data.guestEmail ||
+        request.auth.uid == resource.data.guestUserId
+      );
+      // Staff can read all bookings
+      allow read: if isStaff();
+      // Guests can create bookings
+      allow create: if isAuthenticated();
+      // Staff can update bookings
+      allow update: if isStaff();
+      // Only admins can delete bookings
+      allow delete: if isAdmin();
+    }
+
+    // Hotel rooms (future collection)
+    match /rooms/{roomId} {
+      allow read: if isAuthenticated();
+      allow write: if isManager();
+    }
+
+    // Bookings (future collection)
+    match /bookings/{bookingId} {
+      allow read: if isAuthenticated() && (
+        request.auth.uid == resource.data.userId ||
+        isStaff()
+      );
+      allow create: if isAuthenticated();
+      allow update: if isStaff();
+      allow delete: if isAdmin();
     }
   }
 }
