@@ -29,6 +29,30 @@ function sanitiseNotes(value?: string): string | undefined {
   return trimmed.length > 0 ? trimmed : undefined
 }
 
+function sanitiseTextInput(value: string): string {
+  if (!value) {
+    return ''
+  }
+  // Trim whitespace and remove potentially harmful characters
+  return value
+    .trim()
+    .replace(/[<>'"&]/g, '') // Remove basic XSS characters
+    .replace(/\s+/g, ' ') // Normalize multiple spaces to single space
+    .substring(0, 500) // Prevent extremely long input
+}
+
+function sanitiseTextArea(value: string): string {
+  if (!value) {
+    return ''
+  }
+  // Allow more characters for text areas but still sanitize
+  return value
+    .trim()
+    .replace(/[<>'"]/g, '') // Remove script-injectable characters but allow & for business names
+    .replace(/\s+/g, ' ') // Normalize multiple spaces
+    .substring(0, 1000) // Prevent extremely long input
+}
+
 export function WaitlistPanel({
   queuePosition,
   estimatedWaitMinutes,
@@ -60,13 +84,23 @@ export function WaitlistPanel({
     mode: 'onBlur',
   })
 
+  const guestRange = useMemo(() => {
+    const range: number[] = []
+    for (let current = minGuests; current <= maxGuests; current += 1) {
+      range.push(current)
+    }
+    return range
+  }, [minGuests, maxGuests])
+
   const onFormSubmit = handleSubmit((values: WaitlistFormValues) => {
     const record: WaitlistJoinRecord = {
       submittedAt: new Date().toISOString(),
       queuePosition,
       formValues: {
         ...values,
-        notes: sanitiseNotes(values.notes),
+        fullName: sanitiseTextInput(values.fullName),
+        email: sanitiseTextInput(values.email),
+        notes: sanitiseNotes(sanitiseTextArea(values.notes || '')),
       },
     }
     setSubmittedRecord(record)
@@ -140,14 +174,6 @@ export function WaitlistPanel({
     )
   }
 
-  const guestRange = useMemo(() => {
-    const range: number[] = []
-    for (let current = minGuests; current <= maxGuests; current += 1) {
-      range.push(current)
-    }
-    return range
-  }, [minGuests, maxGuests])
-
   return (
     <div className="mt-6 space-y-6 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-800 shadow-sm dark:border-amber-500/40 dark:bg-amber-900/20 dark:text-amber-100">
       <header className="space-y-2">
@@ -192,7 +218,7 @@ export function WaitlistPanel({
                 required: 'Enter a valid email so we can send confirmation.',
                 maxLength: { value: 120, message: 'Email must be 120 characters or fewer.' },
                 pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
                   message: 'Enter a valid email so we can send confirmation.',
                 },
               })}

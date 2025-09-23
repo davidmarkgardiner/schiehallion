@@ -40,7 +40,7 @@ export function RestaurantReservationConfirmation({
     marketingOptIn,
   } = record.formValues
   const contact = record.formValues.contact
-  const modificationLink = `https://theschiehallion.example/reservations/${record.reference}`
+  const modificationLink = `https://www.theschiehallion.com/reservations/${record.reference}`
 
   return (
     <div className="mt-6 space-y-6 rounded-2xl border border-emerald-200 bg-white p-6 shadow-sm dark:border-emerald-500/40 dark:bg-emerald-950/20">
@@ -185,8 +185,8 @@ export function RestaurantReservationConfirmation({
         </ul>
         <p className="text-xs text-slate-500 dark:text-slate-400">
           Need to adjust plans? Visit the link above or email{' '}
-          <a href="mailto:host@theschiehallion.example" className="text-emerald-600 underline decoration-emerald-400 hover:text-emerald-500">
-            host@theschiehallion.example
+          <a href="mailto:host@theschiehallion.com" className="text-emerald-600 underline decoration-emerald-400 hover:text-emerald-500">
+            host@theschiehallion.com
           </a>{' '}
           so we can assist.
         </p>

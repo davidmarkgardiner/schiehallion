@@ -29,6 +29,30 @@ function sanitiseOptionalField(value?: string): string | undefined {
   return trimmed.length > 0 ? trimmed : undefined
 }
 
+function sanitiseTextInput(value: string): string {
+  if (!value) {
+    return ''
+  }
+  // Trim whitespace and remove potentially harmful characters
+  return value
+    .trim()
+    .replace(/[<>'"&]/g, '') // Remove basic XSS characters
+    .replace(/\s+/g, ' ') // Normalize multiple spaces to single space
+    .substring(0, 500) // Prevent extremely long input
+}
+
+function sanitiseTextArea(value: string): string {
+  if (!value) {
+    return ''
+  }
+  // Allow more characters for text areas but still sanitize
+  return value
+    .trim()
+    .replace(/[<>'"]/g, '') // Remove script-injectable characters but allow & for business names
+    .replace(/\s+/g, ' ') // Normalize multiple spaces
+    .substring(0, 1000) // Prevent extremely long input
+}
+
 export function RestaurantReservationForm({
   tableLabel,
   dateLabel,
@@ -77,9 +101,15 @@ export function RestaurantReservationForm({
   const onFormSubmit = handleSubmit((values: ReservationFormValues) => {
     const cleaned: ReservationFormValues = {
       ...values,
-      customDietaryNotes: sanitiseOptionalField(values.customDietaryNotes),
-      occasionDetails: sanitiseOptionalField(values.occasionDetails),
-      specialRequests: sanitiseOptionalField(values.specialRequests),
+      customDietaryNotes: sanitiseOptionalField(sanitiseTextArea(values.customDietaryNotes || '')),
+      occasionDetails: sanitiseOptionalField(sanitiseTextArea(values.occasionDetails || '')),
+      specialRequests: sanitiseOptionalField(sanitiseTextArea(values.specialRequests || '')),
+      contact: {
+        firstName: sanitiseTextInput(values.contact.firstName),
+        lastName: sanitiseTextInput(values.contact.lastName),
+        email: sanitiseTextInput(values.contact.email),
+        phone: sanitiseTextInput(values.contact.phone),
+      },
     }
     onSubmit(cleaned)
   })
@@ -311,7 +341,7 @@ export function RestaurantReservationForm({
                 required: 'Enter an email address so we can send confirmation.',
                 maxLength: { value: 120, message: 'Email address must be 120 characters or fewer.' },
                 pattern: {
-                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  value: /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/,
                   message: 'Enter a valid email address so we can send confirmation.',
                 },
               })}
