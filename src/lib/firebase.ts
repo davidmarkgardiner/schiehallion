@@ -23,4 +23,35 @@ export const db = getFirestore(firebase_app)
 // Initialize Google Auth Provider
 export const googleProvider = new GoogleAuthProvider()
 
+// Role definitions
+export type UserRole = 'guest' | 'staff' | 'manager' | 'admin'
+
+// Permission matrix
+export const PERMISSIONS = {
+  // Guest permissions
+  MAKE_BOOKING: ['guest', 'staff', 'manager', 'admin'],
+  VIEW_OWN_BOOKINGS: ['guest', 'staff', 'manager', 'admin'],
+
+  // Staff permissions
+  VIEW_ALL_BOOKINGS: ['staff', 'manager', 'admin'],
+  MANAGE_BOOKINGS: ['staff', 'manager', 'admin'],
+  VIEW_GUEST_PROFILES: ['staff', 'manager', 'admin'],
+
+  // Manager permissions
+  MANAGE_STAFF: ['manager', 'admin'],
+  VIEW_REPORTS: ['manager', 'admin'],
+  MANAGE_ROOMS: ['manager', 'admin'],
+
+  // Admin permissions
+  MANAGE_SYSTEM: ['admin'],
+  VIEW_AUDIT_LOGS: ['admin'],
+  MANAGE_USERS: ['admin']
+} as const
+
+export type Permission = keyof typeof PERMISSIONS
+
+export const hasPermission = (userRole: UserRole, permission: Permission): boolean => {
+  return PERMISSIONS[permission].includes(userRole)
+}
+
 export default firebase_app

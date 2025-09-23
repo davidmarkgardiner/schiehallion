@@ -1,5 +1,10 @@
 'use client'
 
+import { useState } from 'react'
+import { useAuth } from '@/context/AuthContext'
+import LoginForm from '@/components/LoginForm'
+import UserProfile from '@/components/UserProfile'
+
 const navItems = [
   { label: 'Rooms', href: '#rooms' },
   { label: 'Dining', href: '#dining' },
@@ -242,6 +247,23 @@ function SectionHeader({
 }
 
 export default function Home() {
+  const { user, userProfile } = useAuth()
+  const [showGuestRegistration, setShowGuestRegistration] = useState(false)
+
+  if (!user) {
+    return (
+      <main className="min-h-screen bg-gradient-to-br from-slate-900 to-slate-950 flex items-center justify-center p-4">
+        <div className="max-w-md w-full">
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-white mb-2">Schiehallion Hotel</h1>
+            <p className="text-slate-400">Highland hospitality reimagined</p>
+          </div>
+          <LoginForm />
+        </div>
+      </main>
+    )
+  }
+
   return (
     <main className="relative overflow-hidden bg-slate-950 text-slate-100">
       <div className="pointer-events-none absolute inset-0 -z-10">
@@ -256,16 +278,19 @@ export default function Home() {
             <a href="#top" className="font-semibold tracking-wide text-slate-100">
               Schiehallion Hotel
             </a>
-            <div className="flex flex-wrap items-center gap-4">
-              {navItems.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  className="rounded-full px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-slate-300 transition hover:bg-white/10 hover:text-white"
-                >
-                  {item.label}
-                </a>
-              ))}
+            <div className="flex items-center gap-6">
+              <div className="flex flex-wrap items-center gap-4">
+                {navItems.map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    className="rounded-full px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-slate-300 transition hover:bg-white/10 hover:text-white"
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+              <UserProfile />
             </div>
           </nav>
 

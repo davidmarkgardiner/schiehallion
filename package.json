@@ -17,7 +17,8 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "validate": "npm run lint && npm run type-check && npm run test",
-    "clear-cache": "rm -rf .next && rm -rf node_modules/.cache"
+    "clear-cache": "rm -rf .next && rm -rf node_modules/.cache",
+    "setup-test-users": "node scripts/create-test-user.mjs"
   },
   "dependencies": {
     "dotenv": "^17.2.2",
