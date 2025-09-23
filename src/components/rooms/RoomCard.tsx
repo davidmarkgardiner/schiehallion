@@ -1,8 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useMemo, useCallback } from 'react'
 import Image from 'next/image'
 import { Room } from '@/types/hotel'
+import { useActiveRoomImages } from '@/hooks/useRoomImages'
+import { RoomImage } from '@/components/ui/image-fallback'
+import { RoomImageErrorAlert } from '@/components/ui/room-image-error-alert'
+import { Badge } from '@/components/ui/badge'
 
 interface RoomCardProps {
   room: Room
@@ -13,18 +17,45 @@ interface RoomCardProps {
 export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [imageError, setImageError] = useState(false)
+  const [imageLoading, setImageLoading] = useState(true)
+  const [isGeneratingImage, setIsGeneratingImage] = useState(false)
+  const [failedImages, setFailedImages] = useState<Set<string>>(new Set())
+  const { imagesByRoomType, hasImages: hasGeneratedImages, isLoading: imagesLoading, error: imagesError } = useActiveRoomImages()
 
-  const nextImage = () => {
-    if (room.images && room.images.length > 0) {
-      setCurrentImageIndex((prev) => (prev + 1) % room.images.length)
-    }
-  }
+  // Combine original room images with AI-generated images
+  const allImages = useMemo(() => {
+    const originalImages = room.images || []
+    const generatedImages = imagesByRoomType[room.type] || []
+    // Filter out any empty or falsy image URLs
+    return [...originalImages, ...generatedImages].filter(img => img && img.length > 0)
+  }, [room.images, room.type, imagesByRoomType])
 
-  const prevImage = () => {
-    if (room.images && room.images.length > 0) {
-      setCurrentImageIndex((prev) => (prev - 1 + room.images.length) % room.images.length)
+  const nextImage = useCallback(() => {
+    if (allImages && allImages.length > 0) {
+      setCurrentImageIndex((prev) => (prev + 1) % allImages.length)
+      setImageLoading(true)
     }
-  }
+  }, [allImages])
+
+  const prevImage = useCallback(() => {
+    if (allImages && allImages.length > 0) {
+      setCurrentImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length)
+      setImageLoading(true)
+    }
+  }, [allImages])
+
+  const handleImageLoad = useCallback(() => {
+    setImageLoading(false)
+  }, [])
+
+  const handleImageError = useCallback(() => {
+    const currentImage = allImages?.[currentImageIndex]
+    if (currentImage) {
+      setFailedImages(prev => new Set(prev).add(currentImage))
+    }
+    setImageError(true)
+    setImageLoading(false)
+  }, [allImages, currentImageIndex])
 
   const formatPrice = (price: number | undefined) => {
     if (price === undefined || price === null) {
@@ -53,6 +84,36 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
       .join(', ')
   }
 
+  const handleGenerateImage = useCallback(async () => {
+    setIsGeneratingImage(true)
+    try {
+      const response = await fetch('/api/generate-image', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          category: 'room',
+          prompt: `A beautiful ${room.type} hotel room with ${getBedDisplay()}, ${room.view} view, featuring luxury amenities and comfortable furnishings. The room should feel welcoming and spacious.`,
+          style: 'photorealistic',
+          size: 'landscape'
+        })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        // TODO: Save the generated image and refresh the room images
+        console.log('Generated image:', data)
+      } else {
+        console.error('Failed to generate image:', response.statusText)
+      }
+    } catch (error) {
+      console.error('Error generating image:', error)
+    } finally {
+      setIsGeneratingImage(false)
+    }
+  }, [room.type, room.view])
+
   const getKeyFeatures = (): string[] => {
     const features: string[] = []
     if (!room.features) return features
@@ -69,32 +130,38 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
     return (
       <div className="flex flex-col md:flex-row gap-6 rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-lg hover:bg-white transition-colors">
         {/* Image Gallery */}
-        <div className="relative md:w-80 h-48 rounded-2xl overflow-hidden bg-lundies-stone/60">
-          {room.images && room.images.length > 0 && !imageError ? (
-            <>
-              <Image
-                src={room.images[currentImageIndex]}
+        <div className="relative md:w-80 h-48">
+          {allImages && allImages.length > 0 && !imageError ? (
+            <div className="relative w-full h-full">
+              <RoomImage
+                src={allImages[currentImageIndex]}
                 alt={`${room.roomNumber} - ${room.type}`}
-                fill
-                className="object-cover"
-                onError={() => setImageError(true)}
+                roomType={room.type}
+                roomNumber={room.roomNumber}
+                hasAIImages={hasGeneratedImages(room.type)}
+                isAIEnhanced={hasGeneratedImages(room.type)}
+                onGenerateRoom={handleGenerateImage}
+                aspectRatio={16 / 9}
+                className="w-full h-full"
+                priority={currentImageIndex === 0}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
-              {room.images && room.images.length > 1 && (
+              {allImages && allImages.length > 1 && (
                 <>
                   <button
                     onClick={prevImage}
-                    className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-lundies-peat/30 text-lundies-charcoal hover:bg-lundies-peat/50 transition-colors flex items-center justify-center"
+                    className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-lundies-peat/30 text-lundies-charcoal hover:bg-lundies-peat/50 transition-colors flex items-center justify-center z-10"
                   >
                     ←
                   </button>
                   <button
                     onClick={nextImage}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-lundies-peat/30 text-lundies-charcoal hover:bg-lundies-peat/50 transition-colors flex items-center justify-center"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-lundies-peat/30 text-lundies-charcoal hover:bg-lundies-peat/50 transition-colors flex items-center justify-center z-10"
                   >
                     →
                   </button>
-                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-                    {room.images && room.images.map((_, index) => (
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+                    {allImages && allImages.map((_, index) => (
                       <div
                         key={`${room.id}-image-${index}`}
                         className={`w-2 h-2 rounded-full ${
@@ -105,13 +172,32 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
                   </div>
                 </>
               )}
-            </>
+            </div>
           ) : (
-            <div className="w-full h-full flex items-center justify-center text-lundies-moss">
-              <div className="text-center">
-                <div className="text-4xl mb-2">🏨</div>
-                <div className="text-sm">Room {room.roomNumber}</div>
-              </div>
+            <RoomImage
+              src={undefined}
+              alt={`${room.roomNumber} - ${room.type}`}
+              roomType={room.type}
+              roomNumber={room.roomNumber}
+              hasAIImages={hasGeneratedImages(room.type)}
+              isAIEnhanced={false}
+              onGenerateRoom={handleGenerateImage}
+              aspectRatio={16 / 9}
+              className="w-full h-full"
+            />
+          )}
+
+          {/* Error Alert for Failed Images */}
+          {(imagesError || (allImages.length === 0 && !imagesLoading)) && (
+            <div className="absolute bottom-2 left-2 right-2 z-20">
+              <RoomImageErrorAlert
+                variant="minimal"
+                roomType={room.type}
+                roomNumber={room.roomNumber}
+                errorType={imagesError ? 'failed' : 'missing'}
+                onGenerateImage={handleGenerateImage}
+                isGenerating={isGeneratingImage}
+              />
             </div>
           )}
         </div>
@@ -188,32 +274,38 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
   return (
     <div className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-lg hover:bg-white transition-colors">
       {/* Image Gallery */}
-      <div className="relative h-48 rounded-2xl overflow-hidden bg-lundies-stone/60 mb-4">
-        {room.images && room.images.length > 0 && !imageError ? (
-          <>
-            <Image
-              src={room.images[currentImageIndex]}
+      <div className="relative h-48 mb-4">
+        {allImages && allImages.length > 0 && !imageError ? (
+          <div className="relative w-full h-full">
+            <RoomImage
+              src={allImages[currentImageIndex]}
               alt={`${room.roomNumber} - ${room.type}`}
-              fill
-              className="object-cover"
-              onError={() => setImageError(true)}
+              roomType={room.type}
+              roomNumber={room.roomNumber}
+              hasAIImages={hasGeneratedImages(room.type)}
+              isAIEnhanced={hasGeneratedImages(room.type)}
+              onGenerateRoom={handleGenerateImage}
+              aspectRatio={16 / 9}
+              className="w-full h-full"
+              priority={currentImageIndex === 0}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             />
-            {room.images && room.images.length > 1 && (
+            {allImages && allImages.length > 1 && (
               <>
                 <button
                   onClick={prevImage}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-lundies-peat/30 text-lundies-charcoal hover:bg-lundies-peat/50 transition-colors flex items-center justify-center"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-lundies-peat/30 text-lundies-charcoal hover:bg-lundies-peat/50 transition-colors flex items-center justify-center z-10"
                 >
                   ←
                 </button>
                 <button
                   onClick={nextImage}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-lundies-peat/30 text-lundies-charcoal hover:bg-lundies-peat/50 transition-colors flex items-center justify-center"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-lundies-peat/30 text-lundies-charcoal hover:bg-lundies-peat/50 transition-colors flex items-center justify-center z-10"
                 >
                   →
                 </button>
-                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-                  {room.images && room.images.map((_, index) => (
+                <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+                  {allImages && allImages.map((_, index) => (
                     <div
                       key={`${room.id}-image-${index}`}
                       className={`w-2 h-2 rounded-full ${
@@ -224,13 +316,32 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
                 </div>
               </>
             )}
-          </>
+          </div>
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-lundies-moss">
-            <div className="text-center">
-              <div className="text-4xl mb-2">🏨</div>
-              <div className="text-sm">Room {room.roomNumber}</div>
-            </div>
+          <RoomImage
+            src={undefined}
+            alt={`${room.roomNumber} - ${room.type}`}
+            roomType={room.type}
+            roomNumber={room.roomNumber}
+            hasAIImages={hasGeneratedImages(room.type)}
+            isAIEnhanced={false}
+            onGenerateRoom={handleGenerateImage}
+            aspectRatio={16 / 9}
+            className="w-full h-full"
+          />
+        )}
+
+        {/* Error Alert for Failed Images */}
+        {(imagesError || (allImages.length === 0 && !imagesLoading)) && (
+          <div className="absolute bottom-2 left-2 right-2 z-20">
+            <RoomImageErrorAlert
+              variant="minimal"
+              roomType={room.type}
+              roomNumber={room.roomNumber}
+              errorType={imagesError ? 'failed' : 'missing'}
+              onGenerateImage={handleGenerateImage}
+              isGenerating={isGeneratingImage}
+            />
           </div>
         )}
       </div>

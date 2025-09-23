@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from 'react'
 import { RoomService } from '@/lib/firebase/hotel-service'
+import { RoomService as MockRoomService } from '@/lib/firebase/hotel-service-mock'
 import { Room } from '@/types/hotel'
 import BookingFlow from '@/components/booking/BookingFlow'
 
@@ -14,13 +15,31 @@ export default function BookingPage() {
 
   useEffect(() => {
     const loadAvailableRooms = async () => {
+      setLoading(true)
       try {
         const rooms = await RoomService.getRooms({
           status: 'available'
         })
-        setAvailableRooms(rooms)
+        if (rooms.length > 0) {
+          setAvailableRooms(rooms)
+          return
+        }
+        // Fallback to mock data when no live data is available
+        const mockRooms = await MockRoomService.getRooms({
+          status: 'available'
+        })
+        setAvailableRooms(mockRooms)
       } catch (error) {
         console.error('Failed to load available rooms:', error)
+        try {
+          const mockRooms = await MockRoomService.getRooms({
+            status: 'available'
+          })
+          setAvailableRooms(mockRooms)
+        } catch (mockError) {
+          console.error('Failed to load mock rooms:', mockError)
+          setAvailableRooms([])
+        }
       } finally {
         setLoading(false)
       }

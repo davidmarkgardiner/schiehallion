@@ -1,10 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { Room, RoomType } from '@/types/hotel'
 import RoomCard from './RoomCard'
 import RoomFilters, { RoomFilterState } from './RoomFilters'
 import { RoomService } from '@/lib/firebase/hotel-service-mock'
+import { imageCacheService } from '@/services/imageCache'
 
 type ViewMode = 'grid' | 'list'
 
@@ -29,15 +30,48 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
     sortBy: 'price-low',
   })
 
+  // Preload images for visible room types
+  const preloadImagesForRooms = useMemo(() => {
+    return async (roomsData: Room[]) => {
+      try {
+        // Get unique room types from loaded rooms
+        const roomTypes = [...new Set(roomsData.map(room => room.type))];
+
+        // Fetch and preload images for each room type
+        for (const roomType of roomTypes) {
+          try {
+            const response = await fetch(`/api/room-images/list?roomType=${roomType}`);
+            if (response.ok) {
+              const { images } = await response.json();
+              const imageUrls = images.map((img: any) => img.url);
+
+              if (imageUrls.length > 0) {
+                // Preload images in background
+                imageCacheService.preloadRoomImages(roomType as RoomType, imageUrls);
+              }
+              // If no images are found, we still want to continue without error
+            }
+          } catch (err) {
+            console.warn(`Failed to preload images for ${roomType}:`, err);
+            // Continue with other room types even if one fails
+          }
+        }
+      } catch (err) {
+        console.warn('Failed to preload room images:', err);
+        // Don't fail the entire preload process if there's an error
+      }
+    };
+  }, []);
+
   // Load rooms data
   useEffect(() => {
     const loadRooms = async () => {
       try {
         setLoading(true)
         setError(null)
-        
+
         let roomsData: Room[]
-        
+
         if (checkInDate && checkOutDate) {
           // Get available rooms for specific dates
           roomsData = await RoomService.getAvailableRooms(checkInDate, checkOutDate, guests)
@@ -48,8 +82,11 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
             maxOccupancy: guests
           })
         }
-        
+
         setRooms(roomsData)
+
+        // Preload images for the loaded rooms
+        preloadImagesForRooms(roomsData);
       } catch (err) {
         console.error('Failed to load rooms:', err)
         setError('Failed to load rooms. Please try again.')
@@ -59,7 +96,7 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
     }
 
     loadRooms()
-  }, [checkInDate, checkOutDate, guests])
+  }, [checkInDate, checkOutDate, guests, preloadImagesForRooms])
 
   // Apply filters and sorting
   useEffect(() => {

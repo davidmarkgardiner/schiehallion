@@ -6,7 +6,8 @@
 import { useState, useEffect, useMemo } from 'react'
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd'
 import { DailyAvailability, Room, RoomType, PackageType } from '@/types/hotel'
-import { AvailabilityService } from '@/lib/firebase/hotel-service'
+import { AvailabilityService as FirebaseAvailabilityService } from '@/lib/firebase/hotel-service'
+import { AvailabilityService as MockAvailabilityService } from '@/lib/firebase/hotel-service-mock'
 import { useCartStore, PACKAGE_OPTIONS } from '@/store/cartStore'
 
 interface DragDropCalendarProps {
@@ -120,6 +121,38 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
 
   const { addRoomFromDrop } = useCartStore()
 
+  type AvailabilityClient = Pick<typeof FirebaseAvailabilityService, 'getDailyAvailability'>
+
+  const fetchAvailabilityForMonth = async (service: AvailabilityClient) => {
+    const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
+    const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
+    const data: Record<string, DailyAvailability> = {}
+
+    const currentDate = new Date(startOfMonth)
+    while (currentDate <= endOfMonth) {
+      const dateStr = currentDate.toISOString().split('T')[0]
+      try {
+        const dayAvailability = await service.getDailyAvailability(dateStr)
+        if (dayAvailability) {
+          data[dateStr] = dayAvailability
+        }
+      } catch (error) {
+        console.warn(`Failed to load availability for ${dateStr}:`, error)
+      }
+      currentDate.setDate(currentDate.getDate() + 1)
+    }
+
+    return data
+  }
+
+  const hasUsableAvailability = (data: Record<string, DailyAvailability>) => {
+    if (Object.keys(data).length === 0) return false
+
+    return Object.values(data).some(day =>
+      Object.values(day.availability || {}).some(typeAvail => typeAvail.availableRooms > 0)
+    )
+  }
+
   // Helper functions (defined before useMemo to avoid hoisting issues)
   const getAvailabilityCount = (availability: DailyAvailability | undefined, type?: RoomType): number => {
     if (!availability) return 0
@@ -157,27 +190,23 @@ const DragDropCalendar: React.FC<DragDropCalendarProps> = ({
     const loadAvailabilityData = async () => {
       setLoading(true)
       try {
-        const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
-        const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
-        const data: Record<string, DailyAvailability> = {}
+        const primaryData = await fetchAvailabilityForMonth(FirebaseAvailabilityService)
 
-        const currentDate = new Date(startOfMonth)
-        while (currentDate <= endOfMonth) {
-          const dateStr = currentDate.toISOString().split('T')[0]
-          try {
-            const dayAvailability = await AvailabilityService.getDailyAvailability(dateStr)
-            if (dayAvailability) {
-              data[dateStr] = dayAvailability
-            }
-          } catch (error) {
-            console.warn(`Failed to load availability for ${dateStr}:`, error)
-          }
-          currentDate.setDate(currentDate.getDate() + 1)
+        if (hasUsableAvailability(primaryData)) {
+          setAvailabilityData(primaryData)
+        } else {
+          const fallbackData = await fetchAvailabilityForMonth(MockAvailabilityService)
+          setAvailabilityData(fallbackData)
         }
-
-        setAvailabilityData(data)
       } catch (error) {
         console.error('Failed to load availability data:', error)
+        try {
+          const fallbackData = await fetchAvailabilityForMonth(MockAvailabilityService)
+          setAvailabilityData(fallbackData)
+        } catch (mockError) {
+          console.error('Failed to load mock availability data:', mockError)
+          setAvailabilityData({})
+        }
       } finally {
         setLoading(false)
       }

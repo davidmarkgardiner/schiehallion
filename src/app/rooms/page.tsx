@@ -10,6 +10,7 @@ import AvailabilityCalendar from '@/components/rooms/AvailabilityCalendar'
 import ShoppingCart from '@/components/booking/ShoppingCart'
 import { useCartStore } from '@/store/cartStore'
 import { Room, RoomType, PackageType } from '@/types/hotel'
+import PerformanceDashboard from '@/components/dev/PerformanceDashboard'
 
 interface DateRange {
   startDate: Date | null
@@ -339,6 +340,9 @@ export default function RoomsPage() {
         onClose={() => setShowCart(false)}
         onProceedToBooking={handleProceedToBooking}
       />
+
+      {/* Performance Dashboard (dev only) */}
+      <PerformanceDashboard />
     </main>
   )
 }
