@@ -1,0 +1,31 @@
+{
+  "name": "ai-chatbot-github",
+  "version": "1.0.0",
+  "description": "Reusable AI chatbot with GitHub integration for Node.js applications",
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "keywords": [
+    "ai",
+    "chatbot",
+    "github",
+    "openai",
+    "anthropic",
+    "nextjs",
+    "typescript"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "peerDependencies": {
+    "@octokit/rest": "^20.0.0",
+    "openai": "^4.0.0",
+    "next": "^14.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

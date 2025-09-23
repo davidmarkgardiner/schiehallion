@@ -33,6 +33,28 @@
       ]
     },
     {
+      "collectionGroup": "rooms",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "roomNumber",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "maxOccupancy",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "__name__",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "bookings",
       "queryScope": "COLLECTION",
       "fields": [
@@ -88,16 +110,6 @@
         },
         {
           "fieldPath": "checkOutDate",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "dailyAvailability",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "date",
           "order": "ASCENDING"
         }
       ]
