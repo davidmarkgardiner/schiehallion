@@ -11,7 +11,7 @@ export default function StaffLogin() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showTwoFactor, setShowTwoFactor] = useState(false)
-  const [sessionTimeout, setSessionTimeout] = useState<number | null>(null)
+  const [sessionTimeout, setSessionTimeout] = useState<NodeJS.Timeout | null>(null)
 
   const { login, user, userProfile, logout } = useAuth()
   const router = useRouter()
