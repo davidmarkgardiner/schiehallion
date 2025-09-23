@@ -1,3 +1,5 @@
+'use client'
+
 const navItems = [
   { label: 'Rooms', href: '#rooms' },
   { label: 'Dining', href: '#dining' },
