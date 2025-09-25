@@ -41,7 +41,7 @@ providers:
           stripe-publishable-key: STRIPE_PUBLISHABLE_KEY
           stripe-secret-key: STRIPE_SECRET_KEY
           github-token-shadcn: GITHUB_TOKEN_SHADCN
-
+          gemini-api-key: GEMINI_API_KEY
 # Template mappings for MCP configuration
 mappings:
   - from: google_secretmanager:secrets

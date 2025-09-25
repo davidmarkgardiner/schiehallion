@@ -95,13 +95,10 @@ class ImageCacheService {
    */
   getOptimizedUrl(url: string, width?: number, height?: number): string {
     try {
-      // For local images, we can use them directly without optimization
+      // For local images, use them directly as relative URLs for Next.js optimization
       if (url.startsWith('/images/rooms/') && !url.includes('localhost')) {
-        // Add cache busting parameter based on day to refresh daily
-        const urlObj = new URL(url, typeof window !== 'undefined' ? window.location.origin : 'http://localhost:3000');
-        const dayOfYear = Math.floor(Date.now() / (1000 * 60 * 60 * 24));
-        urlObj.searchParams.set('v', dayOfYear.toString());
-        return urlObj.toString();
+        // Return relative URL directly - Next.js Image will handle optimization
+        return url;
       }
 
       // Check if this is a generated room image that can be optimized
