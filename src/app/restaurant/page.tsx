@@ -32,11 +32,11 @@ const FLOORPLAN_HEIGHT = 480
 const TABLE_SIZE = 72
 
 const zoneBadgeStyles: Record<TableZone, string> = {
-  main_dining: 'bg-lundies-sand/20 text-lundies-sand dark:bg-lundies-sand/10 dark:text-lundies-sand',
-  window: 'bg-sky-100 text-sky-700 dark:bg-sky-900/60 dark:text-sky-200',
-  private: 'bg-lundies-peat/20 text-lundies-peat dark:bg-lundies-peat/10 dark:text-lundies-peat',
-  terrace: 'bg-lundies-heather/20 text-lundies-heather dark:bg-lundies-heather/10 dark:text-lundies-heather',
-  chef_counter: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/60 dark:text-indigo-200',
+  main_dining: 'bg-lundies-sand/30 text-lundies-peat dark:bg-neutral-900/60 dark:text-neutral-200',
+  window: 'bg-lundies-linen/70 text-lundies-peat dark:bg-neutral-900/60 dark:text-neutral-200',
+  private: 'bg-lundies-stone/50 text-lundies-charcoal dark:bg-neutral-900/60 dark:text-neutral-200',
+  terrace: 'bg-lundies-heather/40 text-lundies-moss dark:bg-neutral-900/60 dark:text-neutral-200',
+  chef_counter: 'bg-lundies-peat/30 text-lundies-charcoal dark:bg-neutral-900/60 dark:text-neutral-200',
 }
 
 type ZoneBackground = {
@@ -49,7 +49,7 @@ const zoneBackgrounds: ZoneBackground[] = [
   {
     zone: 'window',
     style: { left: '0%', top: '0%', width: '42%', height: '48%' },
-    className: 'bg-sky-200/30 dark:bg-sky-900/30 border-sky-400/60',
+    className: 'bg-lundies-linen/60 border-lundies-stone/60 dark:bg-neutral-900/50 dark:border-neutral-700',
   },
   {
     zone: 'main_dining',
@@ -69,7 +69,7 @@ const zoneBackgrounds: ZoneBackground[] = [
   {
     zone: 'chef_counter',
     style: { left: '72%', top: '58%', width: '24%', height: '28%' },
-    className: 'bg-indigo-200/30 dark:bg-indigo-900/30 border-indigo-400/60',
+    className: 'bg-lundies-peat/40 border-lundies-charcoal/50 dark:bg-neutral-900/60 dark:border-neutral-700',
   },
 ]
 
@@ -749,7 +749,7 @@ export default function RestaurantGuestExperience() {
                     <span className="h-3 w-3 rounded-full bg-lundies-stone" /> Unavailable this slot
                   </span>
                   <span className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-indigo-500" /> Accessibility icons
+                    <span className="h-3 w-3 rounded-full bg-lundies-moss" /> Accessibility icons
                   </span>
                 </div>
                 <div className="flex items-center gap-2">
@@ -854,7 +854,7 @@ export default function RestaurantGuestExperience() {
                                 {formatZoneLabel(table.zone)}
                               </span>
                               {accessibilityBadges.length > 0 && (
-                                <div className="mt-1 flex gap-1 text-[11px] text-indigo-600 dark:text-indigo-200">
+                                <div className="mt-1 flex gap-1 text-[11px] text-lundies-moss dark:text-neutral-200">
                                   {accessibilityBadges.map((item) => (
                                     <span key={`${table.id}-${item.label}`} title={item.label} aria-label={item.label}>
                                       {item.icon}
@@ -959,11 +959,11 @@ export default function RestaurantGuestExperience() {
                           ))}
                         </div>
                         {selectedTable.accessibility.length > 0 && (
-                          <div className="flex flex-wrap gap-2 text-[11px] text-indigo-600 dark:text-indigo-200">
+                          <div className="flex flex-wrap gap-2 text-[11px] text-lundies-moss dark:text-neutral-200">
                             {selectedTable.accessibility.map((item) => (
                               <span
                                 key={`${selectedTable.id}-${item}`}
-                                className="flex items-center gap-1 rounded-full bg-indigo-50 px-2 py-0.5 dark:bg-indigo-900/40"
+                                className="flex items-center gap-1 rounded-full bg-lundies-heather/20 px-2 py-0.5 dark:bg-neutral-900/50"
                               >
                                 <span aria-hidden="true">{accessibilityIcons[item].icon}</span>
                                 <span>{accessibilityMap.get(item)}</span>
@@ -981,7 +981,7 @@ export default function RestaurantGuestExperience() {
                         )}
                         {!tableIsAvailable && (
                           <p className="text-xs text-lundies-sand dark:text-lundies-sand">
-                            This table is linked to another reservation right now. Choose any table highlighted in emerald to proceed.
+                            This table is linked to another reservation right now. Choose any table highlighted in moss tones to proceed.
                           </p>
                         )}
                       </div>
@@ -1026,7 +1026,7 @@ export default function RestaurantGuestExperience() {
                               {canReserve ? 'Provide guest details' : 'Select an available table'}
                             </button>
                             <p className="text-xs text-lundies-stone dark:text-lundies-stone">
-                              Secure your table in a few steps — we'll capture dietary needs, special occasions, and contact details next.
+                              Secure your table in a few steps — we&apos;ll capture dietary needs, special occasions, and contact details next.
                             </p>
                           </>
                         ) : (
@@ -1091,7 +1091,7 @@ export default function RestaurantGuestExperience() {
                         <span>Updated {formatIsoTime(slot.lastUpdated)}</span>
                       </div>
                       {slot.specialEvent && (
-                        <p className="mt-2 text-xs text-emerald-600 dark:text-emerald-300">
+                        <p className="mt-2 text-xs text-lundies-moss dark:text-neutral-300">
                           {slotEventIcon[slot.specialEvent.tone]} {slot.specialEvent.label}
                         </p>
                       )}

@@ -58,36 +58,36 @@ export default function AdminDashboard() {
 
   if (loading || !user || !userProfile) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-lundies-ivory via-lundies-linen to-lundies-stone dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-800">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading dashboard...</p>
+          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-lundies-moss"></div>
+          <p className="mt-4 text-sm uppercase tracking-[0.3em] text-lundies-peat/70 dark:text-neutral-300/80">Loading dashboard...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-lundies-ivory via-lundies-linen to-lundies-stone text-lundies-charcoal dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-800">
       {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center">
-              <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+      <header className="border-b border-lundies-stone/60 bg-white/80 shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/80">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between py-6">
+            <div className="flex items-center gap-4">
+              <h1 className="text-3xl font-bold text-lundies-charcoal dark:text-neutral-50">
                 Admin Dashboard
               </h1>
-              <span className="ml-4 px-2 py-1 text-xs font-semibold bg-indigo-100 text-indigo-800 rounded-full">
+              <span className="rounded-full bg-lundies-linen/90 px-3 py-1 text-xs font-semibold tracking-[0.3em] text-lundies-peat">
                 {userProfile.role.toUpperCase()}
               </span>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-lundies-peat/80 dark:text-neutral-300">
                 Welcome, {userProfile.profile.firstName || user.email}
               </span>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500"
+                className="rounded-full border border-lundies-peat/30 px-4 py-2 text-sm font-semibold text-lundies-peat transition hover:bg-lundies-peat/10 focus:outline-none focus:ring-2 focus:ring-lundies-peat/40"
               >
                 Logout
               </button>
@@ -99,70 +99,70 @@ export default function AdminDashboard() {
       {/* Main Content */}
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+        <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
           <button
             onClick={() => router.push('/admin/image-generation')}
-            className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg p-4 text-left transition-all duration-200 transform hover:scale-105 shadow-lg"
+            className="group rounded-3xl border border-lundies-stone/60 bg-white/80 p-4 text-left shadow-sm transition duration-200 hover:-translate-y-1 hover:bg-lundies-ivory/80 dark:border-neutral-700 dark:bg-neutral-900/70 dark:hover:bg-neutral-800"
           >
-            <div className="flex items-center justify-between mb-2">
+            <div className="mb-2 flex items-center justify-between text-lundies-charcoal dark:text-neutral-100">
               <div className="text-2xl">🎨</div>
-              <svg className="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </div>
-            <h3 className="font-semibold text-lg mb-1">AI Image Studio</h3>
-            <p className="text-sm opacity-90">Generate room, food & scenery images</p>
+            <h3 className="mb-1 text-lg font-semibold text-lundies-charcoal dark:text-neutral-100">AI Image Studio</h3>
+            <p className="text-sm text-lundies-peat/80 dark:text-neutral-300">Curate brand-safe imagery across rooms and dining.</p>
           </button>
 
           <button
             onClick={() => router.push('/admin/restaurant')}
-            className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white rounded-lg p-4 text-left transition-all duration-200 transform hover:scale-105 shadow-lg"
+            className="group rounded-3xl border border-lundies-stone/60 bg-white/80 p-4 text-left shadow-sm transition duration-200 hover:-translate-y-1 hover:bg-lundies-ivory/80 dark:border-neutral-700 dark:bg-neutral-900/70 dark:hover:bg-neutral-800"
           >
-            <div className="flex items-center justify-between mb-2">
+            <div className="mb-2 flex items-center justify-between text-lundies-charcoal dark:text-neutral-100">
               <div className="text-2xl">🍽️</div>
-              <svg className="w-5 h-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="h-5 w-5 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
               </svg>
             </div>
-            <h3 className="font-semibold text-lg mb-1">Restaurant</h3>
-            <p className="text-sm opacity-90">Manage tables & reservations</p>
+            <h3 className="mb-1 text-lg font-semibold text-lundies-charcoal dark:text-neutral-100">Restaurant</h3>
+            <p className="text-sm text-lundies-peat/80 dark:text-neutral-300">Manage reservations, availability and table layouts.</p>
           </button>
 
-          <div className="bg-gradient-to-r from-green-600 to-teal-600 text-white rounded-lg p-4 text-left shadow-lg">
-            <div className="flex items-center justify-between mb-2">
+          <div className="rounded-3xl border border-lundies-stone/40 bg-white/60 p-4 text-left shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/70">
+            <div className="mb-2 flex items-center justify-between text-lundies-charcoal dark:text-neutral-100">
               <div className="text-2xl">🏨</div>
-              <div className="text-xs bg-white/20 px-2 py-1 rounded">Coming Soon</div>
+              <div className="rounded-full bg-lundies-linen/90 px-2 py-1 text-xs font-semibold tracking-[0.25em] text-lundies-peat">Coming Soon</div>
             </div>
-            <h3 className="font-semibold text-lg mb-1">Room Management</h3>
-            <p className="text-sm opacity-90">Handle bookings & availability</p>
+            <h3 className="mb-1 text-lg font-semibold text-lundies-charcoal dark:text-neutral-100">Room Management</h3>
+            <p className="text-sm text-lundies-peat/80 dark:text-neutral-300">Handle bookings, assignments and availability.</p>
           </div>
 
-          <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-lg p-4 text-left shadow-lg">
-            <div className="flex items-center justify-between mb-2">
+          <div className="rounded-3xl border border-lundies-stone/40 bg-white/60 p-4 text-left shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/70">
+            <div className="mb-2 flex items-center justify-between text-lundies-charcoal dark:text-neutral-100">
               <div className="text-2xl">📊</div>
-              <div className="text-xs bg-white/20 px-2 py-1 rounded">Coming Soon</div>
+              <div className="rounded-full bg-lundies-linen/90 px-2 py-1 text-xs font-semibold tracking-[0.25em] text-lundies-peat">Coming Soon</div>
             </div>
-            <h3 className="font-semibold text-lg mb-1">Analytics</h3>
-            <p className="text-sm opacity-90">View reports & insights</p>
+            <h3 className="mb-1 text-lg font-semibold text-lundies-charcoal dark:text-neutral-100">Analytics</h3>
+            <p className="text-sm text-lundies-peat/80 dark:text-neutral-300">View upcoming performance dashboards & insights.</p>
           </div>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+        <div className="mb-8 grid grid-cols-1 gap-6 md:grid-cols-3">
+          <div className="overflow-hidden rounded-3xl border border-lundies-stone/60 bg-white/80 shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/70">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="h-6 w-6 text-lundies-moss" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-2.239" />
                   </svg>
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                    <dt className="truncate text-sm font-medium uppercase tracking-[0.25em] text-lundies-peat/70 dark:text-neutral-300/80">
                       Active Staff
                     </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
+                    <dd className="text-lg font-semibold text-lundies-charcoal dark:text-neutral-100">
                       {staffUsers.length}
                     </dd>
                   </dl>
@@ -171,20 +171,20 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="overflow-hidden rounded-3xl border border-lundies-stone/60 bg-white/80 shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/70">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="h-6 w-6 text-lundies-moss" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v6a2 2 0 002 2h2m0 0h8a2 2 0 002-2V7a2 2 0 00-2-2h-2m0 0V3a2 2 0 10-4 0v2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                   </svg>
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                    <dt className="truncate text-sm font-medium uppercase tracking-[0.25em] text-lundies-peat/70 dark:text-neutral-300/80">
                       Recent Actions
                     </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
+                    <dd className="text-lg font-semibold text-lundies-charcoal dark:text-neutral-100">
                       {auditLogs.length}
                     </dd>
                   </dl>
@@ -193,20 +193,20 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
+          <div className="overflow-hidden rounded-3xl border border-lundies-stone/60 bg-white/80 shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/70">
             <div className="p-5">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <svg className="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <svg className="h-6 w-6 text-lundies-moss" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </div>
                 <div className="ml-5 w-0 flex-1">
                   <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+                    <dt className="truncate text-sm font-medium uppercase tracking-[0.25em] text-lundies-peat/70 dark:text-neutral-300/80">
                       Session Active
                     </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
+                    <dd className="text-lg font-semibold text-lundies-charcoal dark:text-neutral-100">
                       30 min
                     </dd>
                   </dl>
@@ -218,48 +218,52 @@ export default function AdminDashboard() {
 
         {/* Staff Management */}
         {(userProfile.role === 'manager' || userProfile.role === 'admin') && (
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg mb-8">
+          <div className="mb-8 rounded-3xl border border-lundies-stone/60 bg-white/80 shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/70">
             <div className="px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4">
+              <h3 className="mb-4 text-lg font-semibold uppercase tracking-[0.3em] text-lundies-peat/80 dark:text-neutral-200">
                 Staff Management
               </h3>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                  <thead className="bg-gray-50 dark:bg-gray-700">
+                <table className="min-w-full divide-y divide-lundies-stone/40 dark:divide-neutral-700">
+                  <thead className="bg-lundies-linen/80 text-lundies-peat dark:bg-neutral-900/70 dark:text-neutral-200">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.3em]">
                         Name
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.3em]">
                         Email
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.3em]">
                         Role
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.3em]">
                         Last Login
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                  <tbody className="divide-y divide-lundies-stone/30 bg-white/70 text-lundies-charcoal dark:divide-neutral-700 dark:bg-neutral-900/70 dark:text-neutral-100">
                     {staffUsers.map((staff) => (
                       <tr key={staff.uid}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-white">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
                           {staff.profile.firstName} {staff.profile.lastName}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm text-lundies-peat/80 dark:text-neutral-300">
                           {staff.email}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                            staff.role === 'admin' ? 'bg-red-100 text-red-800' :
-                            staff.role === 'manager' ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-green-100 text-green-800'
-                          }`}>
+                        <td className="whitespace-nowrap px-6 py-4">
+                          <span
+                            className={`inline-flex rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.3em] ${
+                              staff.role === 'admin'
+                                ? 'bg-lundies-peat/15 text-lundies-peat'
+                                : staff.role === 'manager'
+                                  ? 'bg-lundies-sand/40 text-lundies-peat'
+                                  : 'bg-lundies-heather/20 text-lundies-moss'
+                            }`}
+                          >
                             {staff.role}
                           </span>
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm text-lundies-peat/80 dark:text-neutral-300">
                           {staff.lastLogin?.toLocaleDateString()}
                         </td>
                       </tr>
@@ -273,42 +277,42 @@ export default function AdminDashboard() {
 
         {/* Audit Logs */}
         {userProfile.role === 'admin' && (
-          <div className="bg-white dark:bg-gray-800 shadow rounded-lg">
+          <div className="rounded-3xl border border-lundies-stone/60 bg-white/80 shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/70">
             <div className="px-4 py-5 sm:p-6">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white mb-4">
+              <h3 className="mb-4 text-lg font-semibold uppercase tracking-[0.3em] text-lundies-peat/80 dark:text-neutral-200">
                 Recent Audit Logs
               </h3>
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                  <thead className="bg-gray-50 dark:bg-gray-700">
+                <table className="min-w-full divide-y divide-lundies-stone/40 dark:divide-neutral-700">
+                  <thead className="bg-lundies-linen/80 text-lundies-peat dark:bg-neutral-900/70 dark:text-neutral-200">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.3em]">
                         Timestamp
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.3em]">
                         User
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.3em]">
                         Action
                       </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                      <th className="px-6 py-3 text-left text-xs font-semibold uppercase tracking-[0.3em]">
                         Resource
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                  <tbody className="divide-y divide-lundies-stone/30 bg-white/70 text-lundies-charcoal dark:divide-neutral-700 dark:bg-neutral-900/70 dark:text-neutral-100">
                     {auditLogs.map((log) => (
                       <tr key={log.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm text-lundies-peat/80 dark:text-neutral-300">
                           {log.timestamp?.toLocaleString()}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
                           {log.userId.slice(0, 8)}...
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm font-medium">
                           {log.action}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        <td className="whitespace-nowrap px-6 py-4 text-sm text-lundies-peat/80 dark:text-neutral-300">
                           {log.resource}
                         </td>
                       </tr>

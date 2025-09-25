@@ -4,13 +4,15 @@
 
 :root {
   color-scheme: light;
-  --surface-base: 245 241 235;
-  --surface-muted: 233 226 215;
-  --surface-accent: 215 205 193;
-  --accent-green: 143 160 137;
-  --accent-brown: 139 109 90;
+  --surface-base: 248 245 239;
+  --surface-muted: 236 230 220;
+  --surface-accent: 222 212 199;
+  --surface-elevated: 255 255 252;
+  --accent-green: 128 146 124;
+  --accent-brown: 150 125 104;
+  --accent-stone: 190 180 168;
   --text-primary: 26 23 20;
-  --text-muted: 96 92 84;
+  --text-muted: 104 100 94;
 }
 
 body {
@@ -18,12 +20,13 @@ body {
   color: rgb(var(--text-primary));
   background-color: rgb(var(--surface-base));
   background:
-    radial-gradient(circle at 18% 18%, rgba(var(--accent-green) / 0.18), transparent 55%),
-    radial-gradient(circle at 82% 8%, rgba(var(--accent-brown) / 0.12), transparent 45%),
+    radial-gradient(circle at 18% 18%, rgba(var(--accent-green) / 0.12), transparent 55%),
+    radial-gradient(circle at 82% 12%, rgba(var(--accent-brown) / 0.08), transparent 45%),
     linear-gradient(
       to bottom,
-      rgb(var(--surface-base)),
-      rgb(var(--surface-muted)) 45%,
+      rgb(var(--surface-elevated)),
+      rgb(var(--surface-base)) 32%,
+      rgb(var(--surface-muted)) 64%,
       rgb(var(--surface-accent))
     );
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
