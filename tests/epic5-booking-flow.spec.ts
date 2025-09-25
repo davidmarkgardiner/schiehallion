@@ -1,5 +1,5 @@
 // Epic 5: Booking Flow Implementation Tests
-// SCHH-013: Drag-and-Drop Room Selection
+// SCHH-013: Interactive Room Selection
 // SCHH-014: Multi-Room Shopping Cart
 // SCHH-015: Guest Information Form
 // SCHH-016: Package Selection Interface
@@ -26,7 +26,7 @@ test.describe('Epic 5: Booking Flow Implementation', () => {
     await page.waitForLoadState('networkidle')
   })
 
-  test('SCHH-013: Drag-and-Drop Room Selection - Navigation and Components', async ({ page }) => {
+  test('SCHH-013: Interactive Room Selection - Navigation and Components', async ({ page }) => {
     // Navigate to booking page
     await page.click('text=Book Now')
     await page.waitForLoadState('networkidle')
@@ -34,19 +34,19 @@ test.describe('Epic 5: Booking Flow Implementation', () => {
     // Check that we're on the booking page
     expect(page.url()).toContain('/booking')
 
-    // Verify drag-and-drop calendar is present
-    await expect(page.locator('text=Drag & Drop Booking')).toBeVisible()
-    await expect(page.locator('text=Drag rooms to your preferred dates')).toBeVisible()
+    // Verify interactive room selection panel is present
+    await expect(page.locator('text=Select a room, choose your travel dates')).toBeVisible()
+    await expect(page.locator('label:has-text("Check-in Date") input[type="date"]').first()).toBeVisible()
+    await expect(page.locator('label:has-text("Check-out Date") input[type="date"]').first()).toBeVisible()
 
     // Check for package type selector
-    await expect(page.locator('select')).toBeVisible()
+    await expect(page.locator('label:has-text("Package") select')).toBeVisible()
     await expect(page.locator('option:has-text("Room Only")')).toBeVisible()
 
-    // Verify calendar grid is present
-    await expect(page.locator('.grid-cols-7')).toBeVisible()
-
-    // Check for available rooms section
-    await expect(page.locator('text=Available Rooms')).toBeVisible()
+    // Check for room list and summary card
+    await expect(page.locator('text=Choose your room')).toBeVisible()
+    await expect(page.locator('text=Your stay details')).toBeVisible()
+    await expect(page.locator('button:has-text("Add Room to Cart")')).toBeVisible()
   })
 
   test('SCHH-014: Multi-Room Shopping Cart - Navigation and Basic Functionality', async ({ page }) => {
@@ -90,8 +90,8 @@ test.describe('Epic 5: Booking Flow Implementation', () => {
     await page.goto('/booking')
     await page.waitForLoadState('networkidle')
 
-    // Check for package selection in the drag-drop calendar
-    await expect(page.locator('select')).toBeVisible()
+    // Check for package selection within the room selection panel
+    await expect(page.locator('label:has-text("Package") select')).toBeVisible()
 
     // Verify package options exist
     const packageSelect = page.locator('select')
@@ -115,7 +115,7 @@ test.describe('Epic 5: Booking Flow Implementation', () => {
 
     // Check main booking flow components
     await expect(page.locator('text=Build Your Perfect Stay')).toBeVisible()
-    await expect(page.locator('text=Drag & Drop Booking')).toBeVisible()
+    await expect(page.locator('text=Choose your room')).toBeVisible()
 
     // Test rooms page integration
     await page.goto('/rooms')
@@ -175,7 +175,7 @@ test.describe('Epic 5: Booking Flow Implementation', () => {
     await expect(page.locator('text=Build Your Perfect Stay')).toBeVisible()
 
     // Check that the main booking interface is functional
-    await expect(page.locator('text=Drag & Drop Booking')).toBeVisible()
+    await expect(page.locator('text=Choose your room')).toBeVisible()
   })
 
   test('Mobile Responsiveness - Basic Layout', async ({ page }) => {
@@ -198,11 +198,11 @@ test.describe('Epic 5: Booking Flow Implementation', () => {
   test('Epic 5 Integration - All Components Accessible', async ({ page }) => {
     console.log('Testing Epic 5: Booking Flow Implementation')
 
-    // Test SCHH-013: Drag-and-Drop Room Selection
+    // Test SCHH-013: Interactive Room Selection
     await page.goto('/booking')
     await page.waitForLoadState('networkidle')
-    await expect(page.locator('text=Drag & Drop Booking')).toBeVisible()
-    console.log('✓ SCHH-013: Drag-and-Drop components present')
+    await expect(page.locator('text=Choose your room')).toBeVisible()
+    console.log('✓ SCHH-013: Interactive room selection components present')
 
     // Test SCHH-014: Multi-Room Shopping Cart
     await page.goto('/rooms')

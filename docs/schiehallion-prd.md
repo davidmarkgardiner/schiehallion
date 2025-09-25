@@ -58,7 +58,7 @@ Create Scotland's most intuitive hotel booking experience by combining tradition
 
 #### Room Booking Engine
 
-- **Visual Calendar Grid**: Drag-and-drop room selection using `react-beautiful-dnd`
+- **Interactive Selection Panel**: Click-to-select rooms with inline date picking
 - **Real-time Availability**: Firebase Realtime Database syncing
 - **Dynamic Pricing**: Package combinations (B&B, Half-board, Room-only)
 - **Multi-room Booking**: Shopping cart pattern for group reservations
@@ -191,7 +191,7 @@ Create Scotland's most intuitive hotel booking experience by combining tradition
 | Layer            | Technology            | Adaptation for Hotel             |
 | ---------------- | --------------------- | -------------------------------- |
 | Frontend         | Next.js 15 App Router | + Room/table booking modules     |
-| UI Components    | React + TailwindCSS   | + react-beautiful-dnd, dnd-kit   |
+| UI Components    | React + TailwindCSS   | + interactive selection panel    |
 | State Management | Context API + Zustand | + Booking cart state             |
 | Authentication   | Firebase Auth         | + Guest accounts, staff roles    |
 | Database         | Firestore             | + Booking collections, inventory |
