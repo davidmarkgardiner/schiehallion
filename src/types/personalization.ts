@@ -96,7 +96,7 @@ export interface ConversionEvent {
   suggestionId: string
   type: ConversionEventType
   timestamp: number
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 export interface ConversionMetrics {

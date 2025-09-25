@@ -262,8 +262,8 @@ export default function AvailabilityCalendar({
 
       {/* Selected Date Range Display */}
       {selectedDates.startDate && (
-        <div className="mb-4 p-4 rounded-2xl bg-emerald-400/10 border border-emerald-400/20">
-          <div className="text-sm text-emerald-100">
+        <div className="mb-4 p-4 rounded-2xl bg-lundies-heather/20 border border-lundies-heather/30">
+          <div className="text-sm text-lundies-charcoal">
             <div className="font-medium">Selected Dates:</div>
             <div className="mt-1">
               Check-in: {selectedDates.startDate.toLocaleDateString()}
@@ -275,7 +275,7 @@ export default function AvailabilityCalendar({
               )}
             </div>
             {selectedDates.startDate && selectedDates.endDate && (
-              <div className="mt-1 text-xs text-emerald-200">
+              <div className="mt-1 text-xs text-lundies-peat">
                 {Math.ceil((selectedDates.endDate.getTime() - selectedDates.startDate.getTime()) / (1000 * 60 * 60 * 24))} night(s)
                 {minStay > 1 && ` (Min stay: ${minStay} nights)`}
               </div>
@@ -287,7 +287,7 @@ export default function AvailabilityCalendar({
       {/* Day Headers */}
       <div className="grid grid-cols-7 gap-1 mb-2">
         {dayNames.map(day => (
-          <div key={`header-${day}`} className="text-center text-xs font-medium text-slate-400 py-2">
+          <div key={`header-${day}`} className="text-center text-xs font-medium text-lundies-peat py-2">
             {day}
           </div>
         ))}
@@ -300,9 +300,9 @@ export default function AvailabilityCalendar({
             'relative h-16 rounded-lg border transition-all cursor-pointer text-center p-1',
             day.isCurrentMonth ? 'border-white/10' : 'border-white/5',
             day.isBlocked ? 'cursor-not-allowed opacity-50' : 'hover:bg-white/10',
-            day.isSelected ? 'bg-emerald-400/20 border-emerald-400/40' : '',
-            day.isInRange ? 'bg-emerald-400/10' : '',
-            !day.isCurrentMonth ? 'text-slate-500' : 'text-white',
+            day.isSelected ? 'bg-lundies-heather/30 border-lundies-heather/50' : '',
+            day.isInRange ? 'bg-lundies-heather/20' : '',
+            !day.isCurrentMonth ? 'text-lundies-peat' : 'text-white',
           ].filter(Boolean).join(' ')
 
           return (
@@ -318,7 +318,7 @@ export default function AvailabilityCalendar({
               {day.isCurrentMonth && day.availability !== undefined && (
                 <div className="text-xs mt-1">
                   {day.availability > 0 ? (
-                    <div className={`text-emerald-300 ${day.isPeak ? 'font-bold' : ''}`}>
+                    <div className={`text-lundies-heather ${day.isPeak ? 'font-bold' : ''}`}>
                       {day.availability} left
                     </div>
                   ) : (
@@ -329,7 +329,7 @@ export default function AvailabilityCalendar({
               
               {day.isCurrentMonth && day.price && (
                 <div className={`absolute bottom-1 left-1/2 -translate-x-1/2 text-xs ${
-                  day.isPeak ? 'text-yellow-300 font-bold' : 'text-slate-300'
+                  day.isPeak ? 'text-lundies-sand font-bold' : 'text-lundies-stone'
                 }`}>
                   {formatPrice(day.price)}
                 </div>
@@ -344,13 +344,13 @@ export default function AvailabilityCalendar({
       </div>
 
       {/* Legend */}
-      <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-slate-400">
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-lundies-peat">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded bg-emerald-400/20 border border-emerald-400/40"></div>
+          <div className="w-3 h-3 rounded bg-lundies-heather/30 border border-lundies-heather/50"></div>
           <span>Selected</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded bg-emerald-400/10"></div>
+          <div className="w-3 h-3 rounded bg-lundies-heather/20"></div>
           <span>In Range</span>
         </div>
         <div className="flex items-center gap-2">
@@ -358,7 +358,7 @@ export default function AvailabilityCalendar({
           <span>Peak Season</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded bg-gray-600"></div>
+          <div className="w-3 h-3 rounded bg-lundies-charcoal"></div>
           <span>Unavailable</span>
         </div>
       </div>

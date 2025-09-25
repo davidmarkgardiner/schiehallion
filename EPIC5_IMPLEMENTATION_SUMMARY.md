@@ -2,27 +2,25 @@
 
 ## Overview
 
-Epic 5 has been successfully implemented for the Schiehallion Hotel management system. All four user stories have been completed with comprehensive React components that integrate drag-and-drop functionality, shopping cart management, guest forms, and package selection into a complete booking flow.
+Epic 5 has been successfully implemented for the Schiehallion Hotel management system. All four user stories have been completed with comprehensive React components that integrate interactive room selection, shopping cart management, guest forms, and package selection into a complete booking flow.
 
 ## ✅ Completed User Stories
 
-### SCHH-013: Drag-and-Drop Room Selection (13 points)
+### SCHH-013: Interactive Room Selection (13 points)
 
 **Acceptance Criteria Met:**
-- ✅ React-beautiful-dnd implementation for intuitive room selection
-- ✅ Visual feedback during drag operations with hover effects and scaling
-- ✅ Drop zones for each calendar date with visual indicators
-- ✅ Automatic price calculation during drag operations
-- ✅ Mobile touch support with responsive design
+- ✅ Click-to-select room list with rich room details and feature highlights
+- ✅ Inline date and guest selection with validation and automatic adjustments
+- ✅ Real-time pricing summary with package integration before adding to cart
+- ✅ Responsive layout optimised for desktop and mobile interactions
+- ✅ Clear feedback for successful additions and validation errors
 
 **Implementation Details:**
-- Created `DragDropCalendar` component with full drag-and-drop functionality
-- Integrated `react-beautiful-dnd` library for smooth drag operations
-- Calendar grid with droppable zones for each date
-- Visual feedback with color changes, scaling, and drop indicators
-- Real-time price calculations and availability checking
-- Mobile-responsive touch support for tablets and phones
-- Integration with cart system for seamless room addition
+- Created `RoomSelectionPanel` component for streamlined room and date selection
+- Integrated package selector, date inputs, and guest controls within the booking flow
+- Added pricing summary card with estimated totals prior to checkout
+- Validation logic prevents invalid date ranges and occupancy mismatches
+- Seamless cart integration using the existing Zustand store
 
 ### SCHH-014: Multi-Room Shopping Cart (8 points)
 
@@ -83,8 +81,6 @@ Epic 5 has been successfully implemented for the Schiehallion Hotel management s
 ### New Dependencies Added
 ```json
 {
-  "react-beautiful-dnd": "^13.1.1",
-  "@types/react-beautiful-dnd": "^13.1.8",
   "react-hook-form": "^7.63.0",
   "zustand": "^5.0.8"
 }
@@ -101,7 +97,7 @@ Epic 5 has been successfully implemented for the Schiehallion Hotel management s
 
 2. **Booking Components (`/src/components/booking/`)**
    - `BookingFlow.tsx` - Complete booking flow orchestration
-   - `DragDropCalendar.tsx` - Drag-and-drop room selection
+  - `RoomSelectionPanel.tsx` - Click-to-select room and date selection
    - `ShoppingCart.tsx` - Cart display and management
    - `GuestInfoForm.tsx` - Progressive guest information form
    - `PackageSelection.tsx` - Package options and selection
@@ -115,7 +111,7 @@ Epic 5 has been successfully implemented for the Schiehallion Hotel management s
 
 - **Zustand Cart Store:** Global cart state with session persistence
 - **React Hook Form:** Form state management with validation
-- **React Beautiful DnD:** Drag-and-drop state management
+- **Component State:** Local state management for selection feedback and validation
 - **Component State:** Local UI state for modals and interactions
 
 ### Firebase Integration
@@ -128,8 +124,8 @@ Epic 5 has been successfully implemented for the Schiehallion Hotel management s
 ### Responsive Design
 
 - Mobile-first approach with Tailwind CSS
-- Touch-friendly drag-and-drop interactions
-- Responsive calendar grid (7-column layout)
+- Touch-friendly controls with large tap targets
+- Responsive layout for selection panel and summary card
 - Mobile-optimized form layouts
 - Adaptive cart interface for different screen sizes
 
@@ -138,7 +134,7 @@ Epic 5 has been successfully implemented for the Schiehallion Hotel management s
 ### New Components
 - `/src/store/cartStore.ts` - Shopping cart state management
 - `/src/components/booking/BookingFlow.tsx` - Complete booking orchestration
-- `/src/components/booking/DragDropCalendar.tsx` - Drag-and-drop calendar
+- `/src/components/booking/RoomSelectionPanel.tsx` - Interactive room selection panel
 - `/src/components/booking/ShoppingCart.tsx` - Cart display and management
 - `/src/components/booking/GuestInfoForm.tsx` - Progressive guest form
 - `/src/components/booking/PackageSelection.tsx` - Package selection interface
@@ -167,13 +163,13 @@ Epic 5 has been successfully implemented for the Schiehallion Hotel management s
 
 ### Component Integration
 - ✅ All components render without TypeScript errors
-- ✅ Drag-and-drop functionality structurally complete
+- ✅ Interactive room selection panel structurally complete
 - ✅ Cart state management with persistence working
 - ✅ Form validation and progressive flow implemented
 - ✅ Package selection with pricing calculations functional
 
 ### User Experience
-- ✅ Intuitive drag-and-drop interface design
+- ✅ Intuitive click-to-select interface design
 - ✅ Mobile-responsive layouts across all components
 - ✅ Clear visual feedback for user interactions
 - ✅ Accessible form controls with proper ARIA labels
@@ -190,7 +186,7 @@ Epic 5 has been successfully implemented for the Schiehallion Hotel management s
 
 ### What's Working
 1. **Complete Booking Flow** - All components created and integrated
-2. **Drag-and-Drop** - Full react-beautiful-dnd implementation
+2. **Interactive Selection** - Guided room and date selection experience
 3. **Shopping Cart** - Zustand store with session persistence
 4. **Form Management** - React Hook Form with validation
 5. **Package Selection** - Comprehensive package interface
@@ -206,7 +202,7 @@ Epic 5 has been successfully implemented for the Schiehallion Hotel management s
 ## 🏨 Business Impact
 
 The implemented booking flow provides:
-- **Intuitive User Experience** - Drag-and-drop interface for easy room selection
+- **Intuitive User Experience** - Guided interface for selecting rooms and dates
 - **Flexible Booking Options** - Multiple rooms, dates, and packages
 - **Group Booking Support** - Automatic discounts for multiple rooms
 - **Complete Guest Management** - Comprehensive information capture

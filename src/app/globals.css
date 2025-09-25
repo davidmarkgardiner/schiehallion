@@ -3,25 +3,63 @@
 @tailwind utilities;
 
 :root {
-  color-scheme: dark;
-  --gradient-start: 12 33 66;
-  --gradient-mid: 15 23 42;
-  --gradient-end: 2 6 23;
-  --text-primary: 226 232 240;
+  color-scheme: light;
+  --surface-base: 245 241 235;
+  --surface-muted: 233 226 215;
+  --surface-accent: 215 205 193;
+  --accent-green: 143 160 137;
+  --accent-brown: 139 109 90;
+  --text-primary: 26 23 20;
+  --text-muted: 96 92 84;
 }
 
 body {
   min-height: 100vh;
   color: rgb(var(--text-primary));
+  background-color: rgb(var(--surface-base));
   background:
-    radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.12), transparent 55%),
-    radial-gradient(circle at 80% 0%, rgba(56, 189, 248, 0.1), transparent 45%),
+    radial-gradient(circle at 18% 18%, rgba(var(--accent-green) / 0.18), transparent 55%),
+    radial-gradient(circle at 82% 8%, rgba(var(--accent-brown) / 0.12), transparent 45%),
     linear-gradient(
       to bottom,
-      rgb(var(--gradient-start) / 0.95),
-      rgb(var(--gradient-mid) / 0.95) 40%,
-      rgb(var(--gradient-end) / 1)
+      rgb(var(--surface-base)),
+      rgb(var(--surface-muted)) 45%,
+      rgb(var(--surface-accent))
     );
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   -webkit-font-smoothing: antialiased;
+}
+
+/* Image loading animations */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Custom animations for image loading */
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* Optimize image rendering */
+img {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: optimize-contrast;
 }

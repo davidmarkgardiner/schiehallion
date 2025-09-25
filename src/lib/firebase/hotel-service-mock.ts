@@ -2,6 +2,7 @@
 // @ts-nocheck
 import { Room, DailyAvailability, RoomType } from '../../types/hotel'
 import { Timestamp } from 'firebase/firestore'
+import { roomImageManagementService } from '../../services/roomImageManagementService'
 
 // Create a mock Timestamp function
 const createMockTimestamp = (date: Date): Timestamp => ({
@@ -366,6 +367,16 @@ export class RoomService {
       filtered = filtered.filter(room => room.maxOccupancy >= filters.maxOccupancy!)
     }
 
+    // Enhance rooms with AI-generated images
+    const activeGeneratedImages = roomImageManagementService.getActiveImagesForRoomTypes()
+    filtered = filtered.map(room => ({
+      ...room,
+      images: [
+        ...room.images,
+        ...(activeGeneratedImages[room.type] || [])
+      ]
+    }))
+
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 500))
 
@@ -386,6 +397,16 @@ export class RoomService {
     if (guests) {
       available = available.filter(room => room.maxOccupancy >= guests)
     }
+
+    // Enhance rooms with AI-generated images
+    const activeGeneratedImages = roomImageManagementService.getActiveImagesForRoomTypes()
+    available = available.map(room => ({
+      ...room,
+      images: [
+        ...room.images,
+        ...(activeGeneratedImages[room.type] || [])
+      ]
+    }))
 
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 500))

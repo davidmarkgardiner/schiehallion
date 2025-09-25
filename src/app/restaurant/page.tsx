@@ -32,10 +32,10 @@ const FLOORPLAN_HEIGHT = 480
 const TABLE_SIZE = 72
 
 const zoneBadgeStyles: Record<TableZone, string> = {
-  main_dining: 'bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-200',
+  main_dining: 'bg-lundies-sand/20 text-lundies-sand dark:bg-lundies-sand/10 dark:text-lundies-sand',
   window: 'bg-sky-100 text-sky-700 dark:bg-sky-900/60 dark:text-sky-200',
-  private: 'bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-200',
-  terrace: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-200',
+  private: 'bg-lundies-peat/20 text-lundies-peat dark:bg-lundies-peat/10 dark:text-lundies-peat',
+  terrace: 'bg-lundies-heather/20 text-lundies-heather dark:bg-lundies-heather/10 dark:text-lundies-heather',
   chef_counter: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/60 dark:text-indigo-200',
 }
 
@@ -54,17 +54,17 @@ const zoneBackgrounds: ZoneBackground[] = [
   {
     zone: 'main_dining',
     style: { left: '38%', top: '6%', width: '54%', height: '56%' },
-    className: 'bg-amber-200/30 dark:bg-amber-900/30 border-amber-400/60',
+    className: 'bg-lundies-sand/30 dark:bg-lundies-sand/10 border-lundies-sand/60',
   },
   {
     zone: 'private',
     style: { left: '4%', top: '52%', width: '34%', height: '40%' },
-    className: 'bg-rose-200/30 dark:bg-rose-900/30 border-rose-400/60',
+    className: 'bg-lundies-peat/30 dark:bg-lundies-peat/10 border-lundies-peat/60',
   },
   {
     zone: 'terrace',
     style: { left: '38%', top: '60%', width: '34%', height: '32%' },
-    className: 'bg-emerald-200/30 dark:bg-emerald-900/30 border-emerald-400/60',
+    className: 'bg-lundies-heather/30 dark:bg-lundies-heather/10 border-lundies-heather/60',
   },
   {
     zone: 'chef_counter',
@@ -74,10 +74,10 @@ const zoneBackgrounds: ZoneBackground[] = [
 ]
 
 const slotStatusStyles = {
-  available: 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-200',
-  limited: 'bg-amber-50 text-amber-700 dark:bg-amber-900/40 dark:text-amber-200',
-  full: 'bg-rose-50 text-rose-700 dark:bg-rose-900/40 dark:text-rose-200',
-  closed: 'bg-slate-100 text-slate-600 dark:bg-slate-800/50 dark:text-slate-300',
+  available: 'bg-lundies-heather/10 text-lundies-heather dark:bg-lundies-heather/20 dark:text-lundies-heather',
+  limited: 'bg-lundies-sand/20 text-lundies-sand dark:bg-lundies-sand/20 dark:text-lundies-sand',
+  full: 'bg-lundies-peat/20 text-lundies-peat dark:bg-lundies-peat/20 dark:text-lundies-peat',
+  closed: 'bg-lundies-stone/20 text-lundies-stone dark:bg-lundies-charcoal/50 dark:text-lundies-stone',
 }
 
 const accessibilityIcons: Record<AccessibilityFeature, { icon: string; label: string }> = {
@@ -648,54 +648,54 @@ export default function RestaurantGuestExperience() {
     : guestCapacityRange.max
 
   return (
-    <main className="min-h-screen bg-slate-50 pb-16 pt-10 dark:bg-slate-950">
+    <main className="min-h-screen bg-lundies-linen pb-16 pt-10 dark:bg-lundies-charcoal">
       <div className="mx-auto flex max-w-7xl flex-col gap-10 px-6">
         <SiteNavigation
           layout="standard"
           actionSlot={
             <Link
               href="/rooms"
-              className="rounded-full border border-emerald-400/40 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-200 transition hover:bg-emerald-400/10"
+              className="rounded-full border border-lundies-heather/40 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-lundies-heather transition hover:bg-lundies-heather/10"
             >
               View Rooms
             </Link>
           }
         />
-        <header className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-900/5 dark:bg-slate-900 dark:ring-white/10">
-          <p className="text-sm uppercase tracking-[0.4em] text-slate-500 dark:text-slate-400">The Schiehallion Kitchen</p>
+        <header className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-lundies-charcoal/5 dark:bg-lundies-charcoal dark:ring-white/10">
+          <p className="text-sm uppercase tracking-[0.4em] text-lundies-peat dark:text-lundies-stone">The Schiehallion Kitchen</p>
           <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
-              <h1 className="text-3xl font-semibold text-slate-900 dark:text-white md:text-4xl">
+              <h1 className="text-3xl font-semibold text-lundies-charcoal dark:text-white md:text-4xl">
                 Choose your table, time, and tasting journey
               </h1>
-              <p className="mt-2 text-sm text-slate-600 dark:text-slate-300">
+              <p className="mt-2 text-sm text-lundies-peat dark:text-lundies-stone">
                 View the live floor plan, highlight accessibility-friendly options, and secure a time that suits your plans.
                 Availability updates every few seconds as bookings flow through concierge, website, and partner channels.
               </p>
             </div>
-            <div className="flex flex-wrap items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+            <div className="flex flex-wrap items-center gap-3 text-sm text-lundies-stone dark:text-lundies-stone">
               <div className="flex items-center gap-2">
-                <span className="h-3 w-3 rounded-full bg-emerald-500" /> Available
+                <span className="h-3 w-3 rounded-full bg-lundies-heather" /> Available
               </div>
               <div className="flex items-center gap-2">
-                <span className="h-3 w-3 rounded-full bg-amber-500" /> Held
+                <span className="h-3 w-3 rounded-full bg-lundies-sand" /> Held
               </div>
               <div className="flex items-center gap-2">
-                <span className="h-3 w-3 rounded-full bg-rose-500" /> Reserved
+                <span className="h-3 w-3 rounded-full bg-lundies-peat" /> Reserved
               </div>
             </div>
           </div>
         </header>
 
-        <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <section className="rounded-2xl border border-lundies-stone/20 bg-white p-6 shadow-sm dark:border-lundies-charcoal dark:bg-lundies-charcoal">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="flex flex-wrap gap-4">
-              <label className="flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-300">
-                <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Dining Date</span>
+              <label className="flex flex-col gap-2 text-sm text-lundies-stone dark:text-lundies-stone">
+                <span className="text-xs font-semibold uppercase tracking-wide text-lundies-stone dark:text-lundies-stone">Dining Date</span>
                 <select
                   value={selectedDate}
                   onChange={(event) => setSelectedDate(event.target.value)}
-                  className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                  className="rounded-lg border border-lundies-stone/30 px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather dark:border-lundies-stone dark:bg-lundies-charcoal dark:text-lundies-linen"
                 >
                   {availableDates.map((date) => (
                     <option key={date} value={date}>
@@ -705,8 +705,8 @@ export default function RestaurantGuestExperience() {
                 </select>
               </label>
 
-              <div className="flex flex-col gap-2 text-sm text-slate-600 dark:text-slate-300">
-                <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Service Period</span>
+              <div className="flex flex-col gap-2 text-sm text-lundies-stone dark:text-lundies-stone">
+                <span className="text-xs font-semibold uppercase tracking-wide text-lundies-stone dark:text-lundies-stone">Service Period</span>
                 <div className="flex flex-wrap gap-2">
                   {periodsForDate.map((period) => (
                     <button
@@ -715,8 +715,8 @@ export default function RestaurantGuestExperience() {
                       onClick={() => setActivePeriodId(period.id)}
                       className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition ${
                         period.id === activePeriodId
-                          ? 'bg-emerald-600 text-white shadow-sm'
-                          : 'border border-slate-300 text-slate-500 hover:border-emerald-400 hover:text-emerald-600 dark:border-slate-700 dark:text-slate-400'
+                          ? 'bg-lundies-heather text-white shadow-sm'
+                          : 'border border-lundies-stone/30 text-lundies-stone hover:border-lundies-heather hover:text-lundies-heather dark:border-lundies-stone dark:text-lundies-stone'
                       }`}
                     >
                       {period.name}
@@ -726,10 +726,10 @@ export default function RestaurantGuestExperience() {
               </div>
             </div>
             {activePeriod && (
-              <div className="max-w-md rounded-xl border border-slate-200 bg-slate-50 p-4 text-xs text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900/60 dark:text-slate-300">
-                <p className="font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">Chef Notes</p>
+              <div className="max-w-md rounded-xl border border-lundies-stone/20 bg-lundies-linen p-4 text-xs text-lundies-stone shadow-sm dark:border-lundies-stone dark:bg-lundies-charcoal/60 dark:text-lundies-stone">
+                <p className="font-semibold uppercase tracking-wide text-lundies-stone dark:text-lundies-stone">Chef Notes</p>
                 <p className="mt-1 leading-relaxed">{activePeriod.notes}</p>
-                <p className="mt-2 text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                <p className="mt-2 text-[11px] uppercase tracking-wide text-lundies-stone/70 dark:text-lundies-stone/70">
                   Zones open: {activePeriod.zonesOpen.map((zone) => formatZoneLabel(zone)).join(', ')}
                 </p>
               </div>
@@ -738,15 +738,15 @@ export default function RestaurantGuestExperience() {
         </section>
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)]">
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <section className="rounded-2xl border border-lundies-stone/20 bg-white p-6 shadow-sm dark:border-lundies-charcoal dark:bg-lundies-charcoal">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                <div className="flex flex-wrap gap-3 text-xs text-slate-500 dark:text-slate-400">
+                <div className="flex flex-wrap gap-3 text-xs text-lundies-stone dark:text-lundies-stone">
                   <span className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-emerald-500" /> Available tables
+                    <span className="h-3 w-3 rounded-full bg-lundies-heather" /> Available tables
                   </span>
                   <span className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-slate-300" /> Unavailable this slot
+                    <span className="h-3 w-3 rounded-full bg-lundies-stone" /> Unavailable this slot
                   </span>
                   <span className="flex items-center gap-2">
                     <span className="h-3 w-3 rounded-full bg-indigo-500" /> Accessibility icons
@@ -756,21 +756,21 @@ export default function RestaurantGuestExperience() {
                   <button
                     type="button"
                     onClick={() => adjustZoom(-0.15)}
-                    className="rounded-lg border border-slate-300 px-3 py-1 text-sm text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                    className="rounded-lg border border-lundies-stone/30 px-3 py-1 text-sm text-lundies-stone transition hover:bg-lundies-linen dark:border-lundies-stone dark:text-lundies-stone dark:hover:bg-lundies-charcoal"
                   >
                     −
                   </button>
                   <button
                     type="button"
                     onClick={() => adjustZoom(0.15)}
-                    className="rounded-lg border border-slate-300 px-3 py-1 text-sm text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                    className="rounded-lg border border-lundies-stone/30 px-3 py-1 text-sm text-lundies-stone transition hover:bg-lundies-linen dark:border-lundies-stone dark:text-lundies-stone dark:hover:bg-lundies-charcoal"
                   >
                     +
                   </button>
                   <button
                     type="button"
                     onClick={resetViewport}
-                    className="rounded-lg border border-slate-300 px-3 py-1 text-sm text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                    className="rounded-lg border border-lundies-stone/30 px-3 py-1 text-sm text-lundies-stone transition hover:bg-lundies-linen dark:border-lundies-stone dark:text-lundies-stone dark:hover:bg-lundies-charcoal"
                   >
                     Reset
                   </button>
@@ -779,7 +779,7 @@ export default function RestaurantGuestExperience() {
 
               <div
                 ref={containerRef}
-                className="relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-inner dark:border-slate-800 dark:bg-slate-950"
+                className="relative overflow-hidden rounded-2xl border border-lundies-stone/20 bg-lundies-linen shadow-inner dark:border-lundies-charcoal dark:bg-lundies-charcoal"
                 style={{ touchAction: 'none' }}
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
@@ -805,7 +805,7 @@ export default function RestaurantGuestExperience() {
                         className={`absolute rounded-xl border ${item.className}`}
                         style={item.style}
                       >
-                        <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-1 text-xs font-medium text-slate-600 shadow-sm dark:bg-slate-900/80 dark:text-slate-200">
+                        <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-1 text-xs font-medium text-lundies-stone shadow-sm dark:bg-lundies-charcoal/80 dark:text-lundies-linen">
                           {formatZoneLabel(item.zone)}
                         </span>
                       </div>
@@ -816,14 +816,14 @@ export default function RestaurantGuestExperience() {
                           const state = resolveTableState(table, availableSet, selectedTableId)
                           const accessibilityBadges = table.accessibility.map((key) => accessibilityIcons[key])
                           const className = state.isAvailable
-                            ? 'bg-emerald-500 text-white border-emerald-400'
+                            ? 'bg-lundies-heather text-white border-lundies-heather'
                             : table.status === 'reserved'
-                            ? 'bg-rose-100 text-rose-700 border-rose-400'
+                            ? 'bg-lundies-peat/20 text-lundies-peat border-lundies-peat'
                             : table.status === 'held'
-                            ? 'bg-amber-100 text-amber-700 border-amber-400'
+                            ? 'bg-lundies-sand/20 text-lundies-sand border-lundies-sand'
                             : table.status === 'maintenance'
-                            ? 'bg-slate-200 text-slate-500 border-slate-300'
-                            : 'bg-slate-100 text-slate-600 border-slate-200'
+                            ? 'bg-lundies-stone/20 text-lundies-stone border-lundies-stone'
+                            : 'bg-lundies-linen text-lundies-stone border-lundies-stone'
 
                           return (
                             <button
@@ -839,8 +839,8 @@ export default function RestaurantGuestExperience() {
                                 height: TABLE_SIZE,
                                 transform: `translate(${table.position.x}px, ${table.position.y}px)`,
                               }}
-                              className={`absolute flex flex-col items-center justify-center rounded-xl border-2 px-2 text-center text-sm font-semibold shadow-md transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 ${className} ${
-                                state.isSelected ? 'ring-2 ring-emerald-500' : 'ring-0'
+                              className={`absolute flex flex-col items-center justify-center rounded-xl border-2 px-2 text-center text-sm font-semibold shadow-md transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lundies-heather ${className} ${
+                                state.isSelected ? 'ring-2 ring-lundies-heather' : 'ring-0'
                               } ${state.isSelectable ? 'cursor-pointer' : 'cursor-not-allowed opacity-80'}`}
                               aria-pressed={state.isSelected}
                               aria-label={`${table.label}, ${formatZoneLabel(table.zone)} zone, ${table.capacity.default} seats`}
@@ -867,16 +867,16 @@ export default function RestaurantGuestExperience() {
                         })}
 
                   {hoveredTable && (
-                    <div className="pointer-events-none absolute bottom-4 left-4 max-w-[260px] rounded-xl border border-slate-200 bg-white/95 p-4 text-xs text-slate-600 shadow-lg backdrop-blur dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-300">
-                      <p className="text-sm font-semibold text-slate-900 dark:text-white">{hoveredTable.label}</p>
-                      <p className="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                    <div className="pointer-events-none absolute bottom-4 left-4 max-w-[260px] rounded-xl border border-lundies-stone/20 bg-white/95 p-4 text-xs text-lundies-stone shadow-lg backdrop-blur dark:border-lundies-stone dark:bg-lundies-charcoal/90 dark:text-lundies-stone">
+                      <p className="text-sm font-semibold text-lundies-charcoal dark:text-white">{hoveredTable.label}</p>
+                      <p className="text-[11px] uppercase tracking-wide text-lundies-stone/70 dark:text-lundies-stone/70">
                         {formatZoneLabel(hoveredTable.zone)} · Default {hoveredTable.capacity.default} seats
                       </p>
                       <div className="mt-2 flex flex-wrap gap-1">
                         {hoveredTable.features.map((feature) => (
                           <span
                             key={`${hoveredTable.id}-${feature}`}
-                            className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-200"
+                            className="rounded-full bg-lundies-linen px-2 py-0.5 text-[10px] font-medium text-lundies-stone dark:bg-lundies-charcoal dark:text-lundies-stone"
                           >
                             {featureMap.get(feature) ?? feature}
                           </span>
@@ -890,8 +890,8 @@ export default function RestaurantGuestExperience() {
           </section>
 
           <aside className="space-y-6">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Reservation Summary</h2>
+            <div className="rounded-2xl border border-lundies-stone/20 bg-white p-6 shadow-sm dark:border-lundies-charcoal dark:bg-lundies-charcoal">
+              <h2 className="text-xl font-semibold text-lundies-charcoal dark:text-white">Reservation Summary</h2>
               {selectedSlot ? (
                 reservationStep === 'confirmation' && confirmationRecord && selectedTable ? (
                   <RestaurantReservationConfirmation
@@ -904,20 +904,20 @@ export default function RestaurantGuestExperience() {
                     onBookAnother={handleMakeAnotherReservation}
                   />
                 ) : (
-                  <div className="mt-4 space-y-6 text-sm text-slate-600 dark:text-slate-300">
+                  <div className="mt-4 space-y-6 text-sm text-lundies-stone dark:text-lundies-stone">
                     <div>
-                      <p className="text-lg font-semibold text-slate-900 dark:text-white">{reservationTimeRange}</p>
-                      <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      <p className="text-lg font-semibold text-lundies-charcoal dark:text-white">{reservationTimeRange}</p>
+                      <p className="text-xs uppercase tracking-wide text-lundies-stone dark:text-lundies-stone">
                         {reservationDurationLabel} · Last booking {selectedSlot.lastBookingCutoff}
                       </p>
-                      <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+                      <p className="mt-2 text-xs text-lundies-stone dark:text-lundies-stone">
                         Availability updates live — {selectedSlot.availableTableIds.length} of {selectedSlot.totalTables} tables · {selectedSlot.capacityAvailable} seats ready.
                       </p>
-                      <p className="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                      <p className="text-[11px] uppercase tracking-wide text-lundies-stone/70 dark:text-lundies-stone/70">
                         Live refresh {formatIsoTime(selectedSlot.lastUpdated)}
                       </p>
                       {selectedSlot.specialEvent && (
-                        <div className="mt-3 flex items-start gap-2 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-xs text-emerald-700 dark:border-emerald-500/40 dark:bg-emerald-900/30 dark:text-emerald-200">
+                        <div className="mt-3 flex items-start gap-2 rounded-xl border border-lundies-heather/20 bg-lundies-heather/10 p-3 text-xs text-lundies-heather dark:border-lundies-heather/40 dark:bg-lundies-heather/20 dark:text-lundies-heather">
                           <span className="text-lg" aria-hidden="true">
                             {slotEventIcon[selectedSlot.specialEvent.tone]}
                           </span>
@@ -930,19 +930,19 @@ export default function RestaurantGuestExperience() {
                     </div>
 
                     {reservationStep !== 'waitlist' && selectedTable ? (
-                      <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-900/60">
+                      <div className="space-y-3 rounded-xl border border-lundies-stone/20 bg-lundies-linen p-4 dark:border-lundies-stone dark:bg-lundies-charcoal/60">
                         <div className="flex items-center justify-between">
                           <div>
-                            <p className="text-base font-semibold text-slate-900 dark:text-white">Table {selectedTable.label}</p>
-                            <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                            <p className="text-base font-semibold text-lundies-charcoal dark:text-white">Table {selectedTable.label}</p>
+                            <p className="text-xs uppercase tracking-wide text-lundies-stone dark:text-lundies-stone">
                               {selectedZoneLabel} · Seats {selectedTable.capacity.min}–{selectedTable.capacity.max}
                             </p>
                           </div>
                           <span
                             className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide ${
                               tableIsAvailable
-                                ? 'bg-emerald-600 text-white'
-                                : 'bg-rose-100 text-rose-700 dark:bg-rose-900/40 dark:text-rose-200'
+                                ? 'bg-lundies-heather text-white'
+                                : 'bg-lundies-peat/20 text-lundies-peat dark:bg-lundies-peat/20 dark:text-lundies-peat'
                             }`}
                           >
                             {tableIsAvailable ? 'Available' : 'Held'}
@@ -952,7 +952,7 @@ export default function RestaurantGuestExperience() {
                           {selectedTable.features.map((feature) => (
                             <span
                               key={`${selectedTable.id}-${feature}`}
-                              className="rounded-full bg-white px-2 py-0.5 text-slate-600 shadow-sm dark:bg-slate-800 dark:text-slate-200"
+                              className="rounded-full bg-white px-2 py-0.5 text-lundies-stone shadow-sm dark:bg-lundies-charcoal dark:text-lundies-stone"
                             >
                               {featureMap.get(feature) ?? feature}
                             </span>
@@ -972,15 +972,15 @@ export default function RestaurantGuestExperience() {
                           </div>
                         )}
                         {selectedTable.notes && (
-                          <p className="text-xs text-slate-500 dark:text-slate-400">{selectedTable.notes}</p>
+                          <p className="text-xs text-lundies-stone dark:text-lundies-stone">{selectedTable.notes}</p>
                         )}
                         {selectedTable.combinableWith.length > 0 && (
-                          <p className="text-[11px] uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                          <p className="text-[11px] uppercase tracking-wide text-lundies-stone/70 dark:text-lundies-stone/70">
                             Can combine with {selectedTable.combinableWith.map((id) => tableMap.get(id)?.label ?? id).join(', ')}
                           </p>
                         )}
                         {!tableIsAvailable && (
-                          <p className="text-xs text-amber-600 dark:text-amber-300">
+                          <p className="text-xs text-lundies-sand dark:text-lundies-sand">
                             This table is linked to another reservation right now. Choose any table highlighted in emerald to proceed.
                           </p>
                         )}
@@ -1019,18 +1019,18 @@ export default function RestaurantGuestExperience() {
                               disabled={!canReserve}
                               className={`w-full rounded-lg px-4 py-2 text-sm font-semibold transition ${
                                 canReserve
-                                  ? 'bg-emerald-600 text-white shadow-sm hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-500'
-                                  : 'cursor-not-allowed bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400'
+                                  ? 'bg-lundies-heather text-white shadow-sm hover:bg-lundies-heather/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-lundies-heather'
+                                  : 'cursor-not-allowed bg-lundies-stone/20 text-lundies-stone dark:bg-lundies-charcoal dark:text-lundies-stone'
                               }`}
                             >
                               {canReserve ? 'Provide guest details' : 'Select an available table'}
                             </button>
-                            <p className="text-xs text-slate-500 dark:text-slate-400">
-                              Secure your table in a few steps — we’ll capture dietary needs, special occasions, and contact details next.
+                            <p className="text-xs text-lundies-stone dark:text-lundies-stone">
+                              Secure your table in a few steps — we'll capture dietary needs, special occasions, and contact details next.
                             </p>
                           </>
                         ) : (
-                          <p className="text-xs text-slate-500 dark:text-slate-400">
+                          <p className="text-xs text-lundies-stone dark:text-lundies-stone">
                             All tables for this slot are currently held. Join the waitlist below or explore alternative times.
                           </p>
                         )}
@@ -1038,7 +1038,7 @@ export default function RestaurantGuestExperience() {
                           <button
                             type="button"
                             onClick={() => setReservationStep('waitlist')}
-                            className="w-full rounded-lg border border-emerald-500 px-4 py-2 text-sm font-semibold text-emerald-600 transition hover:bg-emerald-50 dark:border-emerald-400 dark:text-emerald-200 dark:hover:bg-emerald-900/30"
+                            className="w-full rounded-lg border border-lundies-heather px-4 py-2 text-sm font-semibold text-lundies-heather transition hover:bg-lundies-heather/10 dark:border-lundies-heather dark:text-lundies-heather dark:hover:bg-lundies-heather/20"
                           >
                             Join the waitlist
                           </button>
@@ -1048,13 +1048,13 @@ export default function RestaurantGuestExperience() {
                   </div>
                 )
               ) : (
-                <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">No slots available for this service. Try another date or period.</p>
+                <p className="mt-4 text-sm text-lundies-stone dark:text-lundies-stone">No slots available for this service. Try another date or period.</p>
               )}
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Time Slot Management</h2>
-              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            <div className="rounded-2xl border border-lundies-stone/20 bg-white p-6 shadow-sm dark:border-lundies-charcoal dark:bg-lundies-charcoal">
+              <h2 className="text-xl font-semibold text-lundies-charcoal dark:text-white">Time Slot Management</h2>
+              <p className="mt-1 text-sm text-lundies-stone dark:text-lundies-stone">
                 Live availability by service. Select a slot to reveal matching tables and estimated dining duration.
               </p>
               <div className="mt-4 space-y-3">
@@ -1066,18 +1066,18 @@ export default function RestaurantGuestExperience() {
                       type="button"
                       key={slot.id}
                       onClick={() => setSelectedSlotId(slot.id)}
-                      className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition hover:border-emerald-400 hover:bg-emerald-50/40 dark:hover:bg-emerald-900/20 ${
+                      className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition hover:border-lundies-heather hover:bg-lundies-heather/10 dark:hover:bg-lundies-heather/20 ${
                         isActive
-                          ? 'border-emerald-500 bg-emerald-50/60 dark:border-emerald-400 dark:bg-emerald-900/40'
-                          : 'border-slate-200 dark:border-slate-700'
+                          ? 'border-lundies-heather bg-lundies-heather/10 dark:border-lundies-heather dark:bg-lundies-heather/20'
+                          : 'border-lundies-stone/20 dark:border-lundies-stone'
                       }`}
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2">
                         <div>
-                          <p className="text-base font-semibold text-slate-900 dark:text-white">
+                          <p className="text-base font-semibold text-lundies-charcoal dark:text-white">
                             {formatTimeLabel(slot.time)} · {addMinutesToTime(slot.time, slot.durationMinutes)}
                           </p>
-                          <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                          <p className="text-xs uppercase tracking-wide text-lundies-stone dark:text-lundies-stone">
                             {slot.durationMinutes} min experience · Last booking {slot.lastBookingCutoff}
                           </p>
                         </div>
