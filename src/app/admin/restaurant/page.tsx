@@ -32,43 +32,43 @@ const zoneBackgrounds: ZoneBackground[] = [
   {
     zone: 'window',
     style: { left: '0%', top: '0%', width: '42%', height: '48%' },
-    className: 'bg-sky-200/30 dark:bg-sky-900/30 border-sky-400/60',
+    className: 'bg-lundies-heather/15 border-lundies-heather/50',
   },
   {
     zone: 'main_dining',
     style: { left: '38%', top: '6%', width: '54%', height: '56%' },
-    className: 'bg-amber-200/30 dark:bg-amber-900/30 border-amber-400/60',
+    className: 'bg-lundies-sand/20 border-lundies-sand/60',
   },
   {
     zone: 'private',
     style: { left: '4%', top: '52%', width: '34%', height: '40%' },
-    className: 'bg-rose-200/30 dark:bg-rose-900/30 border-rose-400/60',
+    className: 'bg-lundies-peat/15 border-lundies-peat/50',
   },
   {
     zone: 'terrace',
     style: { left: '38%', top: '60%', width: '34%', height: '32%' },
-    className: 'bg-emerald-200/30 dark:bg-emerald-900/30 border-emerald-400/60',
+    className: 'bg-lundies-heather/20 border-lundies-heather/50',
   },
   {
     zone: 'chef_counter',
     style: { left: '72%', top: '58%', width: '24%', height: '28%' },
-    className: 'bg-indigo-200/30 dark:bg-indigo-900/30 border-indigo-400/60',
+    className: 'bg-lundies-stone/30 border-lundies-stone/60',
   },
 ]
 
 const zoneBadgeStyles: Record<TableZone, string> = {
-  main_dining: 'bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-200',
-  window: 'bg-sky-100 text-sky-700 dark:bg-sky-900/60 dark:text-sky-200',
-  private: 'bg-rose-100 text-rose-700 dark:bg-rose-900/60 dark:text-rose-200',
-  terrace: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-200',
-  chef_counter: 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/60 dark:text-indigo-200',
+  main_dining: 'bg-lundies-sand/30 text-lundies-sand',
+  window: 'bg-lundies-heather/30 text-lundies-heather',
+  private: 'bg-lundies-peat/25 text-lundies-peat',
+  terrace: 'bg-lundies-heather/25 text-lundies-heather',
+  chef_counter: 'bg-lundies-stone/40 text-lundies-stone',
 }
 
 const tableStatusStyles: Record<RestaurantTable['status'], string> = {
-  available: 'border-emerald-500/70 bg-white/80 dark:bg-slate-900/80',
-  held: 'border-amber-500/70 bg-amber-50/80 dark:bg-amber-900/40',
-  reserved: 'border-rose-500/70 bg-rose-50/80 dark:bg-rose-900/40',
-  maintenance: 'border-slate-400/70 bg-slate-100/70 dark:bg-slate-800/60',
+  available: 'border-lundies-heather bg-lundies-heather/20 text-lundies-charcoal',
+  held: 'border-lundies-sand bg-lundies-sand/20 text-lundies-sand',
+  reserved: 'border-lundies-peat bg-lundies-peat/20 text-lundies-peat',
+  maintenance: 'border-lundies-stone bg-lundies-stone/30 text-lundies-stone',
 }
 
 function normaliseCapacity(capacity: RestaurantTable['capacity']): RestaurantTable['capacity'] {
@@ -301,13 +301,13 @@ export default function RestaurantManagementStudio() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 py-10 dark:bg-slate-950">
+    <div className="min-h-screen bg-lundies-linen/80 py-10">
       <div className="mx-auto flex max-w-7xl flex-col gap-10 px-6">
-        <header className="flex flex-col gap-4 rounded-2xl bg-white p-8 shadow-sm ring-1 ring-slate-900/5 dark:bg-slate-900 dark:ring-white/10">
+        <header className="flex flex-col gap-4 rounded-3xl border border-lundies-stone/60 bg-white/95 p-8 shadow-lg shadow-lundies-stone/30">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-wider text-slate-500 dark:text-slate-400">Restaurant Module</p>
-              <h1 className="text-3xl font-semibold text-slate-900 dark:text-white">
+              <p className="text-sm uppercase tracking-wider text-lundies-peat">Restaurant Module</p>
+              <h1 className="text-3xl font-semibold text-lundies-charcoal">
                 Table Management Studio
               </h1>
             </div>
@@ -315,59 +315,62 @@ export default function RestaurantManagementStudio() {
               <button
                 type="button"
                 onClick={resetLayout}
-                className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+                className="rounded-lg border border-lundies-stone/60 px-4 py-2 text-sm font-medium text-lundies-peat transition hover:border-lundies-heather hover:bg-white/70 hover:text-lundies-heather"
               >
                 Reset to Defaults
               </button>
               <button
                 type="button"
                 onClick={addServicePeriod}
-                className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-500"
+                className="rounded-lg bg-lundies-heather px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-lundies-heather/90"
               >
                 Add Service Period
               </button>
             </div>
           </div>
-          <p className="max-w-3xl text-sm text-slate-600 dark:text-slate-300">
+          <p className="max-w-3xl text-sm text-lundies-peat">
             Drag tables to rearrange the floor plan, configure capacity rules, and map service periods to guest-facing
             experiences. Every change syncs with live availability and the guest table selector.
           </p>
         </header>
 
         <main className="grid gap-8 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,0.8fr)]">
-          <section>
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <section>
+              <div className="rounded-3xl border border-lundies-stone/60 bg-white/95 p-6 shadow-lg shadow-lundies-stone/30">
               <div className="mb-4 flex items-center justify-between">
                 <div>
-                  <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Floor Plan Editor</h2>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                  <h2 className="text-xl font-semibold text-lundies-charcoal">Floor Plan Editor</h2>
+                  <p className="text-sm text-lundies-peat">
                     Visualise the dining room, highlight zones, and drag tables into new positions.
                   </p>
                 </div>
-                <div className="flex gap-3 text-xs text-slate-500 dark:text-slate-400">
+                <div className="flex flex-wrap gap-3 text-xs text-lundies-peat">
                   <span className="flex items-center gap-1">
-                    <span className="h-3 w-3 rounded-full bg-emerald-500" /> Available
+                    <span className="h-3 w-3 rounded-full bg-lundies-heather" /> Available
                   </span>
                   <span className="flex items-center gap-1">
-                    <span className="h-3 w-3 rounded-full bg-amber-500" /> Held
+                    <span className="h-3 w-3 rounded-full bg-lundies-sand" /> Held
                   </span>
                   <span className="flex items-center gap-1">
-                    <span className="h-3 w-3 rounded-full bg-rose-500" /> Reserved
+                    <span className="h-3 w-3 rounded-full bg-lundies-peat" /> Reserved
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <span className="h-3 w-3 rounded-full bg-lundies-stone" /> Maintenance
                   </span>
                 </div>
               </div>
 
-              <div
-                ref={floorplanRef}
-                className="relative mx-auto flex max-w-full items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-inner dark:border-slate-800 dark:bg-slate-950"
-                style={{
-                  width: FLOORPLAN_WIDTH,
-                  height: FLOORPLAN_HEIGHT,
-                  backgroundImage:
-                    'linear-gradient(to right, rgba(148, 163, 184, 0.15) 1px, transparent 1px), linear-gradient(to bottom, rgba(148, 163, 184, 0.15) 1px, transparent 1px)',
-                  backgroundSize: '40px 40px',
-                }}
-              >
+                <div
+                  ref={floorplanRef}
+                  className="relative mx-auto flex max-w-full items-center justify-center overflow-hidden rounded-3xl border border-lundies-stone/60 bg-lundies-linen/70 shadow-inner"
+                  style={{
+                    width: FLOORPLAN_WIDTH,
+                    height: FLOORPLAN_HEIGHT,
+                    backgroundImage:
+                      'linear-gradient(to right, rgba(214, 206, 195, 0.2) 1px, transparent 1px), linear-gradient(to bottom, rgba(214, 206, 195, 0.2) 1px, transparent 1px)',
+                    backgroundSize: '40px 40px',
+                  }}
+                >
                 <div className="absolute inset-0">
                   {zoneBackgrounds.map((item) => (
                     <div
@@ -375,7 +378,7 @@ export default function RestaurantManagementStudio() {
                       className={`absolute rounded-xl border ${item.className}`}
                       style={item.style}
                     >
-                      <span className="absolute left-2 top-2 rounded-full bg-white/90 px-2 py-1 text-xs font-medium text-slate-600 shadow-sm dark:bg-slate-900/80 dark:text-slate-200">
+                      <span className="absolute left-2 top-2 rounded-full border border-lundies-stone/50 bg-white/90 px-2 py-1 text-xs font-medium text-lundies-peat shadow-sm">
                         {formatZoneLabel(item.zone)}
                       </span>
                     </div>
@@ -413,12 +416,12 @@ export default function RestaurantManagementStudio() {
                         height: TABLE_SIZE,
                         transform: `translate(${table.position.x}px, ${table.position.y}px)`,
                       }}
-                      className={`absolute flex flex-col items-center justify-center rounded-xl border-2 px-2 text-center text-sm font-semibold text-slate-700 shadow-md transition focus:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 dark:text-slate-100 ${tableStatusStyles[table.status]} ${
-                        isSelected ? 'ring-2 ring-emerald-500' : 'ring-0'
+                      className={`absolute flex flex-col items-center justify-center rounded-xl border-2 px-2 text-center text-sm font-semibold text-lundies-charcoal shadow-md transition focus:outline-none focus-visible:ring-2 focus-visible:ring-lundies-heather ${tableStatusStyles[table.status]} ${
+                        isSelected ? 'ring-2 ring-lundies-heather' : 'ring-0'
                       } ${draggingId === table.id ? 'cursor-grabbing' : 'cursor-grab'}`}
                     >
                       <span className="text-base font-bold">{table.label}</span>
-                      <span className="text-xs font-medium text-slate-500 dark:text-slate-400">
+                      <span className="text-xs font-medium text-lundies-peat">
                         {table.capacity.default} seats
                       </span>
                       <span
@@ -434,17 +437,17 @@ export default function RestaurantManagementStudio() {
           </section>
 
           <aside className="space-y-6">
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Table Configuration</h2>
+              <div className="rounded-3xl border border-lundies-stone/60 bg-white/95 p-6 shadow-lg shadow-lundies-stone/30">
+              <h2 className="text-xl font-semibold text-lundies-charcoal">Table Configuration</h2>
               {selectedTable ? (
-                <div className="mt-4 space-y-6 text-sm text-slate-600 dark:text-slate-300">
+                <div className="mt-4 space-y-6 text-sm text-lundies-peat">
                   <div className="grid gap-3">
-                    <label className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    <label className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                       Table Label
                     </label>
                     <div className="flex items-center gap-2">
-                      <span className="text-lg font-semibold text-slate-900 dark:text-white">{selectedTable.label}</span>
-                      <span className="rounded-full border border-slate-300 px-2 py-0.5 text-xs text-slate-500 dark:border-slate-700 dark:text-slate-400">
+                      <span className="text-lg font-semibold text-lundies-charcoal">{selectedTable.label}</span>
+                      <span className="rounded-full border border-lundies-stone/60 px-2 py-0.5 text-xs text-lundies-peat">
                         ID: {selectedTable.id}
                       </span>
                     </div>
@@ -453,7 +456,7 @@ export default function RestaurantManagementStudio() {
                   <div className="grid gap-4 md:grid-cols-3">
                     {(['min', 'default', 'max'] as const).map((key) => (
                       <label key={key} className="flex flex-col gap-1">
-                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                           {key === 'min' && 'Minimum'}
                           {key === 'default' && 'Default'}
                           {key === 'max' && 'Maximum'}
@@ -463,14 +466,14 @@ export default function RestaurantManagementStudio() {
                           min={1}
                           value={selectedTable.capacity[key]}
                           onChange={(event) => handleCapacityChange(key, Number(event.target.value))}
-                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          className="rounded-lg border border-lundies-stone/60 px-3 py-2 text-sm text-lundies-charcoal shadow-sm focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather"
                         />
                       </label>
                     ))}
                   </div>
 
                   <div className="grid gap-3">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                       Zone
                     </span>
                     <div className="grid gap-2 sm:grid-cols-2">
@@ -479,23 +482,29 @@ export default function RestaurantManagementStudio() {
                           type="button"
                           key={option.value}
                           onClick={() => handleZoneChange(option.value)}
-                          className={`flex flex-col items-start gap-1 rounded-xl border px-4 py-3 text-left transition hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-900/20 ${
+                          className={`flex flex-col items-start gap-1 rounded-xl border px-4 py-3 text-left transition ${
                             selectedTable.zone === option.value
-                              ? 'border-emerald-500 bg-emerald-50/60 dark:border-emerald-400 dark:bg-emerald-900/40'
-                              : 'border-slate-200 dark:border-slate-700'
+                              ? 'border-lundies-heather bg-lundies-heather/20 shadow-inner'
+                              : 'border-lundies-stone/60 bg-white/95 hover:border-lundies-heather hover:bg-lundies-heather/15'
                           }`}
                         >
-                          <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                          <span
+                            className={`text-sm font-semibold ${
+                              selectedTable.zone === option.value
+                                ? 'text-lundies-heather'
+                                : 'text-lundies-charcoal'
+                            }`}
+                          >
                             {option.label}
                           </span>
-                          <span className="text-xs text-slate-500 dark:text-slate-400">{option.description}</span>
+                          <span className="text-xs text-lundies-peat">{option.description}</span>
                         </button>
                       ))}
                     </div>
                   </div>
 
                   <div className="grid gap-3">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                       Status
                     </span>
                     <div className="flex flex-wrap gap-2">
@@ -506,8 +515,8 @@ export default function RestaurantManagementStudio() {
                           onClick={() => handleStatusChange(status)}
                           className={`rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-wide transition ${
                             selectedTable.status === status
-                              ? 'bg-emerald-600 text-white shadow'
-                              : 'border border-slate-300 text-slate-500 hover:border-emerald-400 hover:text-emerald-500 dark:border-slate-700 dark:text-slate-400'
+                              ? 'bg-lundies-heather text-white shadow'
+                              : 'border border-lundies-stone/60 text-lundies-peat hover:border-lundies-heather hover:text-lundies-heather'
                           }`}
                         >
                           {status}
@@ -517,7 +526,7 @@ export default function RestaurantManagementStudio() {
                   </div>
 
                   <div className="grid gap-3">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                       Features
                     </span>
                     <div className="grid gap-2 sm:grid-cols-2">
@@ -528,16 +537,20 @@ export default function RestaurantManagementStudio() {
                             type="button"
                             key={option.value}
                             onClick={() => toggleTableFeature(option.value)}
-                            className={`flex flex-col items-start gap-1 rounded-xl border px-4 py-3 text-left transition hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-900/20 ${
+                            className={`flex flex-col items-start gap-1 rounded-xl border px-4 py-3 text-left transition hover:border-lundies-heather hover:bg-lundies-heather/15 ${
                               active
-                                ? 'border-emerald-500 bg-emerald-50/60 text-emerald-700 dark:border-emerald-400 dark:bg-emerald-900/40 dark:text-emerald-200'
-                                : 'border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300'
+                                ? 'border-lundies-heather bg-lundies-heather/20 text-lundies-heather'
+                                : 'border-lundies-stone/60 bg-white/95 text-lundies-peat hover:border-lundies-heather hover:bg-lundies-heather/10'
                             }`}
                           >
-                            <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                            <span
+                              className={`text-sm font-semibold ${
+                                active ? 'text-lundies-heather' : 'text-lundies-charcoal'
+                              }`}
+                            >
                               {option.label}
                             </span>
-                            <span className="text-xs text-slate-500 dark:text-slate-400">{option.description}</span>
+                            <span className="text-xs text-lundies-peat">{option.description}</span>
                           </button>
                         )
                       })}
@@ -545,7 +558,7 @@ export default function RestaurantManagementStudio() {
                   </div>
 
                   <div className="grid gap-3">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                       Accessibility
                     </span>
                     <div className="flex flex-wrap gap-2">
@@ -558,8 +571,8 @@ export default function RestaurantManagementStudio() {
                             onClick={() => toggleAccessibility(option.value)}
                             className={`rounded-full px-3 py-1 text-xs font-medium transition ${
                               active
-                                ? 'bg-sky-600 text-white shadow-sm'
-                                : 'border border-slate-300 text-slate-500 hover:border-sky-400 hover:text-sky-600 dark:border-slate-700 dark:text-slate-400'
+                                ? 'bg-lundies-heather text-white shadow-sm'
+                                : 'border border-lundies-stone/60 text-lundies-peat hover:border-lundies-heather hover:text-lundies-heather'
                             }`}
                           >
                             {option.label}
@@ -567,14 +580,14 @@ export default function RestaurantManagementStudio() {
                         )
                       })}
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-lundies-peat">
                       Accessibility badges display on the guest floor plan and feed the concierge assistant for pre-arrival
                       planning.
                     </p>
                   </div>
 
                   <div className="grid gap-3">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                       Combinable Tables
                     </span>
                     <div className="grid gap-2 sm:grid-cols-2">
@@ -587,15 +600,21 @@ export default function RestaurantManagementStudio() {
                               type="button"
                               key={table.id}
                               onClick={() => toggleCombination(table.id)}
-                              className={`flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left transition hover:border-emerald-500 hover:bg-emerald-50/40 dark:hover:bg-emerald-900/20 ${
+                              className={`flex items-center justify-between gap-3 rounded-xl border px-4 py-3 text-left transition ${
                                 combined
-                                  ? 'border-emerald-500 bg-emerald-50/60 text-emerald-700 dark:border-emerald-400 dark:bg-emerald-900/40'
-                                  : 'border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-300'
+                                  ? 'border-lundies-heather bg-lundies-heather/20 text-lundies-heather shadow-inner'
+                                  : 'border-lundies-stone/60 bg-white/95 text-lundies-peat hover:border-lundies-heather hover:bg-lundies-heather/10'
                               }`}
                             >
                               <div>
-                                <p className="text-sm font-semibold text-slate-900 dark:text-slate-100">{table.label}</p>
-                                <p className="text-xs text-slate-500 dark:text-slate-400">
+                                <p
+                                  className={`text-sm font-semibold ${
+                                    combined ? 'text-lundies-heather' : 'text-lundies-charcoal'
+                                  }`}
+                                >
+                                  {table.label}
+                                </p>
+                                <p className="text-xs text-lundies-peat">
                                   Default {table.capacity.default} seats · {formatZoneLabel(table.zone)} zone
                                 </p>
                               </div>
@@ -606,48 +625,48 @@ export default function RestaurantManagementStudio() {
                           )
                         })}
                     </div>
-                    <p className="text-xs text-slate-500 dark:text-slate-400">
+                    <p className="text-xs text-lundies-peat">
                       {combinationSummary.tables} tables · {combinationSummary.seats} guests when combined with current configuration.
                     </p>
                   </div>
 
                   <div className="grid gap-3">
-                    <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                    <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                       Notes for Team Briefing
                     </span>
                     <textarea
                       value={selectedTable.notes ?? ''}
                       onChange={(event) => handleNotesChange(event.target.value)}
                       rows={3}
-                      className="rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                      className="rounded-xl border border-lundies-stone/60 bg-white/95 px-3 py-2 text-sm text-lundies-charcoal shadow-sm focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather"
                       placeholder="Capture service notes, celebration cues, or pairing suggestions for staff."
                     />
                   </div>
                 </div>
               ) : (
-                <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">Select a table to configure settings.</p>
+                <p className="mt-4 text-sm text-lundies-peat">Select a table to configure settings.</p>
               )}
             </div>
 
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-              <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Service Period Configuration</h2>
-              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            <div className="rounded-3xl border border-lundies-stone/60 bg-white/95 p-6 shadow-lg shadow-lundies-stone/30">
+              <h2 className="text-xl font-semibold text-lundies-charcoal">Service Period Configuration</h2>
+              <p className="mt-1 text-sm text-lundies-peat">
                 Control opening times, seating duration, and which zones are offered to guests for each service.
               </p>
               <div className="mt-4 space-y-5">
-                {periods.map((period) => (
-                  <div
-                    key={period.id}
-                    className="rounded-2xl border border-slate-200 p-4 transition hover:border-emerald-400 dark:border-slate-800 dark:hover:border-emerald-500/60"
-                  >
+                  {periods.map((period) => (
+                    <div
+                      key={period.id}
+                      className="rounded-2xl border border-lundies-stone/60 bg-white/95 p-4 transition hover:border-lundies-heather hover:shadow-md"
+                    >
                     <div className="flex flex-wrap items-center justify-between gap-3">
                       <div>
-                        <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-100">{period.name}</h3>
-                        <p className="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                          <h3 className="text-lg font-semibold text-lundies-charcoal">{period.name}</h3>
+                        <p className="text-xs uppercase tracking-wide text-lundies-peat">
                           Last booking {period.lastSeatingTime} · Max party {period.maxPartySize}
                         </p>
                       </div>
-                      <div className="flex gap-2 text-xs text-slate-500 dark:text-slate-400">
+                      <div className="flex gap-2 text-xs text-lundies-peat">
                         <span>{period.startTime}</span>
                         <span aria-hidden="true">—</span>
                         <span>{period.endTime}</span>
@@ -656,29 +675,29 @@ export default function RestaurantManagementStudio() {
 
                     <div className="mt-3 grid gap-3 md:grid-cols-2">
                       <label className="flex flex-col gap-1">
-                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                           Start Time
                         </span>
                         <input
                           type="time"
                           value={period.startTime}
                           onChange={(event) => updateServicePeriod(period.id, { startTime: event.target.value })}
-                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                            className="rounded-lg border border-lundies-stone/60 bg-white/95 px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather"
                         />
                       </label>
                       <label className="flex flex-col gap-1">
-                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                           End Time
                         </span>
                         <input
                           type="time"
                           value={period.endTime}
                           onChange={(event) => updateServicePeriod(period.id, { endTime: event.target.value })}
-                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                            className="rounded-lg border border-lundies-stone/60 bg-white/95 px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather"
                         />
                       </label>
                       <label className="flex flex-col gap-1">
-                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                           Default Duration (minutes)
                         </span>
                         <input
@@ -688,11 +707,11 @@ export default function RestaurantManagementStudio() {
                           onChange={(event) =>
                             updateServicePeriod(period.id, { defaultDurationMinutes: Number(event.target.value) })
                           }
-                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          className="rounded-lg border border-lundies-stone/60 bg-white/95 px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather"
                         />
                       </label>
                       <label className="flex flex-col gap-1">
-                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                           Turnaround Buffer (minutes)
                         </span>
                         <input
@@ -702,22 +721,22 @@ export default function RestaurantManagementStudio() {
                           onChange={(event) =>
                             updateServicePeriod(period.id, { turnaroundBufferMinutes: Number(event.target.value) })
                           }
-                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          className="rounded-lg border border-lundies-stone/60 bg-white/95 px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather"
                         />
                       </label>
                       <label className="flex flex-col gap-1">
-                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                           Last Seating
                         </span>
                         <input
                           type="time"
                           value={period.lastSeatingTime}
                           onChange={(event) => updateServicePeriod(period.id, { lastSeatingTime: event.target.value })}
-                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          className="rounded-lg border border-lundies-stone/60 bg-white/95 px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather"
                         />
                       </label>
                       <label className="flex flex-col gap-1">
-                        <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                        <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                           Maximum Party Size
                         </span>
                         <input
@@ -725,13 +744,13 @@ export default function RestaurantManagementStudio() {
                           min={2}
                           value={period.maxPartySize}
                           onChange={(event) => updateServicePeriod(period.id, { maxPartySize: Number(event.target.value) })}
-                          className="rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          className="rounded-lg border border-lundies-stone/60 bg-white/95 px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather"
                         />
                       </label>
                     </div>
 
                     <div className="mt-3">
-                      <span className="text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                      <span className="text-xs font-semibold uppercase tracking-wide text-lundies-peat">
                         Zones Available
                       </span>
                       <div className="mt-2 flex flex-wrap gap-2">
@@ -744,8 +763,8 @@ export default function RestaurantManagementStudio() {
                               onClick={() => toggleServiceZone(period.id, zone.value)}
                               className={`rounded-full px-3 py-1 text-xs font-medium transition ${
                                 active
-                                  ? 'bg-emerald-600 text-white shadow-sm'
-                                  : 'border border-slate-300 text-slate-500 hover:border-emerald-400 hover:text-emerald-600 dark:border-slate-700 dark:text-slate-400'
+                                  ? 'bg-lundies-heather text-white shadow-sm'
+                                  : 'border border-lundies-stone/60 text-lundies-peat hover:border-lundies-heather hover:text-lundies-heather'
                               }`}
                             >
                               {zone.label}
@@ -759,7 +778,7 @@ export default function RestaurantManagementStudio() {
                       value={period.notes ?? ''}
                       onChange={(event) => updateServicePeriod(period.id, { notes: event.target.value })}
                       rows={3}
-                      className="mt-3 w-full rounded-xl border border-slate-300 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                      className="mt-3 w-full rounded-xl border border-lundies-stone/60 bg-white/95 px-3 py-2 text-sm text-lundies-charcoal shadow-sm focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather"
                       placeholder="Brief front-of-house on menu focus, live entertainment, or partner promotions."
                     />
                   </div>
