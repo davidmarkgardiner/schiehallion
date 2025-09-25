@@ -243,7 +243,29 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'schiehallion-cart-storage',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => {
+        if (typeof window === 'undefined') {
+          const memoryStorage: Record<string, string> = {}
+          return {
+            getItem: (name: string) => memoryStorage[name] ?? null,
+            setItem: (name: string, value: string) => {
+              memoryStorage[name] = value
+            },
+            removeItem: (name: string) => {
+              delete memoryStorage[name]
+            },
+            clear: () => {
+              Object.keys(memoryStorage).forEach(key => delete memoryStorage[key])
+            },
+            key: (index: number) => Object.keys(memoryStorage)[index] ?? null,
+            get length() {
+              return Object.keys(memoryStorage).length
+            }
+          } as Storage
+        }
+
+        return window.sessionStorage
+      }),
       partialize: (state) => ({
         items: state.items.map(item => ({
           ...item,
