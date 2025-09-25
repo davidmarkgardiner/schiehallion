@@ -3,7 +3,7 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { useCartStore } from '@/store/cartStore'
@@ -15,11 +15,21 @@ import ShoppingCart from './ShoppingCart'
 import GuestInfoForm from './GuestInfoForm'
 import PackageSelection from './PackageSelection'
 import DragDropCalendar from './DragDropCalendar'
+import PersonalizationEnginePanel from './PersonalizationEnginePanel'
 import { PaymentStep } from '@/components/payment/PaymentStep'
 
 interface BookingFlowProps {
   initialStep?: BookingFlowState['currentStep']
   availableRooms?: any[]
+}
+
+const determineSeason = (dateString: string): 'spring' | 'summer' | 'autumn' | 'winter' => {
+  const date = new Date(dateString)
+  const month = date.getUTCMonth() + 1
+  if (month >= 3 && month <= 5) return 'spring'
+  if (month >= 6 && month <= 8) return 'summer'
+  if (month >= 9 && month <= 11) return 'autumn'
+  return 'winter'
 }
 
 const BookingFlow: React.FC<BookingFlowProps> = ({
@@ -28,7 +38,10 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
 }) => {
   const router = useRouter()
   const { user } = useAuth()
-  const { getCartSummary, clearCart } = useCartStore()
+  const getCartSummary = useCartStore(state => state.getCartSummary)
+  const clearCart = useCartStore(state => state.clearCart)
+  const cartItems = useCartStore(state => state.items)
+  const updateCartItem = useCartStore(state => state.updateItem)
 
   const [currentStep, setCurrentStep] = useState<BookingFlowState['currentStep']>(initialStep)
   const [guestInfo, setGuestInfo] = useState<GuestFormData | null>(null)
@@ -38,8 +51,30 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
   const [showCart, setShowCart] = useState(false)
   const [bookingIds, setBookingIds] = useState<string[]>([])
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null)
+  const [selectedPackage, setSelectedPackage] = useState<PackageType>(
+    cartItems[0]?.packageType || 'room-only'
+  )
 
   const cartSummary = getCartSummary()
+  const stayContext = useMemo(() => {
+    const firstItem = cartItems[0]
+    const guests = cartItems.reduce((sum, item) => sum + item.guests, 0)
+    const checkInDate = firstItem?.checkInDate ?? null
+    return {
+      checkInDate,
+      nights: firstItem?.numberOfNights,
+      guests,
+      packageType: selectedPackage,
+      baseRate: firstItem?.roomRate,
+      season: checkInDate ? determineSeason(checkInDate) : undefined
+    }
+  }, [cartItems, selectedPackage])
+
+  useEffect(() => {
+    if (cartItems.length > 0) {
+      setSelectedPackage(cartItems[0].packageType)
+    }
+  }, [cartItems])
 
   // Auto-advance to guest info if cart has items
   useEffect(() => {
@@ -60,6 +95,13 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
   const handleGuestInfoSubmit = (data: GuestFormData) => {
     setGuestInfo(data)
     setCurrentStep('package-selection')
+  }
+
+  const handlePackageChange = (packageType: PackageType) => {
+    setSelectedPackage(packageType)
+    cartItems.forEach(item => {
+      updateCartItem(item.id, { packageType })
+    })
   }
 
   const handlePackageSelectionComplete = async () => {
@@ -241,17 +283,22 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
       case 'package-selection':
         return (
           <div className="space-y-8">
-            <PackageSelection
-              selectedPackage="room-only"
-              onPackageChange={(packageType: PackageType) => {
-                // Update cart items with new package
-                console.log('Package changed to:', packageType)
-              }}
-              basePrice={cartSummary.items[0]?.roomRate || 0}
-              numberOfNights={cartSummary.items[0]?.numberOfNights || 1}
-              showTerms={true}
-              onTermsAccept={handlePackageSelectionComplete}
-            />
+            <div className="grid gap-8 lg:grid-cols-[1.2fr_minmax(0,_0.8fr)]">
+              <PackageSelection
+                selectedPackage={selectedPackage}
+                onPackageChange={handlePackageChange}
+                basePrice={cartSummary.items[0]?.roomRate || 0}
+                numberOfNights={cartSummary.items[0]?.numberOfNights || 1}
+                showTerms={true}
+                onTermsAccept={handlePackageSelectionComplete}
+              />
+              <PersonalizationEnginePanel
+                userId={user?.uid}
+                stayContext={stayContext}
+                currentPackage={selectedPackage}
+                onPackageSelect={handlePackageChange}
+              />
+            </div>
           </div>
         )
 
