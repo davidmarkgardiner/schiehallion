@@ -8,3 +8,9 @@ certae backend
 create front end
 
 create booking, menu, photos
+
+
+finish of merging branch pr 7
+
+export ANTHROPIC_AUTH_TOKEN=1a63dcdde99544fd8b5a2ba7c4960694.U1SdwsYEb20zf3r9
+export ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic

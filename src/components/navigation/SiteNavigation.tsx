@@ -33,17 +33,17 @@ const baseSectionClasses =
 const palettes = {
   landing: {
     primary: {
-      active: 'bg-white/20 text-white shadow-sm',
-      inactive: 'text-slate-300 hover:bg-white/10 hover:text-white',
+      active: 'bg-lundies-heather/30 text-lundies-charcoal shadow-sm',
+      inactive: 'text-lundies-moss hover:bg-lundies-heather/20 hover:text-lundies-charcoal',
     },
-    section: 'text-slate-400 hover:text-white',
+    section: 'text-lundies-peat hover:text-lundies-charcoal',
   },
   standard: {
     primary: {
-      active: 'bg-slate-800 text-white shadow-sm',
-      inactive: 'text-slate-300 hover:bg-slate-800/60 hover:text-white',
+      active: 'bg-lundies-stone text-lundies-charcoal shadow-sm',
+      inactive: 'text-lundies-moss hover:bg-lundies-stone/80 hover:text-lundies-charcoal',
     },
-    section: 'text-slate-400 hover:text-slate-200',
+    section: 'text-lundies-peat hover:text-lundies-charcoal',
   },
 } as const
 
@@ -76,9 +76,9 @@ export default function SiteNavigation({
   const palette = palettes[layout]
 
   return (
-    <div className={`flex flex-col gap-4 text-slate-200 ${className}`}>
+    <div className={`flex flex-col gap-4 text-lundies-charcoal ${className}`}>
       <div className="flex flex-col gap-4 md:grid md:grid-cols-[auto,1fr,auto] md:items-center">
-        <Link href="/" className="font-semibold tracking-wide text-white">
+        <Link href="/" className="font-semibold tracking-wide text-lundies-charcoal">
           Schiehallion Hotel
         </Link>
 
@@ -104,6 +104,14 @@ export default function SiteNavigation({
 
         <div className="order-2 flex items-center justify-end gap-3 md:order-none">
           {actionSlot}
+          {/* Admin Panel Link */}
+          <Link
+            href="/admin"
+            className={`${basePrimaryClasses} ${palette.primary.inactive} text-xs`}
+            title="Admin Panel"
+          >
+            ⚙️ Admin
+          </Link>
           <NavUserProfile />
         </div>
       </div>

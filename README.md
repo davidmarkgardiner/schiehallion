@@ -13,6 +13,7 @@ A production-ready Next.js template with Firebase Authentication featuring Googl
 - 🌙 **Dark Mode Support** - Automatic theme switching
 - ⚡ **Next.js 15** - Latest Next.js with App Router
 - 🔒 **TypeScript** - Full type safety
+- 🤖 **AI Concierge Assistant** - LLM chat widget with GitHub issue capture
 
 ## Quick Start
 
@@ -61,6 +62,26 @@ npm run dev
 Open [http://localhost:3000](http://localhost:3000) to see your app.
 
 ## Development
+
+### 🤖 AI Concierge & Issue Reporting
+
+The floating concierge widget uses the reusable package in `packages/ai-chatbot-github` to provide LLM-powered support and GitHub issue creation. Configure environment variables in `.env.local` (see `.env.example`) to enable one or both AI providers and GitHub integration:
+
+```env
+OPENAI_API_KEY=your_openai_api_key
+OPENAI_MODEL=gpt-4o-mini
+ANTHROPIC_API_KEY=your_anthropic_key
+ANTHROPIC_MODEL=claude-3-sonnet-20240229
+GITHUB_TOKEN=ghp_your_token
+GITHUB_OWNER=your_org_or_user
+GITHUB_REPO=your_repo
+```
+
+Once configured, the concierge can:
+
+- Switch between general, repository, and live web search modes.
+- Capture chat transcripts and send structured issues to GitHub.
+- Provide hotel, restaurant, or technical support answers directly inside the app.
 
 ## 📁 Project Structure
 

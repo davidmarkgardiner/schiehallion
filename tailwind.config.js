@@ -7,6 +7,18 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        lundies: {
+          ivory: '#f5f1eb',
+          linen: '#ebe3d7',
+          stone: '#d6cec3',
+          sand: '#c2b19b',
+          peat: '#8b6f5a',
+          heather: '#8fa089',
+          moss: '#6f7a63',
+          charcoal: '#1f1b16',
+        },
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':

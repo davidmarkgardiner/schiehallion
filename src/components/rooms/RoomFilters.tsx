@@ -94,7 +94,7 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
       {/* Filter Toggle Button */}
       <button
         onClick={onToggle}
-        className="flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
+        className="flex items-center gap-2 rounded-full border border-lundies-stone/60 bg-white/80 px-4 py-2 text-sm font-medium text-lundies-charcoal transition hover:bg-white/70"
       >
         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
@@ -109,14 +109,14 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
 
       {/* Filter Panel */}
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 w-80 rounded-3xl border border-white/10 bg-slate-900/95 backdrop-blur-sm p-6 shadow-xl z-50">
+        <div className="absolute top-full left-0 mt-2 w-80 rounded-3xl border border-lundies-stone/60 bg-white/95 backdrop-blur-sm p-6 shadow-xl z-50">
           <div className="space-y-6">
             {/* Header */}
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-white">Filter Rooms</h3>
+              <h3 className="text-lg font-semibold text-lundies-charcoal">Filter Rooms</h3>
               <button
                 onClick={clearFilters}
-                className="text-sm text-emerald-300 hover:text-emerald-200 transition-colors"
+                className="text-sm text-lundies-moss hover:text-lundies-moss transition-colors"
               >
                 Clear All
               </button>
@@ -124,11 +124,11 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
 
             {/* Sort By */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Sort By</label>
+              <label className="block text-sm font-medium text-lundies-peat mb-2">Sort By</label>
               <select
                 value={filters.sortBy}
                 onChange={(e) => updateFilter('sortBy', e.target.value as RoomFilterState['sortBy'])}
-                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full rounded-2xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-2 text-lundies-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-lundies-heather"
               >
                 {SORT_OPTIONS.map(option => (
                   <option key={option.value} value={option.value}>
@@ -140,11 +140,11 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
 
             {/* Room Type */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Room Type</label>
+              <label className="block text-sm font-medium text-lundies-peat mb-2">Room Type</label>
               <select
                 value={filters.roomType || ''}
                 onChange={(e) => updateFilter('roomType', e.target.value || undefined)}
-                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full rounded-2xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-2 text-lundies-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-lundies-heather"
               >
                 <option value="">Any Type</option>
                 {ROOM_TYPES.map(type => (
@@ -157,11 +157,11 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
 
             {/* Max Occupancy */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Guests</label>
+              <label className="block text-sm font-medium text-lundies-peat mb-2">Guests</label>
               <select
                 value={filters.maxOccupancy || ''}
                 onChange={(e) => updateFilter('maxOccupancy', e.target.value ? parseInt(e.target.value) : undefined)}
-                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full rounded-2xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-2 text-lundies-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-lundies-heather"
               >
                 <option value="">Any Number</option>
                 <option value="1">1 Guest</option>
@@ -173,7 +173,7 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
 
             {/* Price Range */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">
+              <label className="block text-sm font-medium text-lundies-peat mb-2">
                 Price Range: {formatPrice(filters.priceRange[0])} - {formatPrice(filters.priceRange[1])}
               </label>
               <div className="space-y-2">
@@ -184,7 +184,7 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
                   step="1000"
                   value={filters.priceRange[0]}
                   onChange={(e) => updateFilter('priceRange', [parseInt(e.target.value), filters.priceRange[1]])}
-                  className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-lundies-stone/60 rounded-lg appearance-none cursor-pointer"
                 />
                 <input
                   type="range"
@@ -193,18 +193,18 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
                   step="1000"
                   value={filters.priceRange[1]}
                   onChange={(e) => updateFilter('priceRange', [filters.priceRange[0], parseInt(e.target.value)])}
-                  className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                  className="w-full h-2 bg-lundies-stone/60 rounded-lg appearance-none cursor-pointer"
                 />
               </div>
             </div>
 
             {/* View */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">View</label>
+              <label className="block text-sm font-medium text-lundies-peat mb-2">View</label>
               <select
                 value={filters.view || ''}
                 onChange={(e) => updateFilter('view', e.target.value || undefined)}
-                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full rounded-2xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-2 text-lundies-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-lundies-heather"
               >
                 <option value="">Any View</option>
                 {ROOM_VIEWS.map(view => (
@@ -217,11 +217,11 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
 
             {/* Bed Type */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-2">Bed Type</label>
+              <label className="block text-sm font-medium text-lundies-peat mb-2">Bed Type</label>
               <select
                 value={filters.bedType || ''}
                 onChange={(e) => updateFilter('bedType', e.target.value || undefined)}
-                className="w-full rounded-2xl border border-white/10 bg-black/30 px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                className="w-full rounded-2xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-2 text-lundies-charcoal text-sm focus:outline-none focus:ring-2 focus:ring-lundies-heather"
               >
                 <option value="">Any Bed</option>
                 {BED_TYPES.map(bed => (
@@ -234,7 +234,7 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
 
             {/* Features */}
             <div>
-              <label className="block text-sm font-medium text-slate-300 mb-3">Features</label>
+              <label className="block text-sm font-medium text-lundies-peat mb-3">Features</label>
               <div className="grid grid-cols-2 gap-2">
                 {[
                   { key: 'wifi' as const, label: 'WiFi' },
@@ -249,9 +249,9 @@ export default function RoomFilters({ filters, onFiltersChange, isOpen, onToggle
                       type="checkbox"
                       checked={filters.features[feature.key] || false}
                       onChange={(e) => updateFeature(feature.key, e.target.checked)}
-                      className="rounded border-white/20 bg-black/30 text-emerald-400 focus:ring-2 focus:ring-emerald-400"
+                      className="rounded border-lundies-stone/60 bg-lundies-stone/40 text-lundies-moss focus:ring-2 focus:ring-lundies-heather"
                     />
-                    <span className="text-slate-200">{feature.label}</span>
+                    <span className="text-lundies-peat">{feature.label}</span>
                   </label>
                 ))}
               </div>

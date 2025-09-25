@@ -23,8 +23,8 @@ export const StripeProvider: React.FC<StripeProviderProps> = ({ children }) => {
   if (!stripePromise) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-400"></div>
-        <span className="ml-2 text-slate-300">Loading payment system...</span>
+        <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-lundies-heather"></div>
+        <span className="ml-2 text-lundies-stone">Loading payment system...</span>
       </div>
     )
   }
@@ -36,9 +36,9 @@ export const StripeProvider: React.FC<StripeProviderProps> = ({ children }) => {
         appearance: {
           theme: 'night',
           variables: {
-            colorPrimary: '#10B981', // emerald-500
-            colorBackground: '#0F172A', // slate-900
-            colorText: '#F1F5F9', // slate-100
+            colorPrimary: '#8fa089', // lundies-heather
+            colorBackground: '#1f1b16', // lundies-charcoal
+            colorText: '#f5f1eb', // lundies-ivory
             colorDanger: '#EF4444', // red-500
             fontFamily: 'system-ui, sans-serif',
             spacingUnit: '4px',
@@ -48,14 +48,14 @@ export const StripeProvider: React.FC<StripeProviderProps> = ({ children }) => {
             '.Input': {
               backgroundColor: 'rgba(255, 255, 255, 0.05)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
-              color: '#F1F5F9',
+              color: '#f5f1eb',
             },
             '.Input:focus': {
-              border: '1px solid #10B981',
-              boxShadow: '0 0 0 1px #10B981',
+              border: '1px solid #8fa089',
+              boxShadow: '0 0 0 1px #8fa089',
             },
             '.Label': {
-              color: '#CBD5E1',
+              color: '#d6cec3',
               fontSize: '14px',
               fontWeight: '500',
             },
