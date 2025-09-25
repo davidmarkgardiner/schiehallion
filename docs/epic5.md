@@ -4,17 +4,17 @@ _Core booking process from selection to confirmation_
 
 #### User Stories
 
-**SCHH-013** | Drag-and-Drop Room Selection  
-**As a** guest  
-**I want to** drag rooms into my booking dates  
-**So that** I can intuitively build my reservation  
+**SCHH-013** | Interactive Room Selection
+**As a** guest
+**I want to** select a room and dates directly
+**So that** I can intuitively build my reservation
 **Acceptance Criteria:**
 
-- React-beautiful-dnd implementation
-- Visual feedback during drag
-- Drop zones for each date
-- Automatic price calculation
-- Mobile touch support
+- Click-to-select room list with detailed information
+- Date inputs with validation and automatic adjustments
+- Real-time price summary before adding to cart
+- Package selection integrated into the flow
+- Mobile-friendly responsive layout
   **Story Points:** 13
 
 **SCHH-014** | Multi-Room Shopping Cart  

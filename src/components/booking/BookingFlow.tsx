@@ -14,7 +14,7 @@ import { Timestamp } from 'firebase/firestore'
 import ShoppingCart from './ShoppingCart'
 import GuestInfoForm from './GuestInfoForm'
 import PackageSelection from './PackageSelection'
-import DragDropCalendar from './DragDropCalendar'
+import RoomSelectionPanel from './RoomSelectionPanel'
 import { PaymentStep } from '@/components/payment/PaymentStep'
 
 interface BookingFlowProps {
@@ -203,16 +203,13 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
                 Build Your Perfect Stay
               </h1>
               <p className="text-lg text-lundies-peat max-w-2xl mx-auto">
-                Drag rooms to your preferred dates or browse our selection to create your Highland getaway.
+                Select a room, choose your travel dates, and add everything to your cart with a single click.
               </p>
             </div>
 
-            <DragDropCalendar
+            <RoomSelectionPanel
               availableRooms={availableRooms}
-              guests={2}
-              onRoomDrop={(roomId, targetDate) => {
-                console.log('Room dropped:', roomId, 'on date:', targetDate)
-              }}
+              initialGuests={2}
             />
 
             {cartSummary.itemCount > 0 && (

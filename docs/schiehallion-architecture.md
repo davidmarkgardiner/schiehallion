@@ -115,7 +115,7 @@ src/
 │   ├── useBooking.ts           // Booking operations
 │   ├── useAvailability.ts      // Real-time checks
 │   ├── usePayment.ts           // Stripe integration
-│   ├── useDragDrop.ts          // DnD functionality
+│   ├── useRoomSelection.ts     // Room/date selection helpers
 │   └── useAIAssistant.ts       // Concierge features
 │
 ├── lib/
