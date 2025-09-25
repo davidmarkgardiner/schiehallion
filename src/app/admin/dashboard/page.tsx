@@ -471,7 +471,7 @@ export default function AdminDashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600 dark:text-gray-400">
-                Welcome, {userProfile.profile.firstName || user.email}
+                Welcome, {userProfile.profile?.firstName || user.email}
               </span>
               <button
                 onClick={handleLogout}
@@ -528,7 +528,7 @@ export default function AdminDashboard() {
                     {staffUsers.map((staff) => (
                       <tr key={staff.uid}>
                         <td className="px-6 py-4 font-medium text-slate-900 dark:text-slate-100">
-                          {staff.profile.firstName} {staff.profile.lastName}
+                          {staff.profile?.firstName || 'N/A'} {staff.profile?.lastName || ''}
                         </td>
                         <td className="px-6 py-4 text-slate-600 dark:text-slate-400">{staff.email}</td>
                         <td className="px-6 py-4">
@@ -545,7 +545,7 @@ export default function AdminDashboard() {
                           </span>
                         </td>
                         <td className="px-6 py-4 text-slate-600 dark:text-slate-400">
-                          {staff.lastLogin?.toLocaleDateString() ?? '—'}
+                          {staff.lastLogin ? new Date(staff.lastLogin).toLocaleDateString() : '—'}
                         </td>
                       </tr>
                     ))}

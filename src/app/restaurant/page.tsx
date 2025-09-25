@@ -648,8 +648,15 @@ export default function RestaurantGuestExperience() {
     : guestCapacityRange.max
 
   return (
-    <main className="min-h-screen bg-lundies-linen pb-16 pt-10 dark:bg-lundies-charcoal">
-      <div className="mx-auto flex max-w-7xl flex-col gap-10 px-6">
+    <main className="relative overflow-hidden bg-lundies-ivory text-lundies-charcoal min-h-screen">
+      {/* Background decoration */}
+      <div className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute left-1/2 top-[-10%] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-lundies-heather/30 blur-[160px]" />
+        <div className="absolute right-[-10%] top-1/3 h-[24rem] w-[24rem] rounded-full bg-lundies-sand/40 blur-[180px]" />
+        <div className="absolute bottom-[-20%] left-[5%] h-[28rem] w-[28rem] rounded-full bg-lundies-peat/20 blur-[160px]" />
+      </div>
+
+      <div className="mx-auto flex max-w-7xl flex-col gap-10 px-6 pb-16 pt-10">
         <SiteNavigation
           layout="standard"
           actionSlot={
@@ -661,7 +668,7 @@ export default function RestaurantGuestExperience() {
             </Link>
           }
         />
-        <header className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-lundies-charcoal/5 dark:bg-lundies-charcoal dark:ring-white/10">
+        <header className="relative rounded-2xl bg-white/90 p-8 shadow-sm ring-1 ring-lundies-stone/5 backdrop-blur-sm dark:bg-lundies-charcoal/90 dark:ring-lundies-stone/10">
           <p className="text-sm uppercase tracking-[0.4em] text-lundies-peat dark:text-lundies-stone">The Schiehallion Kitchen</p>
           <div className="mt-3 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-3xl">
@@ -675,19 +682,19 @@ export default function RestaurantGuestExperience() {
             </div>
             <div className="flex flex-wrap items-center gap-3 text-sm text-lundies-stone dark:text-lundies-stone">
               <div className="flex items-center gap-2">
-                <span className="h-3 w-3 rounded-full bg-lundies-heather" /> Available
+                <span className="h-3 w-3 rounded-full bg-lundies-heather dark:bg-lundies-heather" /> Available
               </div>
               <div className="flex items-center gap-2">
-                <span className="h-3 w-3 rounded-full bg-lundies-sand" /> Held
+                <span className="h-3 w-3 rounded-full bg-lundies-sand dark:bg-lundies-sand" /> Held
               </div>
               <div className="flex items-center gap-2">
-                <span className="h-3 w-3 rounded-full bg-lundies-peat" /> Reserved
+                <span className="h-3 w-3 rounded-full bg-lundies-peat dark:bg-lundies-peat" /> Reserved
               </div>
             </div>
           </div>
         </header>
 
-        <section className="rounded-2xl border border-lundies-stone/20 bg-white p-6 shadow-sm dark:border-lundies-charcoal dark:bg-lundies-charcoal">
+        <section className="relative rounded-2xl border border-lundies-stone/20 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-lundies-stone/20 dark:bg-lundies-charcoal/90">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
             <div className="flex flex-wrap gap-4">
               <label className="flex flex-col gap-2 text-sm text-lundies-stone dark:text-lundies-stone">
@@ -695,7 +702,7 @@ export default function RestaurantGuestExperience() {
                 <select
                   value={selectedDate}
                   onChange={(event) => setSelectedDate(event.target.value)}
-                  className="rounded-lg border border-lundies-stone/30 px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather dark:border-lundies-stone dark:bg-lundies-charcoal dark:text-lundies-linen"
+                  className="rounded-lg border border-lundies-stone/30 px-3 py-2 text-sm text-lundies-charcoal focus:border-lundies-heather focus:outline-none focus:ring-1 focus:ring-lundies-heather dark:border-lundies-stone/20 dark:bg-lundies-charcoal dark:text-lundies-linen"
                 >
                   {availableDates.map((date) => (
                     <option key={date} value={date}>
@@ -716,7 +723,7 @@ export default function RestaurantGuestExperience() {
                       className={`rounded-full px-4 py-2 text-xs font-semibold uppercase tracking-wide transition ${
                         period.id === activePeriodId
                           ? 'bg-lundies-heather text-white shadow-sm'
-                          : 'border border-lundies-stone/30 text-lundies-stone hover:border-lundies-heather hover:text-lundies-heather dark:border-lundies-stone dark:text-lundies-stone'
+                          : 'border border-lundies-stone/30 text-lundies-stone hover:border-lundies-heather hover:text-lundies-heather dark:border-lundies-stone/20 dark:text-lundies-stone'
                       }`}
                     >
                       {period.name}
@@ -726,7 +733,7 @@ export default function RestaurantGuestExperience() {
               </div>
             </div>
             {activePeriod && (
-              <div className="max-w-md rounded-xl border border-lundies-stone/20 bg-lundies-linen p-4 text-xs text-lundies-stone shadow-sm dark:border-lundies-stone dark:bg-lundies-charcoal/60 dark:text-lundies-stone">
+              <div className="max-w-md rounded-xl border border-lundies-stone/20 bg-lundies-linen/50 p-4 text-xs text-lundies-stone shadow-sm dark:border-lundies-stone/20 dark:bg-lundies-charcoal/40 dark:text-lundies-stone">
                 <p className="font-semibold uppercase tracking-wide text-lundies-stone dark:text-lundies-stone">Chef Notes</p>
                 <p className="mt-1 leading-relaxed">{activePeriod.notes}</p>
                 <p className="mt-2 text-[11px] uppercase tracking-wide text-lundies-stone/70 dark:text-lundies-stone/70">
@@ -738,12 +745,12 @@ export default function RestaurantGuestExperience() {
         </section>
 
         <div className="grid gap-8 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,0.8fr)]">
-          <section className="rounded-2xl border border-lundies-stone/20 bg-white p-6 shadow-sm dark:border-lundies-charcoal dark:bg-lundies-charcoal">
+          <section className="relative rounded-2xl border border-lundies-stone/20 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-lundies-stone/20 dark:bg-lundies-charcoal/90">
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex flex-wrap gap-3 text-xs text-lundies-stone dark:text-lundies-stone">
                   <span className="flex items-center gap-2">
-                    <span className="h-3 w-3 rounded-full bg-lundies-heather" /> Available tables
+                    <span className="h-3 w-3 rounded-full bg-lundies-heather dark:bg-lundies-heather" /> Available tables
                   </span>
                   <span className="flex items-center gap-2">
                     <span className="h-3 w-3 rounded-full bg-lundies-stone" /> Unavailable this slot
@@ -756,21 +763,21 @@ export default function RestaurantGuestExperience() {
                   <button
                     type="button"
                     onClick={() => adjustZoom(-0.15)}
-                    className="rounded-lg border border-lundies-stone/30 px-3 py-1 text-sm text-lundies-stone transition hover:bg-lundies-linen dark:border-lundies-stone dark:text-lundies-stone dark:hover:bg-lundies-charcoal"
+                    className="rounded-lg border border-lundies-stone/30 px-3 py-1 text-sm text-lundies-stone transition hover:bg-lundies-linen dark:border-lundies-stone/20 dark:text-lundies-stone dark:hover:bg-lundies-charcoal"
                   >
                     −
                   </button>
                   <button
                     type="button"
                     onClick={() => adjustZoom(0.15)}
-                    className="rounded-lg border border-lundies-stone/30 px-3 py-1 text-sm text-lundies-stone transition hover:bg-lundies-linen dark:border-lundies-stone dark:text-lundies-stone dark:hover:bg-lundies-charcoal"
+                    className="rounded-lg border border-lundies-stone/30 px-3 py-1 text-sm text-lundies-stone transition hover:bg-lundies-linen dark:border-lundies-stone/20 dark:text-lundies-stone dark:hover:bg-lundies-charcoal"
                   >
                     +
                   </button>
                   <button
                     type="button"
                     onClick={resetViewport}
-                    className="rounded-lg border border-lundies-stone/30 px-3 py-1 text-sm text-lundies-stone transition hover:bg-lundies-linen dark:border-lundies-stone dark:text-lundies-stone dark:hover:bg-lundies-charcoal"
+                    className="rounded-lg border border-lundies-stone/30 px-3 py-1 text-sm text-lundies-stone transition hover:bg-lundies-linen dark:border-lundies-stone/20 dark:text-lundies-stone dark:hover:bg-lundies-charcoal"
                   >
                     Reset
                   </button>
@@ -779,7 +786,7 @@ export default function RestaurantGuestExperience() {
 
               <div
                 ref={containerRef}
-                className="relative overflow-hidden rounded-2xl border border-lundies-stone/20 bg-lundies-linen shadow-inner dark:border-lundies-charcoal dark:bg-lundies-charcoal"
+                className="relative overflow-hidden rounded-2xl border border-lundies-stone/20 bg-lundies-linen/50 shadow-inner dark:border-lundies-stone/20 dark:bg-lundies-charcoal/60"
                 style={{ touchAction: 'none' }}
                 onPointerDown={handlePointerDown}
                 onPointerMove={handlePointerMove}
@@ -867,7 +874,7 @@ export default function RestaurantGuestExperience() {
                         })}
 
                   {hoveredTable && (
-                    <div className="pointer-events-none absolute bottom-4 left-4 max-w-[260px] rounded-xl border border-lundies-stone/20 bg-white/95 p-4 text-xs text-lundies-stone shadow-lg backdrop-blur dark:border-lundies-stone dark:bg-lundies-charcoal/90 dark:text-lundies-stone">
+                    <div className="pointer-events-none absolute bottom-4 left-4 max-w-[260px] rounded-xl border border-lundies-stone/20 bg-white/95 p-4 text-xs text-lundies-stone shadow-lg backdrop-blur dark:border-lundies-stone/20 dark:bg-lundies-charcoal/90 dark:text-lundies-stone">
                       <p className="text-sm font-semibold text-lundies-charcoal dark:text-white">{hoveredTable.label}</p>
                       <p className="text-[11px] uppercase tracking-wide text-lundies-stone/70 dark:text-lundies-stone/70">
                         {formatZoneLabel(hoveredTable.zone)} · Default {hoveredTable.capacity.default} seats
@@ -890,7 +897,7 @@ export default function RestaurantGuestExperience() {
           </section>
 
           <aside className="space-y-6">
-            <div className="rounded-2xl border border-lundies-stone/20 bg-white p-6 shadow-sm dark:border-lundies-charcoal dark:bg-lundies-charcoal">
+            <div className="relative rounded-2xl border border-lundies-stone/20 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-lundies-stone/20 dark:bg-lundies-charcoal/90">
               <h2 className="text-xl font-semibold text-lundies-charcoal dark:text-white">Reservation Summary</h2>
               {selectedSlot ? (
                 reservationStep === 'confirmation' && confirmationRecord && selectedTable ? (
@@ -930,7 +937,7 @@ export default function RestaurantGuestExperience() {
                     </div>
 
                     {reservationStep !== 'waitlist' && selectedTable ? (
-                      <div className="space-y-3 rounded-xl border border-lundies-stone/20 bg-lundies-linen p-4 dark:border-lundies-stone dark:bg-lundies-charcoal/60">
+                      <div className="space-y-3 rounded-xl border border-lundies-stone/20 bg-lundies-linen/50 p-4 dark:border-lundies-stone/20 dark:bg-lundies-charcoal/40">
                         <div className="flex items-center justify-between">
                           <div>
                             <p className="text-base font-semibold text-lundies-charcoal dark:text-white">Table {selectedTable.label}</p>
@@ -1052,7 +1059,7 @@ export default function RestaurantGuestExperience() {
               )}
             </div>
 
-            <div className="rounded-2xl border border-lundies-stone/20 bg-white p-6 shadow-sm dark:border-lundies-charcoal dark:bg-lundies-charcoal">
+            <div className="relative rounded-2xl border border-lundies-stone/20 bg-white/90 p-6 shadow-sm backdrop-blur-sm dark:border-lundies-stone/20 dark:bg-lundies-charcoal/90">
               <h2 className="text-xl font-semibold text-lundies-charcoal dark:text-white">Time Slot Management</h2>
               <p className="mt-1 text-sm text-lundies-stone dark:text-lundies-stone">
                 Live availability by service. Select a slot to reveal matching tables and estimated dining duration.
@@ -1069,7 +1076,7 @@ export default function RestaurantGuestExperience() {
                       className={`w-full rounded-xl border px-4 py-3 text-left text-sm transition hover:border-lundies-heather hover:bg-lundies-heather/10 dark:hover:bg-lundies-heather/20 ${
                         isActive
                           ? 'border-lundies-heather bg-lundies-heather/10 dark:border-lundies-heather dark:bg-lundies-heather/20'
-                          : 'border-lundies-stone/20 dark:border-lundies-stone'
+                          : 'border-lundies-stone/20 dark:border-lundies-stone/20'
                       }`}
                     >
                       <div className="flex flex-wrap items-center justify-between gap-2">
