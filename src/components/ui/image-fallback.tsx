@@ -41,30 +41,51 @@ export function ImageFallback({
     // If no src is provided, immediately go to no-src state
     return src ? 'loading' : 'no-src'
   })
-  const [fallbackAttempted, setFallbackAttempted] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
+  const [retryTimeout, setRetryTimeout] = useState<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     if (src) {
       setImageState('loading')
-      setFallbackAttempted(false)
+      setRetryCount(0)
+      // Clear any existing timeout
+      if (retryTimeout) {
+        clearTimeout(retryTimeout)
+        setRetryTimeout(null)
+      }
     } else {
       setImageState('no-src')
     }
-  }, [src])
+  }, [src, retryTimeout])
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (retryTimeout) {
+        clearTimeout(retryTimeout)
+      }
+    }
+  }, [retryTimeout])
 
   const handleImageLoad = useCallback(() => {
     setImageState('loaded')
   }, [])
 
   const handleImageError = useCallback(() => {
-    if (!fallbackAttempted && src) {
-      setFallbackAttempted(true)
-      // Try one more time or switch to error state
-      setImageState('error')
+    const maxRetries = 2
+    if (retryCount < maxRetries && src) {
+      // Implement exponential backoff: 1s, 2s, 4s
+      const delay = Math.pow(2, retryCount) * 1000
+      const timeout = setTimeout(() => {
+        setRetryCount(prev => prev + 1)
+        setImageState('loading')
+        setRetryTimeout(null)
+      }, delay)
+      setRetryTimeout(timeout)
     } else {
       setImageState('error')
     }
-  }, [fallbackAttempted, src])
+  }, [retryCount, src])
 
   const renderFallbackContent = () => {
     switch (fallbackType) {
@@ -151,7 +172,7 @@ export function ImageFallback({
       <div className={cn("relative overflow-hidden rounded-lg", className)}>
         <AspectRatio ratio={aspectRatio}>
           <Card className="w-full h-full border-white/10 bg-slate-800/50 backdrop-blur-sm">
-            <CardContent className="p-0 h-full">
+            <CardContent className="p-0 h-full" role="img" aria-label={alt}>
               {renderFallbackContent()}
             </CardContent>
           </Card>
@@ -165,6 +186,7 @@ export function ImageFallback({
       <AspectRatio ratio={aspectRatio}>
         <>
           <Image
+            key={src}
             src={src}
             alt={alt}
             fill
@@ -177,11 +199,19 @@ export function ImageFallback({
             quality={90}
           />
           {showSkeletonOverlay && (
-            <div className="absolute inset-0">
+            <div
+              className="absolute inset-0"
+              aria-label="Loading image"
+              role="status"
+              aria-live="polite"
+            >
               <Skeleton className="w-full h-full bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800">
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-600/20 to-transparent animate-pulse" />
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+                  <div
+                    className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"
+                    aria-hidden="true"
+                  />
                 </div>
               </Skeleton>
             </div>
