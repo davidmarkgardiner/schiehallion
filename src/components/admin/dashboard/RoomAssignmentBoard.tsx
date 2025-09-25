@@ -189,7 +189,7 @@ export function RoomAssignmentBoard({ guests, rooms, onAssign, onRelease, getRoo
           {rooms.map((room) => {
             const assignedGuest = roomAssignments.get(room.id)
             const isDroppable = room.status === 'vacant-clean' && room.housekeepingStatus === 'clean'
-            const capacityWarning = assignedGuest ? false : draggingId !== null && guestById.get(draggingId)?.partySize > room.capacity
+            const capacityWarning = assignedGuest ? false : draggingId !== null && (guestById.get(draggingId)?.partySize ?? 0) > room.capacity
 
             return (
               <div

@@ -56,31 +56,31 @@ export default function AdminDashboard() {
       return
     }
 
+    const loadDashboardData = async () => {
+      try {
+        setLoading(true)
+
+        // Load audit logs (admin only)
+        if (userProfile?.role === 'admin') {
+          const logs = await getAuditLogs(undefined, 20)
+          setAuditLogs(logs)
+        }
+
+        // Load staff users (manager and admin)
+        if (userProfile?.role === 'manager' || userProfile?.role === 'admin') {
+          const staff = await getStaffUsers()
+          setStaffUsers(staff)
+        }
+
+      } catch (error) {
+        console.error('Error loading dashboard data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
     loadDashboardData()
   }, [user, userProfile, router])
-
-  const loadDashboardData = async () => {
-    try {
-      setLoading(true)
-
-      // Load audit logs (admin only)
-      if (userProfile?.role === 'admin') {
-        const logs = await getAuditLogs(undefined, 20)
-        setAuditLogs(logs)
-      }
-
-      // Load staff users (manager and admin)
-      if (userProfile?.role === 'manager' || userProfile?.role === 'admin') {
-        const staff = await getStaffUsers()
-        setStaffUsers(staff)
-      }
-
-    } catch (error) {
-      console.error('Error loading dashboard data:', error)
-    } finally {
-      setLoading(false)
-    }
-  }
 
   const handleLogout = async () => {
     await logout()
