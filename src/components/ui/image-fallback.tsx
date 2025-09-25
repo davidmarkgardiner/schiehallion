@@ -5,7 +5,6 @@ import { useState, useCallback } from "react"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { cn } from "@/lib/utils"
@@ -58,8 +57,11 @@ export function ImageFallback({
     }
   }, [fallbackAttempted, src])
 
-  const renderFallbackContent = () => {
-    switch (fallbackType) {
+  const fallbackVariant: 'room' | 'placeholder' | 'error' =
+    imageState === 'error' ? 'error' : fallbackType
+
+  const renderFallbackContent = (type: 'room' | 'placeholder' | 'error') => {
+    switch (type) {
       case 'room':
         return (
           <div className="flex flex-col items-center justify-center h-full text-center p-6 space-y-4">
@@ -136,58 +138,37 @@ export function ImageFallback({
   }
 
   // Show skeleton while loading
-  if (imageState === 'loading') {
+  if (src && imageState !== 'error') {
     return (
       <div className={cn("relative overflow-hidden rounded-lg", className)}>
         <AspectRatio ratio={aspectRatio}>
-          <Skeleton className="w-full h-full bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-600/20 to-transparent animate-pulse" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
-            </div>
-          </Skeleton>
-        </AspectRatio>
-      </div>
-    )
-  }
+          <div className="relative w-full h-full">
+            <Image
+              src={src}
+              alt={alt}
+              fill
+              className={cn(
+                "object-cover transition-opacity duration-500",
+                imageState === 'loaded' ? 'opacity-100' : 'opacity-0'
+              )}
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+              priority={priority}
+              sizes={sizes}
+              quality={90}
+            />
 
-  // Show actual image if loaded successfully
-  if (imageState === 'loaded' && src) {
-    return (
-      <div className={cn("relative overflow-hidden rounded-lg", className)}>
-        <AspectRatio ratio={aspectRatio}>
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            className="object-cover transition-opacity duration-500"
-            onLoad={handleImageLoad}
-            onError={handleImageError}
-            priority={priority}
-            sizes={sizes}
-            quality={90}
-          />
-        </AspectRatio>
-      </div>
-    )
-  }
-
-  // Show image if we have a source but haven't tried to load it yet
-  if (src && (imageState === 'loading' || imageState === 'no-src')) {
-    return (
-      <div className={cn("relative overflow-hidden rounded-lg", className)}>
-        <AspectRatio ratio={aspectRatio}>
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            className="object-cover transition-opacity duration-500"
-            onLoad={handleImageLoad}
-            onError={handleImageError}
-            priority={priority}
-            sizes={sizes}
-            quality={90}
-          />
+            {imageState === 'loading' && (
+              <div className="absolute inset-0">
+                <Skeleton className="w-full h-full bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800">
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-600/20 to-transparent animate-pulse" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
+                  </div>
+                </Skeleton>
+              </div>
+            )}
+          </div>
         </AspectRatio>
       </div>
     )
@@ -199,7 +180,7 @@ export function ImageFallback({
       <AspectRatio ratio={aspectRatio}>
         <Card className="w-full h-full border-white/10 bg-slate-800/50 backdrop-blur-sm">
           <CardContent className="p-0 h-full">
-            {renderFallbackContent()}
+            {renderFallbackContent(fallbackVariant)}
           </CardContent>
         </Card>
       </AspectRatio>
