@@ -3,6 +3,7 @@
 
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import type { StateStorage } from 'zustand/middleware'
 import {
   CartItem,
   CartSummary,
@@ -107,6 +108,38 @@ const calculateNights = (checkIn: string, checkOut: string): number => {
   const checkOutDate = new Date(checkOut)
   const timeDiff = checkOutDate.getTime() - checkInDate.getTime()
   return Math.ceil(timeDiff / (1000 * 3600 * 24))
+}
+
+// Provide a storage fallback when sessionStorage isn't available (SSR, tests)
+const memoryStorage: StateStorage = (() => {
+  const store = new Map<string, string>()
+
+  return {
+    getItem: (name: string) => store.get(name) ?? null,
+    setItem: (name: string, value: string) => {
+      store.set(name, value)
+    },
+    removeItem: (name: string) => {
+      store.delete(name)
+    }
+  }
+})()
+
+const getStorage = () => {
+  if (typeof window === 'undefined') {
+    return memoryStorage
+  }
+
+  try {
+    if (window.sessionStorage) {
+      return window.sessionStorage
+    }
+  } catch (error) {
+    // Accessing sessionStorage can throw in some browsers (e.g. Safari private mode)
+    console.warn('Session storage unavailable, falling back to in-memory cart storage', error)
+  }
+
+  return memoryStorage
 }
 
 export const useCartStore = create<CartState>()(
@@ -243,7 +276,7 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'schiehallion-cart-storage',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(getStorage),
       partialize: (state) => ({
         items: state.items.map(item => ({
           ...item,
