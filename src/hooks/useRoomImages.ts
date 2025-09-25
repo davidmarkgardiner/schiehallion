@@ -136,8 +136,8 @@ export function useActiveRoomImages(): {
 
     loadActiveImages();
 
-    // Refresh every 60 seconds (reduced frequency for better performance)
-    const interval = setInterval(loadActiveImages, 60000);
+    // Refresh every 5 minutes (reduced frequency for better performance)
+    const interval = setInterval(loadActiveImages, 300000);
 
     return () => clearInterval(interval);
   }, []);

@@ -192,7 +192,6 @@ export function ImageFallback({
             fill
             className="object-cover transition-opacity duration-500"
             onLoad={handleImageLoad}
-            onLoadingComplete={handleImageLoad}
             onError={handleImageError}
             priority={priority}
             sizes={sizes}

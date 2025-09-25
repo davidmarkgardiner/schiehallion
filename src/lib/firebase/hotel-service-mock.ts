@@ -43,11 +43,7 @@ const mockRooms: Room[] = [
       ironingBoard: true,
       accessibleFeatures: []
     },
-    images: [
-      '/images/rooms/standard-101-1.jpg',
-      '/images/rooms/standard-101-2.jpg',
-      '/images/rooms/standard-101-3.jpg'
-    ],
+    images: [],
     pricing: {
       basePrice: 15000, // £150.00
       seasonalRates: {},
@@ -90,12 +86,7 @@ const mockRooms: Room[] = [
       ironingBoard: true,
       accessibleFeatures: []
     },
-    images: [
-      '/images/rooms/deluxe-102-1.jpg',
-      '/images/rooms/deluxe-102-2.jpg',
-      '/images/rooms/deluxe-102-3.jpg',
-      '/images/rooms/deluxe-102-4.jpg'
-    ],
+    images: [],
     pricing: {
       basePrice: 22000, // £220.00
       seasonalRates: {},
@@ -138,13 +129,7 @@ const mockRooms: Room[] = [
       ironingBoard: true,
       accessibleFeatures: []
     },
-    images: [
-      '/images/rooms/suite-201-1.jpg',
-      '/images/rooms/suite-201-2.jpg',
-      '/images/rooms/suite-201-3.jpg',
-      '/images/rooms/suite-201-4.jpg',
-      '/images/rooms/suite-201-5.jpg'
-    ],
+    images: [],
     pricing: {
       basePrice: 35000, // £350.00
       seasonalRates: {},
@@ -187,11 +172,7 @@ const mockRooms: Room[] = [
       ironingBoard: true,
       accessibleFeatures: []
     },
-    images: [
-      '/images/rooms/family-103-1.jpg',
-      '/images/rooms/family-103-2.jpg',
-      '/images/rooms/family-103-3.jpg'
-    ],
+    images: [],
     pricing: {
       basePrice: 28000, // £280.00
       seasonalRates: {},
@@ -234,10 +215,7 @@ const mockRooms: Room[] = [
       ironingBoard: true,
       accessibleFeatures: ['wheelchair-accessible', 'hearing-loop', 'visual-aids']
     },
-    images: [
-      '/images/rooms/accessible-104-1.jpg',
-      '/images/rooms/accessible-104-2.jpg'
-    ],
+    images: [],
     pricing: {
       basePrice: 16000, // £160.00
       seasonalRates: {},
