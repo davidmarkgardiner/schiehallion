@@ -32,35 +32,37 @@ export default function AdminNav({ className = '' }: AdminNavProps) {
   ];
 
   return (
-    <nav className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 ${className}`}>
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-          <span className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mr-3 text-sm">
+    <nav
+      className={`rounded-3xl border border-lundies-stone/60 bg-white/70 p-4 shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/70 ${className}`}
+    >
+      <div className="mb-4 flex items-center justify-between">
+        <h2 className="flex items-center text-lg font-semibold text-lundies-charcoal dark:text-neutral-100">
+          <span className="mr-3 flex h-8 w-8 items-center justify-center rounded-lg bg-lundies-linen/80 text-sm text-lundies-charcoal shadow-sm dark:bg-neutral-800 dark:text-neutral-100">
             ⚙️
           </span>
           Admin Panel
         </h2>
       </div>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
         {navItems.map((item) => {
           const isActive = pathname === item.href;
-          
+
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`p-4 rounded-lg border transition-colors ${
+              className={`rounded-2xl border p-4 transition-colors ${
                 isActive
-                  ? 'bg-blue-50 border-blue-200 text-blue-900 dark:bg-blue-900/20 dark:border-blue-700 dark:text-blue-300'
-                  : 'bg-gray-50 border-gray-200 text-gray-700 hover:bg-gray-100 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-600'
+                  ? 'border-lundies-stone/60 bg-lundies-linen/90 text-lundies-charcoal shadow-sm dark:border-neutral-600 dark:bg-neutral-800'
+                  : 'border-lundies-stone/40 bg-white/70 text-lundies-peat/80 hover:bg-lundies-ivory/80 dark:border-neutral-700 dark:bg-neutral-900/70 dark:text-neutral-200 dark:hover:bg-neutral-800'
               }`}
             >
-              <div className="flex items-center mb-2">
-                <span className="text-2xl mr-3">{item.icon}</span>
+              <div className="mb-2 flex items-center text-lundies-charcoal dark:text-neutral-100">
+                <span className="mr-3 text-2xl">{item.icon}</span>
                 <span className="font-medium">{item.label}</span>
               </div>
-              <p className="text-sm opacity-75">{item.description}</p>
+              <p className="text-sm text-lundies-peat/80 dark:text-neutral-300">{item.description}</p>
             </Link>
           );
         })}

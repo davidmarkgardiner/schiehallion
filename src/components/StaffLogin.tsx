@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import Link from 'next/link'
+import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
 
@@ -11,33 +12,28 @@ export default function StaffLogin() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [showTwoFactor, setShowTwoFactor] = useState(false)
-  const [sessionTimeout, setSessionTimeout] = useState<NodeJS.Timeout | null>(null)
-
   const { login, user, userProfile, logout } = useAuth()
   const router = useRouter()
+
+  const handleSessionTimeout = useCallback(async () => {
+    setError('Session expired for security. Please log in again.')
+    await logout()
+    router.push('/admin/login')
+  }, [logout, router])
 
   // Session timeout management (30 minutes for staff)
   useEffect(() => {
     if (user && userProfile && ['staff', 'manager', 'admin'].includes(userProfile.role)) {
       const timeout = setTimeout(() => {
         handleSessionTimeout()
-      }, 30 * 60 * 1000) // 30 minutes
-
-      setSessionTimeout(timeout as unknown as number)
+      }, 30 * 60 * 1000)
 
       return () => {
-        if (timeout) {
-          clearTimeout(timeout)
-        }
+        clearTimeout(timeout)
       }
     }
-  }, [user, userProfile])
-
-  const handleSessionTimeout = async () => {
-    setError('Session expired for security. Please log in again.')
-    await logout()
-    router.push('/admin/login')
-  }
+    return undefined
+  }, [handleSessionTimeout, user, userProfile])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -118,29 +114,29 @@ export default function StaffLogin() {
 
   if (showTwoFactor) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
-        <div className="max-w-md w-full mx-auto p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800">
-          <div className="text-center mb-6">
-            <div className="mx-auto h-12 w-12 bg-indigo-100 rounded-full flex items-center justify-center">
-              <svg className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-lundies-ivory via-lundies-linen to-lundies-stone dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-800">
+        <div className="mx-auto w-full max-w-md rounded-3xl border border-lundies-stone/60 bg-white/80 p-6 shadow-lg backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/80">
+          <div className="mb-6 space-y-3 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-lundies-linen/80">
+              <svg className="h-6 w-6 text-lundies-moss" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Two-Factor Authentication</h2>
-            <p className="text-gray-600 dark:text-gray-400 text-sm mt-2">
+            <h2 className="text-2xl font-bold text-lundies-charcoal dark:text-neutral-50">Two-Factor Authentication</h2>
+            <p className="mt-2 text-sm text-lundies-peat/80 dark:text-neutral-300">
               Enter the 6-digit code sent to your device
             </p>
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+            <div className="mb-4 rounded-lg border border-lundies-peat/30 bg-lundies-peat/10 p-3 text-lundies-peat dark:border-neutral-600 dark:bg-neutral-800">
               {error}
             </div>
           )}
 
           <form onSubmit={handleTwoFactorSubmit} className="space-y-4">
             <div>
-              <label htmlFor="twoFactorCode" className="block text-sm font-medium mb-1">
+              <label htmlFor="twoFactorCode" className="mb-1 block text-sm font-medium text-lundies-charcoal dark:text-neutral-100">
                 Verification Code
               </label>
               <input
@@ -148,7 +144,7 @@ export default function StaffLogin() {
                 id="twoFactorCode"
                 value={twoFactorCode}
                 onChange={(e) => setTwoFactorCode(e.target.value.replace(/\D/g, '').slice(0, 6))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 text-center text-lg tracking-widest"
+                className="w-full rounded-lg border border-lundies-stone/50 px-3 py-2 text-center text-lg tracking-widest text-lundies-charcoal focus:outline-none focus:ring-2 focus:ring-lundies-moss dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
                 placeholder="000000"
                 maxLength={6}
                 required
@@ -158,7 +154,7 @@ export default function StaffLogin() {
             <button
               type="submit"
               disabled={loading || twoFactorCode.length !== 6}
-              className="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+              className="w-full rounded-lg bg-lundies-moss px-4 py-2 font-medium text-white transition hover:bg-lundies-heather focus:outline-none focus:ring-2 focus:ring-lundies-moss disabled:opacity-50"
             >
               {loading ? 'Verifying...' : 'Verify & Continue'}
             </button>
@@ -167,9 +163,9 @@ export default function StaffLogin() {
           <div className="mt-4 text-center">
             <button
               onClick={resendTwoFactorCode}
-              className="text-indigo-600 hover:text-indigo-800 text-sm"
+              className="text-sm font-medium text-lundies-moss hover:text-lundies-heather"
             >
-              Didn't receive a code? Resend
+              Didn&apos;t receive a code? Resend
             </button>
           </div>
 
@@ -180,7 +176,7 @@ export default function StaffLogin() {
                 setTwoFactorCode('')
                 setError('')
               }}
-              className="text-gray-600 hover:text-gray-800 text-sm"
+              className="text-sm text-lundies-peat hover:text-lundies-charcoal"
             >
               ← Back to login
             </button>
@@ -191,29 +187,29 @@ export default function StaffLogin() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-blue-100 dark:from-gray-900 dark:to-gray-800">
-      <div className="max-w-md w-full mx-auto p-6 bg-white rounded-lg shadow-lg dark:bg-gray-800">
-        <div className="text-center mb-6">
-          <div className="mx-auto h-12 w-12 bg-indigo-100 rounded-full flex items-center justify-center">
-            <svg className="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-lundies-ivory via-lundies-linen to-lundies-stone dark:from-neutral-950 dark:via-neutral-900 dark:to-neutral-800">
+      <div className="mx-auto w-full max-w-md rounded-3xl border border-lundies-stone/60 bg-white/80 p-6 shadow-lg backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/80">
+        <div className="mb-6 space-y-3 text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-lundies-linen/80">
+            <svg className="h-6 w-6 text-lundies-moss" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Staff Portal</h2>
-          <p className="text-gray-600 dark:text-gray-400 text-sm">
+          <h2 className="text-2xl font-bold text-lundies-charcoal dark:text-neutral-50">Staff Portal</h2>
+          <p className="text-sm text-lundies-peat/80 dark:text-neutral-300">
             Secure access for hotel staff and management
           </p>
         </div>
 
         {error && (
-          <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+          <div className="mb-4 rounded-lg border border-lundies-peat/30 bg-lundies-peat/10 p-3 text-lundies-peat dark:border-neutral-600 dark:bg-neutral-800">
             {error}
           </div>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium mb-1">
+            <label htmlFor="email" className="mb-1 block text-sm font-medium text-lundies-charcoal dark:text-neutral-100">
               Staff Email
             </label>
             <input
@@ -221,14 +217,14 @@ export default function StaffLogin() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full rounded-lg border border-lundies-stone/50 px-3 py-2 text-lundies-charcoal focus:outline-none focus:ring-2 focus:ring-lundies-moss dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
               placeholder="staff@hotel.com"
               required
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium mb-1">
+            <label htmlFor="password" className="mb-1 block text-sm font-medium text-lundies-charcoal dark:text-neutral-100">
               Password
             </label>
             <input
@@ -236,7 +232,7 @@ export default function StaffLogin() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600"
+              className="w-full rounded-lg border border-lundies-stone/50 px-3 py-2 text-lundies-charcoal focus:outline-none focus:ring-2 focus:ring-lundies-moss dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-100"
               required
             />
           </div>
@@ -244,35 +240,32 @@ export default function StaffLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-2 px-4 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 disabled:opacity-50"
+            className="w-full rounded-lg bg-lundies-moss px-4 py-2 font-medium text-white transition hover:bg-lundies-heather focus:outline-none focus:ring-2 focus:ring-lundies-moss disabled:opacity-50"
           >
             {loading ? 'Signing In...' : 'Sign In'}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <div className="flex items-center justify-center space-x-2 text-sm text-gray-600 dark:text-gray-400">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="flex items-center justify-center space-x-2 text-sm text-lundies-peat/80 dark:text-neutral-300">
+            <svg className="h-4 w-4 text-lundies-moss" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
             <span>Secured with 2FA</span>
           </div>
         </div>
 
-        <div className="mt-4 text-center">
-          <a
-            href="/"
-            className="text-indigo-600 hover:text-indigo-800 text-sm"
-          >
-            ← Back to main site
-          </a>
-        </div>
+          <div className="mt-4 text-center">
+            <Link href="/" className="text-sm font-medium text-lundies-moss hover:text-lundies-heather">
+              ← Back to main site
+            </Link>
+          </div>
 
         {/* Demo credentials info */}
-        <div className="mt-6 p-3 bg-yellow-50 border border-yellow-200 rounded text-sm">
-          <p className="font-medium text-yellow-800">Demo Credentials:</p>
-          <p className="text-yellow-700">Use any email with 'staff', 'manager', or 'admin' to trigger 2FA</p>
-          <p className="text-yellow-700">2FA Code: 123456 (for demo)</p>
+        <div className="mt-6 rounded-xl border border-lundies-stone/60 bg-lundies-linen/80 p-3 text-sm text-lundies-peat dark:border-neutral-700 dark:bg-neutral-900/70 dark:text-neutral-200">
+          <p className="font-medium text-lundies-charcoal dark:text-neutral-100">Demo Credentials:</p>
+            <p>Use any email with &lsquo;staff&rsquo;, &lsquo;manager&rsquo;, or &lsquo;admin&rsquo; to trigger 2FA</p>
+          <p>2FA Code: 123456 (for demo)</p>
         </div>
       </div>
     </div>

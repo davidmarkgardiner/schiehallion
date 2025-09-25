@@ -22,13 +22,13 @@ export default function AdminDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <div className="container mx-auto px-4 py-8">
-        <div className="space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-lundies-ivory via-lundies-linen to-lundies-stone text-lundies-charcoal">
+      <div className="container mx-auto px-4 py-12">
+        <div className="space-y-8">
           {/* Header */}
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-white mb-2">Admin Dashboard</h1>
-            <p className="text-slate-300">Manage your AI-powered hotel content</p>
+          <div className="text-center space-y-2">
+            <h1 className="text-4xl font-bold tracking-tight">Admin Dashboard</h1>
+            <p className="text-sm uppercase tracking-[0.35em] text-lundies-peat/70">Manage your AI-powered hotel content</p>
           </div>
 
           {/* Navigation */}
@@ -36,42 +36,48 @@ export default function AdminDashboard() {
 
           {/* Stats Overview */}
           {stats && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="rounded-3xl border border-lundies-stone/60 bg-white/70 p-6 shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/70">
+              <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-lundies-charcoal dark:text-neutral-100">
+                <svg className="h-6 w-6 text-lundies-moss" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
                 AI Image Gallery Overview
               </h2>
-              
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
-                <div className="text-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                  <div className="text-3xl font-bold text-blue-600 mb-1">{stats.totalImages}</div>
-                  <div className="text-sm text-blue-600 font-medium">Total Images</div>
+              <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+                <div className="rounded-2xl border border-lundies-stone/40 bg-lundies-ivory/80 p-4 text-center shadow-sm backdrop-blur-sm dark:border-neutral-700/60 dark:bg-neutral-900/70">
+                  <div className="mb-1 text-3xl font-semibold text-lundies-charcoal dark:text-neutral-50">{stats.totalImages}</div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.3em] text-lundies-peat/70">Total Images</div>
                 </div>
-                <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                  <div className="text-3xl font-bold text-green-600 mb-1">{stats.activeImages}</div>
-                  <div className="text-sm text-green-600 font-medium">Active Images</div>
+                <div className="rounded-2xl border border-lundies-stone/40 bg-lundies-ivory/80 p-4 text-center shadow-sm backdrop-blur-sm dark:border-neutral-700/60 dark:bg-neutral-900/70">
+                  <div className="mb-1 text-3xl font-semibold text-lundies-charcoal dark:text-neutral-50">{stats.activeImages}</div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.3em] text-lundies-peat/70">Active Images</div>
                 </div>
-                <div className="text-center p-4 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                  <div className="text-3xl font-bold text-purple-600 mb-1">{Object.keys(stats.imagesByRoomType).length}</div>
-                  <div className="text-sm text-purple-600 font-medium">Room Types</div>
+                <div className="rounded-2xl border border-lundies-stone/40 bg-lundies-ivory/80 p-4 text-center shadow-sm backdrop-blur-sm dark:border-neutral-700/60 dark:bg-neutral-900/70">
+                  <div className="mb-1 text-3xl font-semibold text-lundies-charcoal dark:text-neutral-50">{Object.keys(stats.imagesByRoomType).length}</div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.3em] text-lundies-peat/70">Room Types</div>
                 </div>
-                <div className="text-center p-4 bg-orange-50 dark:bg-orange-900/20 rounded-lg">
-                  <div className="text-3xl font-bold text-orange-600 mb-1">{Object.keys(stats.imagesByStyle).length}</div>
-                  <div className="text-sm text-orange-600 font-medium">Styles Used</div>
+                <div className="rounded-2xl border border-lundies-stone/40 bg-lundies-ivory/80 p-4 text-center shadow-sm backdrop-blur-sm dark:border-neutral-700/60 dark:bg-neutral-900/70">
+                  <div className="mb-1 text-3xl font-semibold text-lundies-charcoal dark:text-neutral-50">{Object.keys(stats.imagesByStyle).length}</div>
+                  <div className="text-xs font-semibold uppercase tracking-[0.3em] text-lundies-peat/70">Styles Used</div>
                 </div>
               </div>
 
               {/* Room Type Breakdown */}
               {Object.keys(stats.imagesByRoomType).length > 0 && (
                 <div className="mb-6">
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Images by Room Type</h3>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                  <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-lundies-peat/70 dark:text-neutral-300/80">
+                    Images by Room Type
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3 md:grid-cols-5">
                     {Object.entries(stats.imagesByRoomType).map(([roomType, count]: [string, any]) => (
-                      <div key={roomType} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 text-center">
-                        <div className="text-lg font-semibold text-gray-900 dark:text-white">{count}</div>
-                        <div className="text-xs text-gray-600 dark:text-gray-400 capitalize">{roomType}</div>
+                      <div
+                        key={roomType}
+                        className="rounded-xl border border-lundies-stone/40 bg-white/70 p-3 text-center shadow-sm backdrop-blur-sm dark:border-neutral-700/60 dark:bg-neutral-900/70"
+                      >
+                        <div className="text-lg font-semibold text-lundies-charcoal dark:text-neutral-50">{count}</div>
+                        <div className="text-xs font-medium uppercase tracking-[0.25em] text-lundies-peat/70 dark:text-neutral-300/80">
+                          {roomType}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -81,12 +87,19 @@ export default function AdminDashboard() {
               {/* Style Breakdown */}
               {Object.keys(stats.imagesByStyle).length > 0 && (
                 <div>
-                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-3">Images by Style</h3>
+                  <h3 className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-lundies-peat/70 dark:text-neutral-300/80">
+                    Images by Style
+                  </h3>
                   <div className="grid grid-cols-3 gap-3">
                     {Object.entries(stats.imagesByStyle).map(([style, count]: [string, any]) => (
-                      <div key={style} className="bg-gray-50 dark:bg-gray-700 rounded-lg p-3 text-center">
-                        <div className="text-lg font-semibold text-gray-900 dark:text-white">{count}</div>
-                        <div className="text-xs text-gray-600 dark:text-gray-400 capitalize">{style}</div>
+                      <div
+                        key={style}
+                        className="rounded-xl border border-lundies-stone/40 bg-white/70 p-3 text-center shadow-sm backdrop-blur-sm dark:border-neutral-700/60 dark:bg-neutral-900/70"
+                      >
+                        <div className="text-lg font-semibold text-lundies-charcoal dark:text-neutral-50">{count}</div>
+                        <div className="text-xs font-medium uppercase tracking-[0.25em] text-lundies-peat/70 dark:text-neutral-300/80">
+                          {style}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -96,69 +109,71 @@ export default function AdminDashboard() {
           )}
 
           {/* Quick Actions */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-              <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="rounded-3xl border border-lundies-stone/60 bg-white/70 p-6 shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/70">
+            <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-lundies-charcoal dark:text-neutral-100">
+              <svg className="h-6 w-6 text-lundies-moss" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
               Quick Actions
             </h2>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link
                 href="/admin/room-images"
-                className="p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/30 transition-colors"
+                className="group rounded-2xl border border-lundies-stone/50 bg-lundies-linen/80 p-4 transition-colors hover:bg-lundies-ivory/90 dark:border-neutral-700/60 dark:bg-neutral-900/70 dark:hover:bg-neutral-800"
               >
-                <div className="flex items-center mb-2">
-                  <span className="text-2xl mr-3">🎨</span>
-                  <span className="font-medium text-blue-900 dark:text-blue-300">Generate Room Images</span>
+                <div className="mb-2 flex items-center">
+                  <span className="mr-3 text-2xl">🎨</span>
+                  <span className="font-medium text-lundies-charcoal dark:text-neutral-100">Generate Room Images</span>
                 </div>
-                <p className="text-sm text-blue-700 dark:text-blue-400">Create stunning AI-powered room photos for your website</p>
+                <p className="text-sm text-lundies-peat/80 dark:text-neutral-300">
+                  Create AI-powered room photography that matches the Schiehallion palette
+                </p>
               </Link>
-              
+
               <Link
                 href="/rooms"
-                className="p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-700 rounded-lg hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
+                className="group rounded-2xl border border-lundies-stone/50 bg-white/70 p-4 transition-colors hover:bg-lundies-ivory/80 dark:border-neutral-700/60 dark:bg-neutral-900/70 dark:hover:bg-neutral-800"
               >
-                <div className="flex items-center mb-2">
-                  <span className="text-2xl mr-3">🏨</span>
-                  <span className="font-medium text-green-900 dark:text-green-300">View Rooms</span>
+                <div className="mb-2 flex items-center">
+                  <span className="mr-3 text-2xl">🏨</span>
+                  <span className="font-medium text-lundies-charcoal dark:text-neutral-100">View Rooms</span>
                 </div>
-                <p className="text-sm text-green-700 dark:text-green-400">See how your AI-generated images look on the website</p>
+                <p className="text-sm text-lundies-peat/80 dark:text-neutral-300">Review how curated imagery appears on guest pages</p>
               </Link>
             </div>
           </div>
 
           {/* Getting Started */}
           {(!stats || stats.totalImages === 0) && (
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-                <svg className="w-6 h-6 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div className="rounded-3xl border border-lundies-stone/60 bg-white/70 p-6 shadow-sm backdrop-blur-sm dark:border-neutral-700 dark:bg-neutral-900/70">
+              <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-lundies-charcoal dark:text-neutral-100">
+                <svg className="h-6 w-6 text-lundies-moss" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
                 Getting Started
               </h2>
-              
-              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
-                <h3 className="font-medium text-blue-900 dark:text-blue-300 mb-2">Welcome to AI Room Image Management!</h3>
-                <p className="text-sm text-blue-700 dark:text-blue-400 mb-4">
-                  You haven't generated any room images yet. Get started by creating your first AI-powered room image.
+
+              <div className="rounded-2xl border border-lundies-stone/50 bg-lundies-linen/80 p-4 dark:border-neutral-700/60 dark:bg-neutral-900/70">
+                <h3 className="mb-2 font-medium text-lundies-charcoal dark:text-neutral-100">Welcome to AI Room Image Management!</h3>
+                <p className="mb-4 text-sm text-lundies-peat/80 dark:text-neutral-300">
+                  You haven&apos;t generated any room images yet. Curate your first collection to see it appear across guest journeys.
                 </p>
-                <div className="space-y-2 text-sm text-blue-700 dark:text-blue-400">
+                <div className="space-y-2 text-sm text-lundies-peat/80 dark:text-neutral-300">
                   <div className="flex items-center">
-                    <span className="w-6 h-6 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-2">1</span>
+                    <span className="mr-2 flex h-6 w-6 items-center justify-center rounded-full bg-white/80 text-xs font-semibold text-lundies-charcoal shadow-sm dark:bg-neutral-800 dark:text-neutral-100">1</span>
                     Go to Room Images admin panel
                   </div>
                   <div className="flex items-center">
-                    <span className="w-6 h-6 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-2">2</span>
+                    <span className="mr-2 flex h-6 w-6 items-center justify-center rounded-full bg-white/80 text-xs font-semibold text-lundies-charcoal shadow-sm dark:bg-neutral-800 dark:text-neutral-100">2</span>
                     Select a room type and style
                   </div>
                   <div className="flex items-center">
-                    <span className="w-6 h-6 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-2">3</span>
+                    <span className="mr-2 flex h-6 w-6 items-center justify-center rounded-full bg-white/80 text-xs font-semibold text-lundies-charcoal shadow-sm dark:bg-neutral-800 dark:text-neutral-100">3</span>
                     Generate and activate your images
                   </div>
                   <div className="flex items-center">
-                    <span className="w-6 h-6 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center text-xs font-bold mr-2">4</span>
+                    <span className="mr-2 flex h-6 w-6 items-center justify-center rounded-full bg-white/80 text-xs font-semibold text-lundies-charcoal shadow-sm dark:bg-neutral-800 dark:text-neutral-100">4</span>
                     View them live on your rooms page
                   </div>
                 </div>
