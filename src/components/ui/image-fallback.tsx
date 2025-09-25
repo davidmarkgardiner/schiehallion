@@ -1,11 +1,10 @@
 'use client'
 
 import * as React from "react"
-import { useState, useCallback } from "react"
+import { useState, useCallback, useEffect } from "react"
 import Image from "next/image"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Skeleton } from "@/components/ui/skeleton"
 import { AspectRatio } from "@/components/ui/aspect-ratio"
 import { cn } from "@/lib/utils"
@@ -42,21 +41,51 @@ export function ImageFallback({
     // If no src is provided, immediately go to no-src state
     return src ? 'loading' : 'no-src'
   })
-  const [fallbackAttempted, setFallbackAttempted] = useState(false)
+  const [retryCount, setRetryCount] = useState(0)
+  const [retryTimeout, setRetryTimeout] = useState<NodeJS.Timeout | null>(null)
+
+  useEffect(() => {
+    if (src) {
+      setImageState('loading')
+      setRetryCount(0)
+      // Clear any existing timeout
+      if (retryTimeout) {
+        clearTimeout(retryTimeout)
+        setRetryTimeout(null)
+      }
+    } else {
+      setImageState('no-src')
+    }
+  }, [src, retryTimeout])
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (retryTimeout) {
+        clearTimeout(retryTimeout)
+      }
+    }
+  }, [retryTimeout])
 
   const handleImageLoad = useCallback(() => {
     setImageState('loaded')
   }, [])
 
   const handleImageError = useCallback(() => {
-    if (!fallbackAttempted && src) {
-      setFallbackAttempted(true)
-      // Try one more time or switch to error state
-      setImageState('error')
+    const maxRetries = 2
+    if (retryCount < maxRetries && src) {
+      // Implement exponential backoff: 1s, 2s, 4s
+      const delay = Math.pow(2, retryCount) * 1000
+      const timeout = setTimeout(() => {
+        setRetryCount(prev => prev + 1)
+        setImageState('loading')
+        setRetryTimeout(null)
+      }, delay)
+      setRetryTimeout(timeout)
     } else {
       setImageState('error')
     }
-  }, [fallbackAttempted, src])
+  }, [retryCount, src])
 
   const renderFallbackContent = () => {
     switch (fallbackType) {
@@ -135,73 +164,59 @@ export function ImageFallback({
     }
   }
 
-  // Show skeleton while loading
-  if (imageState === 'loading') {
+  const showSkeletonOverlay = imageState === 'loading' && !!src
+  const shouldRenderImage = !!src && imageState !== 'error'
+
+  if (!shouldRenderImage) {
     return (
       <div className={cn("relative overflow-hidden rounded-lg", className)}>
         <AspectRatio ratio={aspectRatio}>
-          <Skeleton className="w-full h-full bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800">
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-600/20 to-transparent animate-pulse" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin" />
-            </div>
-          </Skeleton>
+          <Card className="w-full h-full border-white/10 bg-slate-800/50 backdrop-blur-sm">
+            <CardContent className="p-0 h-full" role="img" aria-label={alt}>
+              {renderFallbackContent()}
+            </CardContent>
+          </Card>
         </AspectRatio>
       </div>
     )
   }
 
-  // Show actual image if loaded successfully
-  if (imageState === 'loaded' && src) {
-    return (
-      <div className={cn("relative overflow-hidden rounded-lg", className)}>
-        <AspectRatio ratio={aspectRatio}>
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            className="object-cover transition-opacity duration-500"
-            onLoad={handleImageLoad}
-            onError={handleImageError}
-            priority={priority}
-            sizes={sizes}
-            quality={90}
-          />
-        </AspectRatio>
-      </div>
-    )
-  }
-
-  // Show image if we have a source but haven't tried to load it yet
-  if (src && (imageState === 'loading' || imageState === 'no-src')) {
-    return (
-      <div className={cn("relative overflow-hidden rounded-lg", className)}>
-        <AspectRatio ratio={aspectRatio}>
-          <Image
-            src={src}
-            alt={alt}
-            fill
-            className="object-cover transition-opacity duration-500"
-            onLoad={handleImageLoad}
-            onError={handleImageError}
-            priority={priority}
-            sizes={sizes}
-            quality={90}
-          />
-        </AspectRatio>
-      </div>
-    )
-  }
-
-  // Show fallback for error or no-src states
   return (
     <div className={cn("relative overflow-hidden rounded-lg", className)}>
       <AspectRatio ratio={aspectRatio}>
-        <Card className="w-full h-full border-white/10 bg-slate-800/50 backdrop-blur-sm">
-          <CardContent className="p-0 h-full">
-            {renderFallbackContent()}
-          </CardContent>
-        </Card>
+        <>
+          <Image
+            key={src}
+            src={src}
+            alt={alt}
+            fill
+            className="object-cover transition-opacity duration-500"
+            onLoad={handleImageLoad}
+            onLoadingComplete={handleImageLoad}
+            onError={handleImageError}
+            priority={priority}
+            sizes={sizes}
+            quality={90}
+          />
+          {showSkeletonOverlay && (
+            <div
+              className="absolute inset-0"
+              aria-label="Loading image"
+              role="status"
+              aria-live="polite"
+            >
+              <Skeleton className="w-full h-full bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800">
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-600/20 to-transparent animate-pulse" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div
+                    className="w-8 h-8 border-2 border-emerald-400 border-t-transparent rounded-full animate-spin"
+                    aria-hidden="true"
+                  />
+                </div>
+              </Skeleton>
+            </div>
+          )}
+        </>
       </AspectRatio>
     </div>
   )
