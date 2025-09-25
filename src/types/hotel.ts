@@ -112,6 +112,7 @@ export interface GuestInfo {
     phone: string
     relationship: string
   }
+  preferenceProfile?: GuestPreferenceProfileSnapshot
 }
 
 // SCHH-008: Booking Data Model
@@ -149,6 +150,11 @@ export interface Booking {
   // Payment Tracking
   paymentStatus: PaymentStatus
   paymentDetails: PaymentDetails
+
+  // Personalisation metadata
+  packageType?: PackageType
+  roomType?: RoomType
+  personalizationSnapshot?: GuestPreferenceProfileSnapshot
 
   // Booking Status
   status: BookingStatus
@@ -352,6 +358,32 @@ export interface CartSummary {
   itemCount: number
 }
 
+export type TravelPurposeOption = 'leisure' | 'business' | 'celebration' | 'family'
+export type BudgetPreferenceOption = 'value' | 'balanced' | 'premium'
+export type CommunicationPreferenceOption = 'email' | 'sms' | 'whatsapp'
+
+export interface GuestPreferenceFormValues {
+  specialRequests?: string
+  dietaryRequirements: string[]
+  accessibilityNeeds: string[]
+  marketingOptIn: boolean
+  tripPurpose?: TravelPurposeOption
+  stayGoals: string[]
+  experienceInterests: string[]
+  roomComforts: string[]
+  stayOccasion?: string
+  personalizationOptIn: boolean
+  communicationPreference: CommunicationPreferenceOption
+  budgetPreference: BudgetPreferenceOption
+}
+
+export type GuestPreferenceProfileSnapshot = Omit<
+  GuestPreferenceFormValues,
+  'specialRequests' | 'dietaryRequirements' | 'accessibilityNeeds'
+> & {
+  capturedAt?: string
+}
+
 // Guest information form types for SCHH-015
 export interface GuestFormData {
   personalInfo: {
@@ -367,12 +399,7 @@ export interface GuestFormData {
     postcode: string
     country: string
   }
-  preferences: {
-    specialRequests?: string
-    dietaryRequirements: string[]
-    accessibilityNeeds: string[]
-    marketingOptIn: boolean
-  }
+  preferences: GuestPreferenceFormValues
   arrival: {
     estimatedArrivalTime?: string
     specialInstructions?: string

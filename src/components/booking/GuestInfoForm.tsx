@@ -3,9 +3,16 @@
 
 'use client'
 
-import { useState } from 'react'
-import { useForm, useFieldArray } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { useForm, useFieldArray, type FieldArrayPath } from 'react-hook-form'
 import { GuestFormData } from '@/types/hotel'
+import {
+  travelPurposeOptions,
+  stayGoalOptions,
+  experienceInterestOptions,
+  roomComfortOptions,
+  budgetPreferenceOptions
+} from '@/data/personalization'
 
 interface GuestInfoFormProps {
   onSubmit: (data: GuestFormData) => void
@@ -29,6 +36,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
     handleSubmit,
     control,
     watch,
+    setValue,
     formState: { errors },
     trigger,
     getValues
@@ -53,7 +61,15 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         specialRequests: '',
         dietaryRequirements: initialData?.preferences?.dietaryRequirements || [],
         accessibilityNeeds: initialData?.preferences?.accessibilityNeeds || [],
-        marketingOptIn: false,
+        marketingOptIn: initialData?.preferences?.marketingOptIn ?? false,
+        tripPurpose: initialData?.preferences?.tripPurpose || 'leisure',
+        stayGoals: initialData?.preferences?.stayGoals || [],
+        experienceInterests: initialData?.preferences?.experienceInterests || [],
+        roomComforts: initialData?.preferences?.roomComforts || [],
+        stayOccasion: initialData?.preferences?.stayOccasion || '',
+        personalizationOptIn: initialData?.preferences?.personalizationOptIn ?? true,
+        communicationPreference: initialData?.preferences?.communicationPreference || 'email',
+        budgetPreference: initialData?.preferences?.budgetPreference || 'balanced',
         ...initialData?.preferences
       },
       arrival: {
@@ -70,22 +86,27 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
     }
   })
 
+  const dietaryFieldName =
+    'preferences.dietaryRequirements' as FieldArrayPath<GuestFormData>
+  const accessibilityFieldName =
+    'preferences.accessibilityNeeds' as FieldArrayPath<GuestFormData>
+
   const {
     fields: dietaryFields,
     append: appendDietary,
     remove: removeDietary
-  } = useFieldArray({
+  } = useFieldArray<GuestFormData, typeof dietaryFieldName>({
     control,
-    name: 'preferences.dietaryRequirements' as const
+    name: dietaryFieldName
   })
 
   const {
     fields: accessibilityFields,
     append: appendAccessibility,
     remove: removeAccessibility
-  } = useFieldArray({
+  } = useFieldArray<GuestFormData, typeof accessibilityFieldName>({
     control,
-    name: 'preferences.accessibilityNeeds' as const
+    name: accessibilityFieldName
   })
 
   const steps: { key: FormStep; title: string; description: string }[] = [
@@ -115,6 +136,35 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
       description: 'Emergency contact information (optional)'
     }
   ]
+
+  type PreferenceArrayField =
+    | 'preferences.stayGoals'
+    | 'preferences.experienceInterests'
+    | 'preferences.roomComforts'
+
+  const watchStayGoals = watch('preferences.stayGoals') || []
+  const watchExperienceInterests = watch('preferences.experienceInterests') || []
+  const watchRoomComforts = watch('preferences.roomComforts') || []
+  const watchTripPurpose = watch('preferences.tripPurpose') || 'leisure'
+  const watchBudgetPreference = watch('preferences.budgetPreference') || 'balanced'
+  const watchPersonalizationOptIn = watch('preferences.personalizationOptIn')
+  const stayGoalLimitReached = watchStayGoals.length >= 3
+
+  const togglePreferenceValue = (field: PreferenceArrayField, value: string) => {
+    const current = (watch(field) as string[] | undefined) || []
+    const next = current.includes(value)
+      ? current.filter(item => item !== value)
+      : [...current, value]
+    setValue(field, next, { shouldDirty: true })
+  }
+
+  useEffect(() => {
+    register('preferences.stayGoals')
+    register('preferences.experienceInterests')
+    register('preferences.roomComforts')
+    register('preferences.tripPurpose')
+    register('preferences.budgetPreference')
+  }, [register])
 
   const currentStepIndex = steps.findIndex(step => step.key === currentStep)
   const isLastStep = currentStepIndex === steps.length - 1
@@ -272,7 +322,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         <input
           type="date"
           {...register('personalInfo.dateOfBirth')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal focus:outline-none focus:ring-2 focus:ring-lundies-heather"
         />
       </div>
     </div>
@@ -325,7 +375,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         </label>
         <select
           {...register('address.country')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal focus:outline-none focus:ring-2 focus:ring-lundies-heather"
         >
           <option value="United Kingdom">United Kingdom</option>
           <option value="Ireland">Ireland</option>
@@ -342,7 +392,147 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
   )
 
   const renderPreferences = () => (
-    <div className="space-y-6">
+    <div className="space-y-8">
+      <div>
+        <h3 className="text-lg font-semibold text-lundies-charcoal mb-2">Tailor your stay focus</h3>
+        <p className="text-lundies-peat text-sm">
+          Choose what this visit is all about so we can surface the right touches.
+        </p>
+        <div className="mt-4 grid gap-3 md:grid-cols-2">
+          {travelPurposeOptions.map((option) => {
+            const isSelected = watchTripPurpose === option.value
+            return (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setValue('preferences.tripPurpose', option.value, { shouldDirty: true })}
+                className={`rounded-2xl border px-4 py-4 text-left transition ${
+                  isSelected
+                    ? 'border-lundies-heather bg-lundies-heather/10 text-lundies-charcoal shadow-lg shadow-lundies-heather/20'
+                    : 'border-lundies-stone/60 bg-lundies-stone/20 text-lundies-peat hover:border-lundies-stone'
+                }`}
+              >
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm font-semibold text-lundies-charcoal">{option.label}</span>
+                  {isSelected && (
+                    <span className="rounded-full bg-lundies-heather px-2 py-0.5 text-xs font-semibold text-lundies-charcoal">
+                      Selected
+                    </span>
+                  )}
+                </div>
+                <p className="mt-2 text-xs text-lundies-peat">{option.description}</p>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      <div>
+        <span className="text-sm font-medium text-lundies-peat">Preferred spending style</span>
+        <div className="mt-3 flex flex-wrap gap-3">
+          {budgetPreferenceOptions.map((option) => {
+            const isSelected = watchBudgetPreference === option.value
+            return (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => setValue('preferences.budgetPreference', option.value, { shouldDirty: true })}
+                className={`rounded-full border px-4 py-2 text-sm transition ${
+                  isSelected
+                    ? 'border-lundies-heather bg-lundies-heather/20 text-lundies-moss'
+                    : 'border-lundies-stone/60 bg-lundies-stone/20 text-lundies-peat hover:bg-lundies-stone/40'
+                }`}
+              >
+                <span className="block font-medium">{option.label}</span>
+                <span className="block text-xs text-lundies-stone">{option.tone}</span>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      <div>
+        <div className="flex items-center justify-between">
+          <label className="block text-sm font-medium text-lundies-peat">Stay goals</label>
+          <span className="text-xs text-lundies-stone">Pick up to three focus areas.</span>
+        </div>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          {stayGoalOptions.map((option) => {
+            const isSelected = watchStayGoals.includes(option.value)
+            const disabled = !isSelected && stayGoalLimitReached
+            return (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => {
+                  if (disabled) return
+                  togglePreferenceValue('preferences.stayGoals', option.value)
+                }}
+                className={`rounded-2xl border px-4 py-3 text-left transition ${
+                  isSelected
+                    ? 'border-lundies-heather bg-lundies-heather/10 text-lundies-charcoal'
+                    : disabled
+                      ? 'border-lundies-stone/30 bg-lundies-stone/10 text-lundies-stone cursor-not-allowed opacity-60'
+                      : 'border-lundies-stone/60 bg-lundies-stone/20 text-lundies-peat hover:border-lundies-stone'
+                }`}
+              >
+                <span className="font-medium text-lundies-charcoal">{option.label}</span>
+                <p className="mt-1 text-xs text-lundies-peat">{option.helper}</p>
+              </button>
+            )
+          })}
+        </div>
+        {stayGoalLimitReached && (
+          <p className="mt-2 text-xs text-amber-600">You can deselect an option to choose another focus.</p>
+        )}
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-lundies-peat mb-2">Experiences you're excited about</label>
+        <div className="flex flex-wrap gap-2">
+          {experienceInterestOptions.map((option) => {
+            const isSelected = watchExperienceInterests.includes(option.value)
+            return (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => togglePreferenceValue('preferences.experienceInterests', option.value)}
+                className={`rounded-full border px-3 py-2 text-sm transition ${
+                  isSelected
+                    ? 'border-lundies-heather bg-lundies-heather/20 text-lundies-moss'
+                    : 'border-lundies-stone/60 bg-lundies-stone/20 text-lundies-peat hover:bg-lundies-stone/40'
+                }`}
+              >
+                {option.label}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-lundies-peat mb-2">In-room comforts that matter</label>
+        <div className="flex flex-wrap gap-2">
+          {roomComfortOptions.map((option) => {
+            const isSelected = watchRoomComforts.includes(option.value)
+            return (
+              <button
+                key={option.value}
+                type="button"
+                onClick={() => togglePreferenceValue('preferences.roomComforts', option.value)}
+                className={`rounded-full border px-3 py-2 text-sm transition ${
+                  isSelected
+                    ? 'border-lundies-heather bg-lundies-heather/20 text-lundies-moss'
+                    : 'border-lundies-stone/60 bg-lundies-stone/20 text-lundies-peat hover:bg-lundies-stone/40'
+                }`}
+              >
+                {option.label}
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
       <div>
         <label className="block text-sm font-medium text-lundies-peat mb-2">
           Special Requests
@@ -425,6 +615,49 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         </div>
       </div>
 
+      <div>
+        <label className="block text-sm font-medium text-lundies-peat mb-2">Celebration or reason for visiting (optional)</label>
+        <input
+          {...register('preferences.stayOccasion')}
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal placeholder-lundies-peat focus:outline-none focus:ring-2 focus:ring-lundies-heather"
+          placeholder="e.g., Anniversary weekend, client summit, family adventure"
+        />
+      </div>
+
+      <div className="rounded-2xl border border-lundies-stone/60 bg-lundies-stone/40 p-4 space-y-3">
+        <div className="flex items-start gap-3">
+          <input
+            type="checkbox"
+            id="personalization-opt-in"
+            {...register('preferences.personalizationOptIn')}
+            className="mt-1 h-4 w-4 rounded border-lundies-stone/60 bg-lundies-stone/40 text-lundies-heather focus:ring-lundies-heather focus:ring-2"
+          />
+          <div>
+            <label htmlFor="personalization-opt-in" className="text-sm font-medium text-lundies-charcoal">
+              Personalised recommendations
+            </label>
+            <p className="mt-1 text-xs text-lundies-peat">
+              {watchPersonalizationOptIn
+                ? 'We will learn from your selections and past stays to surface relevant upgrades and experiences.'
+                : 'We will only store essential booking details and keep recommendations generic.'}
+            </p>
+          </div>
+        </div>
+        <p className="text-xs text-lundies-stone">Privacy-first: update or opt-out any time from your profile controls.</p>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-lundies-peat mb-2">How should we share itinerary updates?</label>
+        <select
+          {...register('preferences.communicationPreference')}
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal focus:outline-none focus:ring-2 focus:ring-lundies-heather"
+        >
+          <option value="email">Email</option>
+          <option value="sms">SMS</option>
+          <option value="whatsapp">WhatsApp</option>
+        </select>
+      </div>
+
       <div className="flex items-center space-x-3">
         <input
           type="checkbox"
@@ -447,7 +680,7 @@ const GuestInfoForm: React.FC<GuestInfoFormProps> = ({
         </label>
         <select
           {...register('arrival.estimatedArrivalTime')}
-          className="w-full rounded-xl border border-white/20 bg-black/30 px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          className="w-full rounded-xl border border-lundies-stone/60 bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal focus:outline-none focus:ring-2 focus:ring-lundies-heather"
         >
           <option value="">Select arrival time</option>
           {arrivalTimes.map((time) => (

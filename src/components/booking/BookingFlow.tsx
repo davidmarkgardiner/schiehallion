@@ -3,12 +3,19 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { useCartStore } from '@/store/cartStore'
 import { BookingService } from '@/lib/firebase/hotel-service'
-import { BookingFlowState, GuestFormData, PackageType } from '@/types/hotel'
+import {
+  Booking,
+  BookingFlowState,
+  GuestFormData,
+  GuestPreferenceProfileSnapshot,
+  PackageType
+} from '@/types/hotel'
+import type { BookingHistoryEntry, SuggestionContext, TravelPurpose } from '@/types/personalization'
 import { Timestamp } from 'firebase/firestore'
 
 import ShoppingCart from './ShoppingCart'
@@ -16,6 +23,7 @@ import GuestInfoForm from './GuestInfoForm'
 import PackageSelection from './PackageSelection'
 import RoomSelectionPanel from './RoomSelectionPanel'
 import { PaymentStep } from '@/components/payment/PaymentStep'
+import { PersonalizationPanel } from './PersonalizationPanel'
 
 interface BookingFlowProps {
   initialStep?: BookingFlowState['currentStep']
@@ -27,8 +35,8 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
   availableRooms = []
 }) => {
   const router = useRouter()
-  const { user } = useAuth()
-  const { getCartSummary, clearCart } = useCartStore()
+  const { user, userProfile } = useAuth()
+  const { getCartSummary, clearCart, items, updateItem } = useCartStore()
 
   const [currentStep, setCurrentStep] = useState<BookingFlowState['currentStep']>(initialStep)
   const [guestInfo, setGuestInfo] = useState<GuestFormData | null>(null)
@@ -38,8 +46,148 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
   const [showCart, setShowCart] = useState(false)
   const [bookingIds, setBookingIds] = useState<string[]>([])
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null)
+  const [selectedPackage, setSelectedPackage] = useState<PackageType>('room-only')
+  const [bookingHistory, setBookingHistory] = useState<BookingHistoryEntry[]>([])
+
+  const sanitizeList = (values?: string[]): string[] =>
+    (values || []).map(value => value.trim()).filter(Boolean)
+
+  const buildPreferenceSnapshot = (
+    preferences: GuestFormData['preferences']
+  ): GuestPreferenceProfileSnapshot => ({
+    tripPurpose: preferences.tripPurpose,
+    stayGoals: sanitizeList(preferences.stayGoals),
+    experienceInterests: sanitizeList(preferences.experienceInterests),
+    roomComforts: sanitizeList(preferences.roomComforts),
+    stayOccasion: preferences.stayOccasion?.trim() || undefined,
+    personalizationOptIn: preferences.personalizationOptIn,
+    marketingOptIn: preferences.marketingOptIn,
+    communicationPreference: preferences.communicationPreference,
+    budgetPreference: preferences.budgetPreference,
+    capturedAt: new Date().toISOString()
+  })
+
+  const derivePackageType = useCallback((booking: Booking): PackageType => {
+    if (booking.packageType) {
+      return booking.packageType
+    }
+
+    const additionalChargeLabels = Object.keys(booking.additionalCharges || {}).map(label =>
+      label.toLowerCase()
+    )
+
+    if (additionalChargeLabels.some(label => label.includes('half') || label.includes('dinner'))) {
+      return 'half-board'
+    }
+
+    if (additionalChargeLabels.some(label => label.includes('breakfast'))) {
+      return 'bed-breakfast'
+    }
+
+    return 'room-only'
+  }, [])
+
+  const transformBookingToHistoryEntry = useCallback(
+    (booking: Booking): BookingHistoryEntry => {
+      const packageType = derivePackageType(booking)
+      const addOns = Object.keys(booking.additionalCharges || {})
+      const checkInDate = booking.checkInDate instanceof Timestamp
+        ? booking.checkInDate.toDate().toISOString()
+        : new Date(String(booking.checkInDate)).toISOString()
+
+      const travelPurpose =
+        booking.personalizationSnapshot?.tripPurpose ||
+        booking.guestInfo.preferenceProfile?.tripPurpose ||
+        'leisure'
+
+      return {
+        bookingId: booking.id,
+        checkInDate,
+        nights: booking.numberOfNights,
+        roomType: booking.roomType || booking.room?.type || 'standard',
+        packageType,
+        spend: booking.totalAmount,
+        travelPurpose: travelPurpose as TravelPurpose,
+        addOns,
+        occupancy: booking.totalGuests,
+        wasUpsold: packageType !== 'room-only' || addOns.length > 0
+      }
+    },
+    [derivePackageType]
+  )
+
+  const refreshBookingHistory = useCallback(async () => {
+    if (!user?.uid) {
+      setBookingHistory([])
+      return
+    }
+
+    try {
+      const bookings = await BookingService.getBookings({ guestUserId: user.uid })
+
+      const uniqueEntries = bookings
+        .map(transformBookingToHistoryEntry)
+        .reduce<BookingHistoryEntry[]>((acc, entry) => {
+          if (!acc.some(existing => existing.bookingId === entry.bookingId)) {
+            acc.push(entry)
+          }
+          return acc
+        }, [])
+
+      setBookingHistory(uniqueEntries)
+    } catch (historyError) {
+      console.warn('Failed to load booking history for personalization', historyError)
+    }
+  }, [transformBookingToHistoryEntry, user?.uid])
 
   const cartSummary = getCartSummary()
+
+  useEffect(() => {
+    if (items.length && items[0].packageType !== selectedPackage) {
+      setSelectedPackage(items[0].packageType)
+    }
+  }, [items, selectedPackage])
+
+  useEffect(() => {
+    refreshBookingHistory()
+  }, [refreshBookingHistory])
+
+  const suggestionContext = useMemo<SuggestionContext>(() => {
+    const firstItem = items[0]
+    const accountPreferences = userProfile?.preferences
+    const totalGuests = items.reduce((sum, item) => sum + item.guests, 0)
+    const formStayOccasion = guestInfo?.preferences.stayOccasion?.trim()
+    const stayOccasion = formStayOccasion || accountPreferences?.specialOccasions?.[0]?.trim()
+    const wantsLateCheckout = guestInfo?.preferences.specialRequests
+      ? guestInfo.preferences.specialRequests.toLowerCase().includes('late check')
+      : false
+
+    const travelPurpose =
+      guestInfo?.preferences.tripPurpose || accountPreferences?.travelPurpose || 'leisure'
+    const budgetSensitivity =
+      guestInfo?.preferences.budgetPreference ||
+      accountPreferences?.budgetPreference ||
+      'balanced'
+
+    return {
+      stayLength: firstItem?.numberOfNights || 1,
+      travelPurpose,
+      companions: totalGuests || 1,
+      budgetSensitivity,
+      stayOccasion: stayOccasion || undefined,
+      isReturningGuest: Boolean(user?.uid && (bookingHistory.length > 0 || accountPreferences || guestInfo)),
+      checkInMonth: firstItem?.checkInDate
+        ? new Date(firstItem.checkInDate).getMonth() + 1
+        : undefined,
+      wantsLateCheckout
+    }
+  }, [
+    bookingHistory.length,
+    guestInfo,
+    items,
+    user,
+    userProfile?.preferences
+  ])
 
   // Auto-advance to guest info if cart has items
   useEffect(() => {
@@ -47,6 +195,13 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
       // Don't auto-advance, let user decide when to proceed
     }
   }, [cartSummary.itemCount, currentStep])
+
+  const handlePackageChange = (packageType: PackageType) => {
+    setSelectedPackage(packageType)
+    if (items.length) {
+      updateItem(items[0].id, { packageType })
+    }
+  }
 
   const handleProceedToGuestInfo = () => {
     if (cartSummary.itemCount === 0) {
@@ -74,9 +229,15 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
 
     try {
       const createdBookingIds = []
+      const preferenceSnapshot = buildPreferenceSnapshot(guestInfo.preferences)
 
       // Create bookings in pending-payment status
       for (const item of cartSummary.items) {
+        const shouldStoreSnapshot = guestInfo.preferences.personalizationOptIn
+        const bookingPreferenceSnapshot: GuestPreferenceProfileSnapshot | undefined = shouldStoreSnapshot
+          ? { ...preferenceSnapshot }
+          : undefined
+
         const bookingData = {
           guestUserId: user.uid,
           guestInfo: {
@@ -104,7 +265,8 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
               name: guestInfo.emergencyContact.name,
               phone: guestInfo.emergencyContact.phone,
               relationship: guestInfo.emergencyContact.relationship
-            } : undefined
+            } : undefined,
+            ...(bookingPreferenceSnapshot && { preferenceProfile: bookingPreferenceSnapshot })
           },
           totalGuests: item.guests,
           roomId: item.room.id,
@@ -119,6 +281,9 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
           taxes: Math.round(item.totalCost * 0.1), // 10% VAT
           discounts: {},
           totalAmount: item.totalCost + Math.round(item.totalCost * 0.1),
+          packageType: item.packageType,
+          roomType: item.room.type,
+          ...(bookingPreferenceSnapshot && { personalizationSnapshot: bookingPreferenceSnapshot }),
           paymentStatus: 'pending' as const,
           paymentDetails: {
             method: 'card' as const,
@@ -159,6 +324,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
       }
 
       setBookingIds(createdBookingIds)
+      await refreshBookingHistory()
       setCurrentStep('payment')
     } catch (err) {
       console.error('Booking creation failed:', err)
@@ -237,17 +403,25 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
 
       case 'package-selection':
         return (
-          <div className="space-y-8">
-            <PackageSelection
-              selectedPackage="room-only"
-              onPackageChange={(packageType: PackageType) => {
-                // Update cart items with new package
-                console.log('Package changed to:', packageType)
-              }}
-              basePrice={cartSummary.items[0]?.roomRate || 0}
-              numberOfNights={cartSummary.items[0]?.numberOfNights || 1}
-              showTerms={true}
-              onTermsAccept={handlePackageSelectionComplete}
+          <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
+            <div className="space-y-8">
+              <PackageSelection
+                selectedPackage={selectedPackage}
+                onPackageChange={handlePackageChange}
+                basePrice={items[0]?.roomRate || cartSummary.items[0]?.roomRate || 0}
+                numberOfNights={items[0]?.numberOfNights || cartSummary.items[0]?.numberOfNights || 1}
+                showTerms={true}
+                onTermsAccept={handlePackageSelectionComplete}
+              />
+            </div>
+            <PersonalizationPanel
+              userId={user?.uid}
+              suggestionContext={suggestionContext}
+              selectedPackage={selectedPackage}
+              onSelectPackage={handlePackageChange}
+              guestPreferences={guestInfo?.preferences}
+              accountPreferences={userProfile?.preferences || undefined}
+              bookingHistory={bookingHistory}
             />
           </div>
         )
