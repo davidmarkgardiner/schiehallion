@@ -48,15 +48,15 @@ test.describe('Epic 5: Manual Authentication and Testing', () => {
     console.log('Step 5: Verify Epic 5 components');
     const bookingContent = await page.textContent('body');
 
-    // Check for SCHH-013: Drag-and-Drop Room Selection
-    const hasDragDrop = bookingContent?.includes('Drag') ||
-                       bookingContent?.includes('Drop') ||
-                       bookingContent?.includes('Build Your Perfect Stay');
+    // Check for SCHH-013: Room and Calendar Selection
+    const hasRoomSelection = bookingContent?.includes('Room & Date Selection') ||
+                             bookingContent?.includes('Choose a room and then click your desired check-in and check-out dates.') ||
+                             bookingContent?.includes('Build Your Perfect Stay');
 
-    if (hasDragDrop) {
-      console.log('✅ SCHH-013: Drag-and-Drop components detected');
+    if (hasRoomSelection) {
+      console.log('✅ SCHH-013: Room selection components detected');
     } else {
-      console.log('❌ SCHH-013: Drag-and-Drop components not found');
+      console.log('❌ SCHH-013: Room selection components not found');
     }
 
     // Check for SCHH-014: Shopping Cart

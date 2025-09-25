@@ -203,7 +203,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
                 Build Your Perfect Stay
               </h1>
               <p className="text-lg text-lundies-peat max-w-2xl mx-auto">
-                Drag rooms to your preferred dates or browse our selection to create your Highland getaway.
+                Select a room and then choose your check-in and check-out dates to craft your Highland getaway.
               </p>
             </div>
 

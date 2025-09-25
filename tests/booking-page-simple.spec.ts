@@ -36,7 +36,7 @@ test.describe('Simple Booking Page Test', () => {
     // Check for specific Epic 5 components
     const hasBookingComponents = bodyContent?.includes('Build Your Perfect Stay') ||
                                 bodyContent?.includes('Access Required') ||
-                                bodyContent?.includes('Drag') ||
+                                bodyContent?.includes('Room & Date Selection') ||
                                 bodyContent?.includes('booking');
 
     if (hasBookingComponents) {
