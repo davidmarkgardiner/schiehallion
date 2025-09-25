@@ -14,6 +14,7 @@ import {
 } from 'firebase/firestore'
 import { db } from './firebase'
 import { UserProfile, UserRole, AuditLog } from '@/types/auth'
+import type { GuestPreferenceProfile, PersonalizationSettings } from '@/types/personalization'
 
 // User profile operations
 export const createUserProfile = async (
@@ -23,13 +24,39 @@ export const createUserProfile = async (
   additionalData?: Partial<UserProfile>
 ): Promise<void> => {
   const userRef = doc(db, 'users', uid)
+  const now = new Date()
+
+  const defaultPreferences: GuestPreferenceProfile = {
+    stayGoals: [],
+    experienceInterests: [],
+    roomComforts: [],
+    dietaryPreferences: [],
+    accessibilityNeeds: [],
+    specialOccasions: [],
+    travelPurpose: 'leisure',
+    budgetPreference: 'balanced',
+    marketingOptIn: true,
+    personalizationOptIn: true,
+    preferredCommunication: 'email',
+    lastCaptured: now.toISOString()
+  }
+
+  const defaultPersonalization: PersonalizationSettings = {
+    allowPersonalization: true,
+    allowMarketing: true,
+    allowDataProcessing: true,
+    lastUpdated: now.toISOString()
+  }
+
   const userData: Omit<UserProfile, 'uid'> = {
     email,
     role,
     profile: additionalData?.profile || {},
-    createdAt: new Date(),
-    lastLogin: new Date(),
+    createdAt: now,
+    lastLogin: now,
     isEmailVerified: false,
+    preferences: additionalData?.preferences || defaultPreferences,
+    personalization: additionalData?.personalization || defaultPersonalization,
     ...(role !== 'guest' && {
       staffInfo: {
         employeeId: '',
@@ -50,12 +77,32 @@ export const getUserProfile = async (uid: string): Promise<UserProfile | null> =
 
   if (userSnap.exists()) {
     const data = userSnap.data()
+    const preferences = data.preferences
+      ? {
+          ...data.preferences,
+          lastCaptured: data.preferences.lastCaptured?.toDate?.()
+            ? data.preferences.lastCaptured.toDate().toISOString()
+            : data.preferences.lastCaptured || new Date().toISOString()
+        }
+      : undefined
+
+    const personalization = data.personalization
+      ? {
+          ...data.personalization,
+          lastUpdated: data.personalization.lastUpdated?.toDate?.()
+            ? data.personalization.lastUpdated.toDate().toISOString()
+            : data.personalization.lastUpdated || new Date().toISOString()
+        }
+      : undefined
+
     return {
       uid,
       ...data,
       // Convert Firestore Timestamps to JavaScript Dates
       createdAt: data.createdAt?.toDate?.() || data.createdAt || new Date(),
-      lastLogin: data.lastLogin?.toDate?.() || data.lastLogin || new Date()
+      lastLogin: data.lastLogin?.toDate?.() || data.lastLogin || new Date(),
+      preferences,
+      personalization
     } as UserProfile
   }
 

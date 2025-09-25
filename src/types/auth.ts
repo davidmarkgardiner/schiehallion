@@ -1,3 +1,5 @@
+import type { GuestPreferenceProfile, PersonalizationSettings } from './personalization'
+
 export type UserRole = 'guest' | 'staff' | 'manager' | 'admin'
 
 export interface UserProfile {
@@ -20,6 +22,8 @@ export interface UserProfile {
     permissions?: string[]
     twoFactorEnabled: boolean
   }
+  preferences?: GuestPreferenceProfile
+  personalization?: PersonalizationSettings
 }
 
 export interface AuditLog {
