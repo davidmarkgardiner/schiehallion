@@ -6,13 +6,14 @@
 import { Elements } from '@stripe/react-stripe-js'
 import { getStripe } from '@/lib/stripe'
 import { ReactNode, useEffect, useState } from 'react'
-import type { Stripe } from '@stripe/stripe-js'
+import type { Stripe, StripeElementsOptions } from '@stripe/stripe-js'
 
 interface StripeProviderProps {
   children: ReactNode
+  clientSecret: string
 }
 
-export const StripeProvider: React.FC<StripeProviderProps> = ({ children }) => {
+export const StripeProvider: React.FC<StripeProviderProps> = ({ children, clientSecret }) => {
   const [stripePromise, setStripePromise] = useState<Promise<Stripe | null> | null>(null)
 
   useEffect(() => {
@@ -29,40 +30,41 @@ export const StripeProvider: React.FC<StripeProviderProps> = ({ children }) => {
     )
   }
 
-  return (
-    <Elements
-      stripe={stripePromise}
-      options={{
-        appearance: {
-          theme: 'night',
-          variables: {
-            colorPrimary: '#8fa089', // lundies-heather
-            colorBackground: '#1f1b16', // lundies-charcoal
-            colorText: '#f5f1eb', // lundies-ivory
-            colorDanger: '#EF4444', // red-500
-            fontFamily: 'system-ui, sans-serif',
-            spacingUnit: '4px',
-            borderRadius: '12px',
-          },
-          rules: {
-            '.Input': {
-              backgroundColor: 'rgba(255, 255, 255, 0.05)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              color: '#f5f1eb',
-            },
-            '.Input:focus': {
-              border: '1px solid #8fa089',
-              boxShadow: '0 0 0 1px #8fa089',
-            },
-            '.Label': {
-              color: '#d6cec3',
-              fontSize: '14px',
-              fontWeight: '500',
-            },
-          },
+  // Elements options with clientSecret
+  const options: StripeElementsOptions = {
+    clientSecret,
+    appearance: {
+      theme: 'night',
+      variables: {
+        colorPrimary: '#8fa089', // lundies-heather
+        colorBackground: '#1f1b16', // lundies-charcoal
+        colorText: '#f5f1eb', // lundies-ivory
+        colorDanger: '#EF4444', // red-500
+        fontFamily: 'system-ui, sans-serif',
+        spacingUnit: '4px',
+        borderRadius: '12px',
+      },
+      rules: {
+        '.Input': {
+          backgroundColor: 'rgba(255, 255, 255, 0.05)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+          color: '#f5f1eb',
         },
-      }}
-    >
+        '.Input:focus': {
+          border: '1px solid #8fa089',
+          boxShadow: '0 0 0 1px #8fa089',
+        },
+        '.Label': {
+          color: '#d6cec3',
+          fontSize: '14px',
+          fontWeight: '500',
+        },
+      },
+    },
+  }
+
+  return (
+    <Elements stripe={stripePromise} options={options}>
       {children}
     </Elements>
   )

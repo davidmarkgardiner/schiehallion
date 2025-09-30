@@ -37,3 +37,22 @@ claude mcp add --transport sse jina https://mcp.jina.ai/sse \
   --header "Authorization : Bearer ${JINA_API_KEY}"
 
 ---
+after vercel
+  Critical Action Items
+
+  1. Configure Webhook (required for production):
+    - Go to https://dashboard.stripe.com/test/webhooks
+    - Add endpoint: http://localhost:3000/api/payment/webhook (for local testing)
+    - Select events: payment_intent.succeeded, payment_intent.payment_failed
+    - Copy signing secret → update STRIPE_WEBHOOK_SECRET in .env.local
+  2. Complete booking update logic:
+    - File: src/lib/payment-service.ts:279
+    - Implement BookingService.updateBooking() to update status after payment
+  3. Test payment flow:
+    - Test card: 4242 4242 4242 4242
+    - Any future expiry, any CVC
+
+---
+
+view my booking did not work, payment seemd to work :-)
+

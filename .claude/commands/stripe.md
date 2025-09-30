@@ -15,3 +15,19 @@ secrets can be seen using cmd: 'cat .env.local'
 
 if you need and .env vars ask the user to confirm!
 also if having issues run simple verification to test api / token is working
+
+you have acccess to stripe cli also
+```
+ stripe -h
+The official command-line tool to interact with Stripe.
+
+Usage:
+  stripe [command]
+
+Webhook commands:
+  listen                             Listen for webhook events
+  trigger                            Trigger test webhook events
+
+Stripe commands:
+  logs                               Interact with Stripe API request logs
+```

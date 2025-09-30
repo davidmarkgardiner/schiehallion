@@ -8,15 +8,31 @@ import { RoomService } from '@/lib/firebase/hotel-service'
 import { RoomService as MockRoomService } from '@/lib/firebase/hotel-service-mock'
 import { Room } from '@/types/hotel'
 import BookingFlow from '@/components/booking/BookingFlow'
+import { useAuth } from '@/context/AuthContext'
+import { useRouter } from 'next/navigation'
 
 export default function BookingPage() {
   const [availableRooms, setAvailableRooms] = useState<Room[]>([])
   const [loading, setLoading] = useState(true)
+  const { user, loading: authLoading } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
+    // Wait for auth to load
+    if (authLoading) {
+      return
+    }
+
+    // Redirect to login if not authenticated
+    if (!user) {
+      router.push('/login?redirect=/booking')
+      return
+    }
+
     const loadAvailableRooms = async () => {
       setLoading(true)
       try {
+        console.log('[BookingPage] Loading rooms for user:', user.uid)
         const rooms = await RoomService.getRooms({
           status: 'available'
         })
@@ -46,14 +62,16 @@ export default function BookingPage() {
     }
 
     loadAvailableRooms()
-  }, [])
+  }, [user, authLoading, router])
 
-  if (loading) {
+  if (authLoading || loading) {
     return (
       <main className="min-h-screen bg-gradient-to-br from-lundies-charcoal to-lundies-peat flex items-center justify-center">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-lundies-heather mb-4"></div>
-          <p className="text-lundies-stone">Loading available rooms...</p>
+          <p className="text-lundies-stone">
+            {authLoading ? 'Authenticating...' : 'Loading available rooms...'}
+          </p>
         </div>
       </main>
     )

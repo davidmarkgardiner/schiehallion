@@ -65,7 +65,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
       setError(null)
 
       const token = await user.getIdToken()
-      
+
       const response = await fetch('/api/payment/create-intent', {
         method: 'POST',
         headers: {
@@ -104,7 +104,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
     try {
       // Confirm payment on server
       const token = await user?.getIdToken()
-      
+
       const response = await fetch('/api/payment/confirm', {
         method: 'POST',
         headers: {
@@ -272,8 +272,8 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
         </div>
 
         {/* Payment Form */}
-        {paymentIntent && (
-          <StripeProvider>
+        {paymentIntent && paymentIntent.clientSecret && (
+          <StripeProvider clientSecret={paymentIntent.clientSecret}>
             <PaymentForm
               clientSecret={paymentIntent.clientSecret}
               amount={cartSummary.total / 100} // Convert to pounds

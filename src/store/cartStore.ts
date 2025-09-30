@@ -16,7 +16,7 @@ interface CartState {
   items: CartItem[]
 
   // Actions
-  addItem: (item: Omit<CartItem, 'id' | 'addedAt'>) => void
+  addItem: (item: Omit<CartItem, 'id' | 'addedAt'>) => Promise<void>
   removeItem: (itemId: string) => void
   updateItem: (itemId: string, updates: Partial<CartItem>) => void
   clearCart: () => void
@@ -114,7 +114,20 @@ export const useCartStore = create<CartState>()(
     (set, get) => ({
       items: [],
 
-      addItem: (itemData) => {
+      addItem: async (itemData) => {
+        // Check availability before adding to cart
+        const { AvailabilityService } = await import('@/lib/firebase/hotel-service')
+
+        const isAvailable = await AvailabilityService.checkRoomAvailability(
+          itemData.room.id,
+          itemData.checkInDate,
+          itemData.checkOutDate
+        )
+
+        if (!isAvailable) {
+          throw new Error('This room is not available for your selected dates. Please choose different dates or view alternative rooms.')
+        }
+
         const id = generateCartItemId()
         const packageOption = PACKAGE_OPTIONS[itemData.packageType]
         const numberOfNights = calculateNights(itemData.checkInDate, itemData.checkOutDate)
@@ -243,7 +256,29 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: 'schiehallion-cart-storage',
-      storage: createJSONStorage(() => sessionStorage),
+      storage: createJSONStorage(() => {
+        if (typeof window === 'undefined') {
+          const memoryStorage: Record<string, string> = {}
+          return {
+            getItem: (name: string) => memoryStorage[name] ?? null,
+            setItem: (name: string, value: string) => {
+              memoryStorage[name] = value
+            },
+            removeItem: (name: string) => {
+              delete memoryStorage[name]
+            },
+            clear: () => {
+              Object.keys(memoryStorage).forEach(key => delete memoryStorage[key])
+            },
+            key: (index: number) => Object.keys(memoryStorage)[index] ?? null,
+            get length() {
+              return Object.keys(memoryStorage).length
+            }
+          } as Storage
+        }
+
+        return window.sessionStorage
+      }),
       partialize: (state) => ({
         items: state.items.map(item => ({
           ...item,

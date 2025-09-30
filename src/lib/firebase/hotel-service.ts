@@ -135,10 +135,44 @@ export class RoomService {
 export class BookingService {
   private static collectionRef = collection(db, COLLECTIONS.BOOKINGS)
 
+  // Helper to remove undefined values from nested objects
+  private static removeUndefinedFields<T extends Record<string, any>>(obj: T): T {
+    const cleaned: any = {}
+    for (const key in obj) {
+      const value = obj[key]
+      if (value === undefined) {
+        continue // Skip undefined fields
+      }
+      // Skip Date and Timestamp objects (pass through without recursion)
+      if (value instanceof Date || value instanceof Timestamp) {
+        cleaned[key] = value
+      } else if (value !== null && typeof value === 'object' && !Array.isArray(value)) {
+        cleaned[key] = this.removeUndefinedFields(value)
+      } else {
+        cleaned[key] = value
+      }
+    }
+    return cleaned as T
+  }
+
   // Create a new booking with availability check
   static async createBooking(bookingData: Omit<Booking, 'id' | 'bookingReference' | 'createdAt' | 'updatedAt'>): Promise<string> {
-    return await runTransaction(db, async (transaction) => {
-      // Check availability
+    try {
+      // Verify user is authenticated
+      const { auth } = await import('@/lib/firebase')
+      const currentUser = auth.currentUser
+      console.log('[BookingService] Current user:', currentUser?.uid, currentUser?.email)
+
+      if (!currentUser) {
+        throw new Error('User must be authenticated to create a booking')
+      }
+
+      // Get fresh auth token
+      const token = await currentUser.getIdToken(true)
+      console.log('[BookingService] Got fresh auth token:', token?.substring(0, 20) + '...')
+
+      // Check availability BEFORE starting transaction
+      console.log('[BookingService] Checking room availability...', { roomId: bookingData.roomId })
       const isAvailable = await AvailabilityService.checkRoomAvailability(
         bookingData.roomId,
         this.formatDate(bookingData.checkInDate.toDate()),
@@ -149,36 +183,47 @@ export class BookingService {
         throw new Error('Room is not available for selected dates')
       }
 
-      // Generate booking reference
-      const bookingReference = await this.generateBookingReference()
+      console.log('[BookingService] Room is available, creating booking...')
 
-      // Create booking
-      const booking: Omit<Booking, 'id'> = {
-        ...bookingData,
-        bookingReference,
-        statusHistory: [{
-          status: bookingData.status,
-          timestamp: Timestamp.now(),
-          changedBy: bookingData.createdBy,
-          notes: 'Booking created'
-        }],
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now()
-      }
+      return await runTransaction(db, async (transaction) => {
+        // Generate booking reference
+        const bookingReference = await this.generateBookingReference()
 
-      const docRef = doc(this.collectionRef)
-      transaction.set(docRef, booking)
+        // Create booking (remove undefined fields)
+        const bookingRaw: Omit<Booking, 'id'> = {
+          ...bookingData,
+          bookingReference,
+          statusHistory: [{
+            status: bookingData.status,
+            timestamp: Timestamp.now(),
+            changedBy: bookingData.createdBy,
+            notes: 'Booking created'
+          }],
+          createdAt: Timestamp.now(),
+          updatedAt: Timestamp.now()
+        }
 
-      // Update availability
-      await AvailabilityService.updateAvailabilityForBooking(
-        bookingData.roomId,
-        this.formatDate(bookingData.checkInDate.toDate()),
-        this.formatDate(bookingData.checkOutDate.toDate()),
-        'book'
-      )
+        // Clean undefined values before writing to Firestore
+        const booking = this.removeUndefinedFields(bookingRaw)
 
-      return docRef.id
-    })
+        const docRef = doc(this.collectionRef)
+        transaction.set(docRef, booking)
+
+        // Update availability
+        await AvailabilityService.updateAvailabilityForBooking(
+          bookingData.roomId,
+          this.formatDate(bookingData.checkInDate.toDate()),
+          this.formatDate(bookingData.checkOutDate.toDate()),
+          'book'
+        )
+
+        console.log('[BookingService] Booking created successfully:', docRef.id)
+        return docRef.id
+      })
+    } catch (error) {
+      console.error('[BookingService] Error creating booking:', error)
+      throw error
+    }
   }
 
   // Get booking by ID
@@ -299,7 +344,23 @@ export class AvailabilityService {
 
     for (const date of dates) {
       const availability = await this.getDailyAvailability(date)
-      if (!availability) continue
+      if (!availability) {
+        console.warn(`[AvailabilityService] No availability document found for date: ${date}`)
+        // Auto-initialize missing availability for this date
+        await this.initializeDailyAvailability(date)
+        const retryAvailability = await this.getDailyAvailability(date)
+        if (!retryAvailability) return false
+
+        // Continue with the retry
+        const roomData = await RoomService.getRoom(roomId)
+        if (!roomData) return false
+
+        const typeAvailability = retryAvailability.availability[roomData.type]
+        if (!typeAvailability || !typeAvailability.roomIds.available.includes(roomId)) {
+          return false
+        }
+        continue
+      }
 
       // Check if room is available in any room type
       const roomData = await RoomService.getRoom(roomId)
@@ -417,7 +478,7 @@ export class AvailabilityService {
       updates[`${date}/${roomType}/booked`] = {
         '.sv': { increment: -change }
       }
-      updates[`${date}/${roomType}/lastUpdated`] = rtdbServerTimestamp
+      updates[`${date}/${roomType}/lastUpdated`] = Date.now()
     }
 
     await update(this.rtdbRef, updates)

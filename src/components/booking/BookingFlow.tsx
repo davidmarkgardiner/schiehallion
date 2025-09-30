@@ -246,7 +246,10 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
             email: guestInfo.personalInfo.email,
             phone: guestInfo.personalInfo.phone,
             dateOfBirth: guestInfo.personalInfo.dateOfBirth
-              ? Timestamp.fromDate(new Date(guestInfo.personalInfo.dateOfBirth))
+              ? (() => {
+                  const date = new Date(guestInfo.personalInfo.dateOfBirth)
+                  return isNaN(date.getTime()) ? undefined : Timestamp.fromDate(date)
+                })()
               : undefined,
             nationality: undefined,
             passportNumber: undefined,
@@ -301,7 +304,10 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
             notes: 'Booking created, awaiting payment'
           }],
           checkInTime: guestInfo.arrival.estimatedArrivalTime
-            ? Timestamp.fromDate(new Date(`${item.checkInDate} ${guestInfo.arrival.estimatedArrivalTime}`))
+            ? (() => {
+                const date = new Date(`${item.checkInDate} ${guestInfo.arrival.estimatedArrivalTime}`)
+                return isNaN(date.getTime()) ? undefined : Timestamp.fromDate(date)
+              })()
             : undefined,
           checkOutTime: undefined,
           actualCheckInTime: undefined,
@@ -328,7 +334,16 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
       setCurrentStep('payment')
     } catch (err) {
       console.error('Booking creation failed:', err)
-      setError(err instanceof Error ? err.message : 'Failed to create booking. Please try again.')
+      const errorMessage = err instanceof Error ? err.message : 'Failed to create booking. Please try again.'
+      setError(errorMessage)
+
+      // If it's an availability error, navigate back to room selection
+      if (errorMessage.includes('not available')) {
+        setTimeout(() => {
+          setCurrentStep('room-selection')
+          setError('The selected room is no longer available. Please choose another room or different dates.')
+        }, 3000)
+      }
     } finally {
       setIsLoading(false)
     }
@@ -405,6 +420,23 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
         return (
           <div className="grid gap-8 lg:grid-cols-[minmax(0,2fr)_minmax(320px,1fr)]">
             <div className="space-y-8">
+              {error && (
+                <div className="rounded-xl border border-red-300 bg-red-50 p-4 mb-6">
+                  <div className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-red-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    <div className="flex-1">
+                      <p className="font-medium text-red-900">{error}</p>
+                      {error.includes('not available') && (
+                        <p className="text-sm text-red-700 mt-1">
+                          Redirecting you to room selection in a moment...
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
               <PackageSelection
                 selectedPackage={selectedPackage}
                 onPackageChange={handlePackageChange}

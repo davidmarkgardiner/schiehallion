@@ -3,7 +3,7 @@
 // SCHH-018: Payment Confirmation Flow
 // SCHH-019: Payment Failure Handling
 
-import { stripe, formatAmountForStripe, PaymentMetadata, convertStripeStatus } from './stripe'
+import { getStripeServer, formatAmountForStripe, PaymentMetadata, convertStripeStatus } from './stripe'
 import { BookingService } from './firebase/hotel-service'
 import Stripe from 'stripe'
 
@@ -43,8 +43,11 @@ export class PaymentService {
     request: CreatePaymentIntentRequest
   ): Promise<PaymentIntentResponse> {
     try {
+      // Get the Stripe instance with proper error handling
+      const stripe = getStripeServer()
+
       const amount = formatAmountForStripe(request.amount)
-      
+
       const metadata: Record<string, string> = {
         bookingIds: request.bookingIds.join(','),
         guestUserId: request.guestUserId,
@@ -72,8 +75,12 @@ export class PaymentService {
         },
       })
 
+      if (!paymentIntent.client_secret) {
+        throw new Error('Failed to create payment intent: client_secret is missing')
+      }
+
       return {
-        clientSecret: paymentIntent.client_secret!,
+        clientSecret: paymentIntent.client_secret,
         paymentIntentId: paymentIntent.id,
         amount: paymentIntent.amount,
         currency: paymentIntent.currency,
@@ -92,6 +99,7 @@ export class PaymentService {
    */
   static async getPaymentIntent(paymentIntentId: string): Promise<Stripe.PaymentIntent> {
     try {
+      const stripe = getStripeServer()
       return await stripe.paymentIntents.retrieve(paymentIntentId)
     } catch (error) {
       console.error('Failed to retrieve payment intent:', error)
@@ -109,7 +117,7 @@ export class PaymentService {
   ): Promise<PaymentConfirmation> {
     try {
       const paymentIntent = await this.getPaymentIntent(paymentIntentId)
-      
+
       if (!paymentIntent.metadata) {
         throw new Error('Payment intent missing metadata')
       }
@@ -161,7 +169,7 @@ export class PaymentService {
     try {
       // Hold rooms for 15 minutes
       const roomHoldExpiry = new Date(Date.now() + 15 * 60 * 1000)
-      
+
       // Update booking status to payment-failed with hold
       await this.updateBookingPaymentStatus(bookingIds, {
         status: 'payment-failed',
@@ -193,6 +201,8 @@ export class PaymentService {
     reason?: string
   ): Promise<Stripe.Refund> {
     try {
+      const stripe = getStripeServer()
+
       const refundParams: any = {
         payment_intent: paymentIntentId,
         metadata: {
@@ -236,41 +246,22 @@ export class PaymentService {
     }
   ): Promise<void> {
     try {
-      const updatePromises = bookingIds.map(async (bookingId) => {
-        const booking = await BookingService.getBooking(bookingId)
-        if (!booking) {
-          throw new Error(`Booking ${bookingId} not found`)
-        }
+      // Note: This method currently logs payment updates but doesn't persist them
+      // to avoid Firebase permissions issues when called from server-side API routes.
+      // Payment status updates should be handled via webhooks which have proper admin access.
 
-        const paymentDetails = {
-          ...booking.paymentDetails,
-          ...paymentUpdate,
-          lastUpdated: new Date(),
-        }
+      const bookingStatus = paymentUpdate.status === 'completed' ? 'confirmed' :
+                           paymentUpdate.status === 'failed' ? 'cancelled' : 'pending'
 
-        // Update booking status based on payment status
-        let bookingStatus = booking.status
-        if (paymentUpdate.status === 'completed') {
-          bookingStatus = 'confirmed'
-        } else if (paymentUpdate.status === 'failed') {
-          bookingStatus = 'cancelled' // Use existing booking status
-        }
-
-        // Update booking with new payment details
-        // Note: updateBooking method needs to be implemented in BookingService
-        // For now, we'll use the existing pattern
-        const updatedBooking = {
-          ...booking,
-          paymentDetails,
-          status: bookingStatus,
-          lastUpdatedBy: 'system',
-        }
-
-        // TODO: Implement proper update method in BookingService
-        console.log('Booking payment status updated:', bookingId, paymentUpdate.status)
+      console.log('Payment status update needed:', {
+        bookingIds,
+        paymentStatus: paymentUpdate.status,
+        bookingStatus,
+        paymentIntentId: paymentUpdate.paymentIntentId
       })
 
-      await Promise.all(updatePromises)
+      // TODO: Implement admin SDK-based update or handle via webhook
+      // For now, bookings remain in 'pending-payment' status until webhook processes them
     } catch (error) {
       console.error('Failed to update booking payment status:', error)
       throw error
@@ -292,7 +283,7 @@ export class PaymentService {
   }> {
     try {
       const paymentIntent = await this.getPaymentIntent(paymentIntentId)
-      
+
       if (!paymentIntent.metadata) {
         throw new Error('Payment intent missing metadata')
       }

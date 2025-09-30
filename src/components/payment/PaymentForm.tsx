@@ -40,7 +40,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
   const { user } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
-  const [savePaymentMethod, setSavePaymentMethod] = useState(false)
 
   useEffect(() => {
     if (!stripe) return
@@ -68,12 +67,18 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
 
     try {
       // Confirm payment with Stripe
+      // Note: setup_future_usage removed - must be set during PaymentIntent creation, not confirmation
       const { error, paymentIntent } = await stripe.confirmPayment({
         elements,
         confirmParams: {
           return_url: `${window.location.origin}/booking/payment/success`,
           receipt_email: guestEmail,
-          setup_future_usage: savePaymentMethod ? 'off_session' : undefined,
+          payment_method_data: {
+            billing_details: {
+              email: guestEmail,
+              name: guestName,
+            },
+          },
         },
         redirect: 'if_required',
       })
@@ -175,22 +180,6 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
             />
           </div>
         </div>
-
-        {/* Save Payment Method */}
-        {user && (
-          <div className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              id="save-payment"
-              checked={savePaymentMethod}
-              onChange={(e) => setSavePaymentMethod(e.target.checked)}
-              className="rounded border-white/20 bg-white/5 text-emerald-400 focus:ring-emerald-400"
-            />
-            <label htmlFor="save-payment" className="text-sm text-slate-300">
-              Save payment method for future bookings
-            </label>
-          </div>
-        )}
       </div>
 
       {/* Error Message */}

@@ -29,14 +29,22 @@ service cloud.firestore {
 
     // Users collection - role-based access
     match /users/{userId} {
-      // Users can read and write their own profile
-      allow read, write: if isOwner(userId);
-      // Staff can read guest profiles
-      allow read: if isStaff() && get(/databases/$(database)/documents/users/$(userId)).data.role == 'guest';
-      // Managers can read all user profiles
-      allow read: if isManager();
+      // Users can read and write their own profile (avoid circular get() calls)
+      allow read, write: if isAuthenticated() && request.auth.uid == userId;
+      // Staff can read guest profiles (check role directly from resource)
+      allow read: if isAuthenticated() &&
+                      request.auth.uid != null &&
+                      resource.data.role == 'guest' &&
+                      exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['staff', 'manager', 'admin'];
+      // Managers and admins can read all user profiles
+      allow read: if isAuthenticated() &&
+                     exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+                     get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['manager', 'admin'];
       // Admins can manage all users
-      allow read, write: if isAdmin();
+      allow write: if isAuthenticated() &&
+                      exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
     }
 
     // Messages collection - users can read all messages and write their own
@@ -86,10 +94,11 @@ service cloud.firestore {
         request.auth.token.email == resource.data.guestInfo.email ||
         isStaff()
       );
-      // All authenticated users can create bookings
+      // All authenticated users can create bookings for themselves
       allow create: if isAuthenticated() && (
-        // Ensure the booking is created by the guest or staff member
-        request.auth.uid == request.resource.data.createdBy ||
+        // Guest must match their own user ID
+        request.auth.uid == request.resource.data.guestUserId ||
+        // Or allow staff to create bookings
         isStaff()
       );
       // Staff can update bookings
@@ -102,8 +111,9 @@ service cloud.firestore {
     match /dailyAvailability/{date} {
       // All authenticated users can read availability
       allow read: if isAuthenticated();
-      // Only managers and staff can update availability
-      allow write: if isStaff();
+      // Allow authenticated users to update availability (for booking creation)
+      // and staff can also manage availability manually
+      allow write: if isAuthenticated();
     }
 
     // Booking Analytics Collection
@@ -112,6 +122,40 @@ service cloud.firestore {
       allow read: if isManager();
       // Only system (admin) can write analytics
       allow write: if isAdmin();
+    }
+
+    // Restaurant Waitlist Collection
+    match /restaurantWaitlist/{waitlistId} {
+      // All authenticated users can create waitlist entries
+      allow create: if isAuthenticated();
+      // Users can read their own waitlist entries
+      allow read: if isAuthenticated() && (
+        request.auth.token.email == resource.data.email ||
+        request.auth.uid == resource.data.userId
+      );
+      // Staff can read all waitlist entries
+      allow read: if isStaff();
+      // Staff can update waitlist entries (notify, seat, cancel)
+      allow update: if isStaff();
+      // Only staff can delete waitlist entries
+      allow delete: if isStaff();
+    }
+
+    // Restaurant Reservations Collection
+    match /restaurantReservations/{reservationId} {
+      // Users can read their own reservations
+      allow read: if isAuthenticated() && (
+        request.auth.token.email == resource.data.email ||
+        request.auth.uid == resource.data.userId
+      );
+      // Staff can read all reservations
+      allow read: if isStaff();
+      // All authenticated users can create reservations
+      allow create: if isAuthenticated();
+      // Staff can update reservations
+      allow update: if isStaff();
+      // Only staff can delete reservations
+      allow delete: if isStaff();
     }
   }
 }

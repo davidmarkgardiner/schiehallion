@@ -71,7 +71,7 @@ export const RoomSelectionPanel: React.FC<RoomSelectionPanelProps> = ({
   const estimatedTotal = totalRoomCost + totalPackageCost
   const exceedsOccupancy = selectedRoom ? guests > selectedRoom.maxOccupancy : false
 
-  const handleAddToCart = () => {
+  const handleAddToCart = async () => {
     setError(null)
     setSuccessMessage(null)
 
@@ -106,22 +106,26 @@ export const RoomSelectionPanel: React.FC<RoomSelectionPanelProps> = ({
     const totalRoom = selectedRoom.pricing.basePrice * nights
     const totalPackage = packageDetails.priceAdjustment * nights
 
-    addItem({
-      room: selectedRoom,
-      checkInDate,
-      checkOutDate,
-      numberOfNights: nights,
-      guests,
-      packageType: selectedPackage,
-      packageOption: packageDetails,
-      roomRate: selectedRoom.pricing.basePrice,
-      packageRate: packageDetails.priceAdjustment,
-      totalRoomCost: totalRoom,
-      totalPackageCost: totalPackage,
-      totalCost: totalRoom + totalPackage
-    })
+    try {
+      await addItem({
+        room: selectedRoom,
+        checkInDate,
+        checkOutDate,
+        numberOfNights: nights,
+        guests,
+        packageType: selectedPackage,
+        packageOption: packageDetails,
+        roomRate: selectedRoom.pricing.basePrice,
+        packageRate: packageDetails.priceAdjustment,
+        totalRoomCost: totalRoom,
+        totalPackageCost: totalPackage,
+        totalCost: totalRoom + totalPackage
+      })
 
-    setSuccessMessage(`Added ${selectedRoom.type} room for ${nights} night${nights > 1 ? 's' : ''} to your cart.`)
+      setSuccessMessage(`Added ${selectedRoom.type} room for ${nights} night${nights > 1 ? 's' : ''} to your cart.`)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to add room to cart. Please try again.')
+    }
   }
 
   return (
