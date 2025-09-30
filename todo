@@ -14,3 +14,26 @@ finish of merging branch pr 7
 
 export ANTHROPIC_AUTH_TOKEN=1a63dcdde99544fd8b5a2ba7c4960694.U1SdwsYEb20zf3r9
 export ANTHROPIC_BASE_URL=https://api.z.ai/api/anthropic
+
+
+---
+
+pnpf install
+pnpf run dev
+
+git clean -xdf
+
+FIX LOCAL ISSUE WITH BOOKING
+THEN DPELOY TO VERCEL
+VERCEL TO DEPLOY BRANCH FOR REVIEW
+HAVE CODEX CREATE 3 DESIGNS WE CAN REVIEW
+---
+
+mcp jira
+explain website and replicate 
+photos mcp??
+
+claude mcp add --transport sse jina https://mcp.jina.ai/sse \
+  --header "Authorization : Bearer ${JINA_API_KEY}"
+
+---
