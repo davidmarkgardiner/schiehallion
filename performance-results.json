@@ -1,0 +1,617 @@
+{
+  "pages": {
+    "homepage": {
+      "loadTime": 1045,
+      "status": 200,
+      "metrics": {
+        "dns": 0,
+        "tcp": 0.29999999701976776,
+        "ttfb": 23.5,
+        "download": 5.600000008940697,
+        "domInteractive": 61.29999999701977,
+        "domContentLoaded": 0.10000000894069672,
+        "loadComplete": 0,
+        "firstPaint": 664,
+        "firstContentfulPaint": 664,
+        "transferSize": 9233,
+        "decodedBodySize": 30563,
+        "totalResources": 9,
+        "resourcesByType": {
+          "link": {
+            "count": 3,
+            "size": 76908,
+            "duration": 47.49999998509884
+          },
+          "script": {
+            "count": 6,
+            "size": 4619586,
+            "duration": 1270.8999999910593
+          }
+        }
+      }
+    },
+    "restaurant": {
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/restaurant\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    "adminRestaurant": {
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/admin/restaurant\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    "adminRoomImages": {
+      "error": "page.goto: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/admin/room-images\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    "adminDashboard": {
+      "error": "page.goto: Test timeout of 120000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3000/admin/dashboard\", waiting until \"networkidle\"\u001b[22m\n"
+    },
+    "rooms": {
+      "error": "page.goto: Target page, context or browser has been closed"
+    }
+  },
+  "consoleErrors": [],
+  "jsErrors": [],
+  "networkRequests": [
+    {
+      "url": "http://localhost:3000/",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/media/e4af272ccee01ff0-s.p.woff2",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "font/woff2"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/css/app/layout.css?v=1759251474290",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/css; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/webpack.js?v=1759251474290",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/error.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/not-found.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app-pages-internals.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/main-app.js?v=1759251474290",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/layout.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/page.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDF-FnhIoeeMuMRLZIxUO6F8c4Ej1P4B0c",
+      "status": 200,
+      "statusText": "",
+      "contentType": "application/json; charset=UTF-8"
+    },
+    {
+      "url": "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDF-FnhIoeeMuMRLZIxUO6F8c4Ej1P4B0c",
+      "status": 200,
+      "statusText": "",
+      "contentType": "application/json; charset=UTF-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=27683&CVER=22&X-HTTP-Session-Id=gsessionid&zx=nhfwmmr8v680&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=YFe5OoJDCF11b5LSZ4COgSMZdegmAYXMXaptSjAsq8Y&VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=rpc&SID=1aH5monjy8O3OrbOz9R53w&AID=0&CI=0&TYPE=xmlhttp&zx=km7sq92htb9o&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&gsessionid=YFe5OoJDCF11b5LSZ4COgSMZdegmAYXMXaptSjAsq8Y&SID=1aH5monjy8O3OrbOz9R53w&RID=27684&AID=5&zx=6z491ybyb11v&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Write/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=89384&CVER=22&X-HTTP-Session-Id=gsessionid&zx=ptvmpspftvoi&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Write/channel?gsessionid=FqAmERjWjnAVYKTKeccLEkLrVBbSO8X9JvBT0ynAJYc&VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=rpc&SID=xJZ-z-w0rTAsYpSeHY3WYQ&AID=0&CI=0&TYPE=xmlhttp&zx=ppb7gcxqf4e4&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Write/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&gsessionid=FqAmERjWjnAVYKTKeccLEkLrVBbSO8X9JvBT0ynAJYc&SID=xJZ-z-w0rTAsYpSeHY3WYQ&RID=89385&AID=1&zx=xmohl6vey3av&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Write/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&gsessionid=FqAmERjWjnAVYKTKeccLEkLrVBbSO8X9JvBT0ynAJYc&SID=xJZ-z-w0rTAsYpSeHY3WYQ&RID=89386&AID=2&zx=i48krgjfhmgj&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/restaurant",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/media/e4af272ccee01ff0-s.p.woff2",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "font/woff2"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/css/app/layout.css?v=1759251490760",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/css; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/webpack.js?v=1759251490760",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/error.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app-pages-internals.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/not-found.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/main-app.js?v=1759251490760",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/layout.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/restaurant/page.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDF-FnhIoeeMuMRLZIxUO6F8c4Ej1P4B0c",
+      "status": 200,
+      "statusText": "",
+      "contentType": "application/json; charset=UTF-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=41863&CVER=22&X-HTTP-Session-Id=gsessionid&zx=etvwyo4xoukc&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=DgfGrhdTe30NGoYRnUI9_t6Gp5lG93D-LNNuFSe6EAA&VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=rpc&SID=3ctUBqayVNjksDYLjFDccw&AID=0&CI=0&TYPE=xmlhttp&zx=cmh42jtln52k&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&gsessionid=DgfGrhdTe30NGoYRnUI9_t6Gp5lG93D-LNNuFSe6EAA&SID=3ctUBqayVNjksDYLjFDccw&RID=41864&AID=5&zx=jt70ksjypkwp&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/webpack/d19146b4afe9d974.webpack.hot-update.json",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/json; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/admin/restaurant",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/media/e4af272ccee01ff0-s.p.woff2",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "font/woff2"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/css/app/layout.css?v=1759251521858",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/css; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/webpack.js?v=1759251521858",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/error.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app-pages-internals.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/not-found.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/main-app.js?v=1759251521858",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/layout.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/admin/restaurant/page.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDF-FnhIoeeMuMRLZIxUO6F8c4Ej1P4B0c",
+      "status": 200,
+      "statusText": "",
+      "contentType": "application/json; charset=UTF-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=4619&CVER=22&X-HTTP-Session-Id=gsessionid&zx=hrynjrapq72p&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=Ohb08FjoU2b364Gho8fMmoF3Txo2vwOXuiF_lqXv8PI&VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=rpc&SID=xTN1WusjdATO0l-fA_U1GA&AID=0&CI=0&TYPE=xmlhttp&zx=tm41qohixybp&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/?_rsc=1tu16",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/x-component"
+    },
+    {
+      "url": "http://localhost:3000/?_rsc=1tu16",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/x-component"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&gsessionid=Ohb08FjoU2b364Gho8fMmoF3Txo2vwOXuiF_lqXv8PI&SID=xTN1WusjdATO0l-fA_U1GA&RID=4620&AID=5&zx=4xsjtttfg62q&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/page.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/webpack/f8f2305c6af5446c.webpack.hot-update.json",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/json; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/webpack/webpack.f8f2305c6af5446c.hot-update.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/admin/room-images",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/media/e4af272ccee01ff0-s.p.woff2",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "font/woff2"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/css/app/layout.css?v=1759251551955",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/css; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/webpack.js?v=1759251551955",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/error.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app-pages-internals.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/not-found.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/admin/room-images/page.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/main-app.js?v=1759251551955",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/layout.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDF-FnhIoeeMuMRLZIxUO6F8c4Ej1P4B0c",
+      "status": 200,
+      "statusText": "",
+      "contentType": "application/json; charset=UTF-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=44346&CVER=22&X-HTTP-Session-Id=gsessionid&zx=2ejoyqla0p71&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=OmoQOOJGwu2wrsTSTASCUe8FkyL-84cLCiQVGgXQ-TI&VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=rpc&SID=RoYQwLsagbRdsU1cm_iuog&AID=0&CI=0&TYPE=xmlhttp&zx=ma6foghcar9c&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=OmoQOOJGwu2wrsTSTASCUe8FkyL-84cLCiQVGgXQ-TI&VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=rpc&SID=RoYQwLsagbRdsU1cm_iuog&AID=0&CI=1&TYPE=xmlhttp&zx=syvqv97riwmc&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&gsessionid=OmoQOOJGwu2wrsTSTASCUe8FkyL-84cLCiQVGgXQ-TI&SID=RoYQwLsagbRdsU1cm_iuog&RID=44347&AID=6&zx=xnk2nf2e1msv&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=OmoQOOJGwu2wrsTSTASCUe8FkyL-84cLCiQVGgXQ-TI&VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=rpc&SID=RoYQwLsagbRdsU1cm_iuog&AID=6&CI=1&TYPE=xmlhttp&zx=ufbf8wqesd5u&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=OmoQOOJGwu2wrsTSTASCUe8FkyL-84cLCiQVGgXQ-TI&VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=rpc&SID=RoYQwLsagbRdsU1cm_iuog&AID=7&CI=1&TYPE=xmlhttp&zx=qefyfnc4cetp&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/webpack/c513da73e97cddd6.webpack.hot-update.json",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/json; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/api/room-images/list?roomType=standard",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/json"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/webpack/webpack.c513da73e97cddd6.hot-update.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/images/rooms/generated/standard/standard-artistic-1759248767421-r0mln6.png",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "image/png"
+    },
+    {
+      "url": "http://localhost:3000/api/room-images/list?roomType=standard",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/json"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/webpack/3ec1ddc52ee36560.webpack.hot-update.json",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/json; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/webpack/webpack.3ec1ddc52ee36560.hot-update.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/admin/dashboard",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/html; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/media/e4af272ccee01ff0-s.p.woff2",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "font/woff2"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/css/app/layout.css?v=1759251581687",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/css; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/webpack.js?v=1759251581687",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/not-found.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/error.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app-pages-internals.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/main-app.js?v=1759251581687",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/layout.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/admin/dashboard/page.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    },
+    {
+      "url": "https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyDF-FnhIoeeMuMRLZIxUO6F8c4Ej1P4B0c",
+      "status": 200,
+      "statusText": "",
+      "contentType": "application/json; charset=UTF-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=28919&CVER=22&X-HTTP-Session-Id=gsessionid&zx=yxmmd4q9z93v&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?gsessionid=zd4IRc9FqJdLGnhfFcXGEzTUGgLozwMV7_CHjwa0zC8&VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&RID=rpc&SID=2CAlZASMQ6-ouzJZ3gLJIA&AID=0&CI=0&TYPE=xmlhttp&zx=o07fojxq0u2s&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/?_rsc=1e4g1",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/x-component"
+    },
+    {
+      "url": "http://localhost:3000/?_rsc=1e4g1",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "text/x-component"
+    },
+    {
+      "url": "https://firestore.googleapis.com/google.firestore.v1.Firestore/Listen/channel?VER=8&database=projects%2Fschiehallion-1758624306%2Fdatabases%2F(default)&gsessionid=zd4IRc9FqJdLGnhfFcXGEzTUGgLozwMV7_CHjwa0zC8&SID=2CAlZASMQ6-ouzJZ3gLJIA&RID=28920&AID=4&zx=y2iax444z2lf&t=1",
+      "status": 200,
+      "statusText": "",
+      "contentType": "text/plain; charset=utf-8"
+    },
+    {
+      "url": "http://localhost:3000/_next/static/chunks/app/page.js",
+      "status": 200,
+      "statusText": "OK",
+      "contentType": "application/javascript; charset=UTF-8"
+    }
+  ]
+}

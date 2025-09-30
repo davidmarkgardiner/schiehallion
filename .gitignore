@@ -87,3 +87,4 @@ users.json
 todo
 .mcp.backup.json
 pnpm-lock.yaml
+build-output.txt

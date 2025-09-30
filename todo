@@ -56,3 +56,58 @@ after vercel
 
 view my booking did not work, payment seemd to work :-)
 
+----
+
+  🚨 Critical Issues Found
+
+  1. JavaScript Bundle: 4.6MB (Target: <500KB)
+
+  - 97% of total page weight
+  - Takes 1.27 seconds just to load JS
+  - 10-20x larger than best practices
+
+  2. Firestore Listeners Blocking Page Load
+
+  - Pages never reach "networkidle" state
+  - Continuous connections to Firestore prevent completion
+  - All authenticated pages timeout (30-120 seconds)
+
+  3. Running in Development Mode
+
+  - Development bundles are 2-3x larger than production
+  - Hot Module Replacement adding overhead
+
+  ✅ What's Working Well
+
+  - Fast server response (23.5ms TTFB) ✓
+  - No JavaScript errors ✓
+  - Authentication functional ✓
+  - Lundies theme colors applied correctly ✓
+
+  🎯 Immediate Actions (Do Now)
+
+  1. Build production bundle:
+  pnpm run build && pnpm start
+  This alone will reduce bundle size by 50-70%.
+
+  2. Use Firebase Lite SDK:
+  Check src/lib/firebase.ts - switch to modular imports and use lite
+  versions for non-realtime queries.
+
+  3. Audit Firestore listeners:
+  Replace onSnapshot() with getDocs() for static data. Only use real-time
+   listeners where truly needed (booking availability, live updates).
+
+  4. Enable code splitting:
+  Split admin routes from guest routes so users don't download
+  unnecessary code.
+
+  📊 Performance Budget
+
+  | Metric    | Current  | Target |
+  |-----------|----------|--------|
+  | JS Bundle | 4.6MB ⚠️ | 300KB  |
+  | Page Load | >30s ⚠️  | <3s    |
+  | FCP       | 664ms ✓  | <1s    |
+
+  Would you like me to start implementin

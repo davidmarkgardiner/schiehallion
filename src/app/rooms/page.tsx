@@ -2,15 +2,26 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import SiteNavigation from '@/components/navigation/SiteNavigation'
-import RoomList from '@/components/rooms/RoomList'
-import AvailabilityCalendar from '@/components/rooms/AvailabilityCalendar'
-import ShoppingCart from '@/components/booking/ShoppingCart'
 import { useCartStore } from '@/store/cartStore'
 import { Room, RoomType, PackageType } from '@/types/hotel'
-import PerformanceDashboard from '@/components/dev/PerformanceDashboard'
+
+// Lazy load heavy components
+const RoomList = dynamic(() => import('@/components/rooms/RoomList'), {
+  loading: () => <div className="text-center py-12 text-lundies-moss">Loading rooms...</div>
+})
+const AvailabilityCalendar = dynamic(() => import('@/components/rooms/AvailabilityCalendar'), {
+  ssr: false
+})
+const ShoppingCart = dynamic(() => import('@/components/booking/ShoppingCart'), {
+  ssr: false
+})
+const PerformanceDashboard = dynamic(() => import('@/components/dev/PerformanceDashboard'), {
+  ssr: false
+})
 
 interface DateRange {
   startDate: Date | null
