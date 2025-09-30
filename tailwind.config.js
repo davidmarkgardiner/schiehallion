@@ -18,6 +18,22 @@ module.exports = {
           moss: '#6f7a63',
           charcoal: '#1f1b16',
         },
+        peat: {
+          50: '#f7f3ef',
+          100: '#ece3d7',
+          200: '#ded1bd',
+          300: '#cdb597',
+          400: '#b3906c',
+          500: '#9c7351',
+          600: '#805942',
+          700: '#664435',
+          800: '#4d3228',
+          900: '#3b2720',
+        },
+      },
+      fontFamily: {
+        sans: ['var(--font-body)', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-heading)', 'serif'],
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

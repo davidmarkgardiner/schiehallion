@@ -1,10 +1,20 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Playfair_Display, Source_Sans_3 } from 'next/font/google'
 import './globals.css'
 import { AuthProvider } from '@/context/AuthContext'
 import ChatbotWidget from '@/components/chat/ChatbotWidget'
 
-const inter = Inter({ subsets: ['latin'] })
+const heading = Playfair_Display({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-heading',
+})
+
+const body = Source_Sans_3({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  variable: '--font-body',
+})
 
 export const metadata: Metadata = {
   title: 'Schiehallion Hotel · Highland Hospitality Reimagined',
@@ -19,7 +29,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${heading.variable} ${body.variable} font-sans antialiased`}>
         <AuthProvider>
           {children}
           <ChatbotWidget />
