@@ -1,12 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, lazy, Suspense } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import LoginForm from '@/components/LoginForm'
 import SiteNavigation from '@/components/navigation/SiteNavigation'
 import NavUserProfile from '@/components/NavUserProfile'
-import ConciergeChatWidget from '@/components/concierge/ConciergeChatWidget'
+
+const ConciergeChatWidget = lazy(() => import('@/components/concierge/ConciergeChatWidget'))
 
 const landingSections = [
   { label: 'Rooms Overview', href: '/#rooms' },
@@ -669,7 +670,9 @@ export default function Home() {
         </div>
       </footer>
 
-      <ConciergeChatWidget />
+      <Suspense fallback={null}>
+        <ConciergeChatWidget />
+      </Suspense>
     </main>
   )
 }
