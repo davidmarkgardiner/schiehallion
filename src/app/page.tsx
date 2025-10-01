@@ -1,678 +1,153 @@
 'use client'
 
 import Link from 'next/link'
-import { useState, lazy, Suspense } from 'react'
-import { useAuth } from '@/context/AuthContext'
+import { lazy, useEffect, useState } from 'react'
+
+import ErrorBoundary from '@/components/ErrorBoundary'
+import AwardsSection from '@/components/landing/AwardsSection'
+import ContactSection from '@/components/landing/ContactSection'
+import DiningSection from '@/components/landing/DiningSection'
+import ExperiencesSection from '@/components/landing/ExperiencesSection'
+import HeroSection from '@/components/landing/HeroSection'
+import OperationsSection from '@/components/landing/OperationsSection'
+import RoomsSection from '@/components/landing/RoomsSection'
+import TechnologySection from '@/components/landing/TechnologySection'
 import LoginForm from '@/components/LoginForm'
 import SiteNavigation from '@/components/navigation/SiteNavigation'
-import NavUserProfile from '@/components/NavUserProfile'
+import { contactChannels } from '@/config/contact'
+import { useAuth } from '@/context/AuthContext'
+import {
+  awards,
+  diningMoments,
+  experienceStories,
+  heroImages,
+  landingSections,
+  operationsHighlights,
+  roomCollections,
+  technologyPillars,
+} from '@/data/landing'
+import { usePrefersReducedMotion } from '@/hooks/usePrefersReducedMotion'
+import { useRevealOnScroll } from '@/hooks/useRevealOnScroll'
 
 const ConciergeChatWidget = lazy(() => import('@/components/concierge/ConciergeChatWidget'))
 
-const landingSections = [
-  { label: 'Rooms Overview', href: '/#rooms' },
-  { label: 'Dining Journey', href: '/#dining' },
-  { label: 'Experiences', href: '/#experiences' },
-  { label: 'Technology', href: '/#technology' },
-  { label: 'Operations', href: '/#operations' },
-  { label: 'Connect', href: '/#contact' },
-]
-
-const heroStats = [
-  { label: 'Heritage rooms & suites', value: '15+' },
-  { label: 'Guest rating', value: '4.8/5' },
-  { label: 'Local partners', value: '12' },
-]
-
-const roomShowcase = [
-  {
-    name: 'Highland View Double',
-    vibe: 'Cosy double • Loch-side outlook',
-    occupancy: '2 adults · 1 child',
-    packages: ['Bed & Breakfast', 'Dinner, Bed & Breakfast'],
-    features: ['Super-king bed', 'Walk-in rainfall shower', 'Loch Tay welcome hamper'],
-    notes:
-      'Perfect for Highland Explorers planning a two-night getaway with fresh pastries delivered each morning.',
-  },
-  {
-    name: 'Riverside Twin Retreat',
-    vibe: 'Twin • Work-friendly comfort',
-    occupancy: '2 adults',
-    packages: ['Room Only', 'Corporate Express'],
-    features: ['Ergonomic workspace', 'Ultrafast WiFi', 'Same-day laundry options'],
-    notes:
-      'Built for Business Travellers who need a calm base before meetings in Perthshire and beyond.',
-  },
-  {
-    name: 'Family Cairngorm Suite',
-    vibe: 'Family • Interconnected',
-    occupancy: '2 adults · 2 children',
-    packages: ['Family Adventure', 'Breakfast & Supper Club'],
-    features: ['Separate kids nook', 'Games chest', 'Complimentary Beyond Adventure vouchers'],
-    notes:
-      'Give Event Planners a flexible hub for multi-room bookings and coordinated dining times.',
-  },
-  {
-    name: 'Deluxe Schiehallion Loft',
-    vibe: 'Suite • Romantic finish',
-    occupancy: '2 adults',
-    packages: ['Celebration Stay', 'Seasonal Tasting Journey'],
-    features: ['In-room telescope', 'Freestanding bath', 'Private concierge check-in'],
-    notes:
-      'Our hero room for storytelling — perfect for campaign landing pages and influencer partnerships.',
-  },
-]
-
-const diningMoments = [
-  {
-    title: 'The Schiehallion Kitchen',
-    description:
-      'Local produce takes centre stage — think Perthshire lamb, foraged chanterelles, and artisan bakers from Aberfeldy.',
-    highlights: ['Seasonal tasting menus', 'Vegetarian & vegan pairings', 'Sommelier wine flights'],
-  },
-  {
-    title: 'Breakfast & Brunch',
-    description:
-      'Sunrise spreads with hearty Scottish classics, continental favourites, and mindful options for early adventures.',
-    highlights: ['Freshly baked morning rolls', 'Locally roasted Glen Lyon coffee', 'Express takeaway for river guides'],
-  },
-  {
-    title: 'Afternoon Tea & Sunday Roast',
-    description:
-      'Weekend rituals return with sweet treats, Highland shortbread towers, and a countdown to our famous roast service.',
-    highlights: ['Live roast countdown timer', 'Allergen-aware patisserie', 'Kids discovery tasting plates'],
-  },
-]
-
-const experienceHighlights = [
-  {
-    name: 'Dewars Aberfeldy Distillery',
-    distance: '2 miles',
-    focus: 'Cask tasting tours, heritage storyrooms, curated whisky flights.',
-  },
-  {
-    name: 'Beyond Adventure',
-    distance: 'On the River Tay',
-    focus: 'Kayaking, paddleboarding, and bespoke river guides for families.',
-  },
-  {
-    name: 'Loch Tay & Ben Lawers',
-    distance: '15 minutes',
-    focus: 'Mountain trails, sunrise hikes, and photographer-led expeditions.',
-  },
-  {
-    name: 'Aberfeldy Watermill & Gallery',
-    distance: '5 minutes walk',
-    focus: 'Independent bookshop, art exhibitions, and slow-travel inspiration.',
-  },
-]
-
-const technologyPillars = [
-  {
-    title: 'Unified Booking Surface',
-    detail:
-      'Next.js 15 experience layer that powers web, PWA, and admin journeys with shared design tokens and accessibility baked in.',
-  },
-  {
-    title: 'Real-time Availability Core',
-    detail:
-      'Firestore and Realtime Database keep room calendars, restaurant tables, and waitlists instantly synced across channels.',
-  },
-  {
-    title: 'Edge-first Performance',
-    detail:
-      'Vercel Edge network, caching strategies, and CDN image optimisation keep global guests under 100ms to first content.',
-  },
-  {
-    title: 'Payments & Compliance',
-    detail:
-      'Stripe for secure checkouts, PCI-ready workflows, and automated confirmations via SendGrid and Twilio.',
-  },
-]
-
-const conciergeFeatures = [
-  {
-    title: 'Virtual Highland Host',
-    description:
-      'AI concierge that curates itineraries, translates Gaelic greetings, and matches accessibility needs to the right rooms.',
-  },
-  {
-    title: 'Weather-smart Planning',
-    description:
-      'Connects to live forecasts to shift guests from loch cruises to distillery tours when the clouds roll in.',
-  },
-  {
-    title: 'Culinary Guide',
-    description:
-      'Handles menu queries, allergen checks, and wine pairings with chef-approved responses in seconds.',
-  },
-  {
-    title: 'Partner Integrations',
-    description:
-      'Books distillery tours, adventure sessions, and tee times via channel-ready APIs.',
-  },
-  {
-    title: 'Upsell Intelligence',
-    description:
-      'Suggests upgrades, late check-outs, and local experiences based on guest segments and booking history.',
-  },
-]
-
-const bookingFlow = [
-  {
-    stage: '1. Discover & Dream',
-    description:
-      'Story-first landing pages with hero video, rich imagery, and SEO content for every persona.',
-    touchpoints: ['Dynamic hero modules', 'Local attraction hub', 'Personalised recommendations'],
-  },
-  {
-    stage: '2. Build the Stay',
-    description:
-      'Drag-and-drop room selection, package toggles, and multi-room cart with live availability.',
-    touchpoints: ['Realtime room grid', 'Package comparison', 'Guest preference capture'],
-  },
-  {
-    stage: '3. Dine & Explore',
-    description:
-      'Table reservations, waitlist management, and experience add-ons all in one journey.',
-    touchpoints: ['Interactive floor plan', 'Experience marketplace', 'Automated partner booking'],
-  },
-  {
-    stage: '4. Confirm & Delight',
-    description:
-      'Stripe payments, instant confirmation, and automated concierge handover for pre-arrival nurture.',
-    touchpoints: ['Payment intents', 'Email & SMS triggers', 'AI concierge welcome'],
-  },
-]
-
-const operationsHighlights = [
-  {
-    title: 'Operations Command Centre',
-    bullets: ['Drag-and-drop room assignment board', 'Housekeeping and maintenance snapshots', 'Overbooking guardrails and alerts'],
-  },
-  {
-    title: 'Revenue Studio',
-    bullets: ['Dynamic pricing experiments', 'Package performance analytics', 'Competitor rate monitoring dashboards'],
-  },
-  {
-    title: 'Guest Relationship Desk',
-    bullets: ['Pre-arrival and post-stay automation', 'Loyalty segmentation', 'Unified messaging inbox'],
-  },
-]
-
-const integrationPartners = [
-  { name: 'Hotels.uk.com Channel Manager', focus: 'Rate parity & inventory sync', priority: 'Critical', status: 'API discovery complete' },
-  { name: 'Booking.com XML', focus: 'Two-way availability updates', priority: 'Critical', status: 'Schema mapping underway' },
-  { name: 'Stripe Payments', focus: '3D Secure & multi-currency', priority: 'Critical', status: 'Sandbox connected' },
-  { name: 'SendGrid & Twilio', focus: 'Transactional messaging', priority: 'High', status: 'Template design in progress' },
-  { name: 'VisitScotland & Weather APIs', focus: 'Live events & climate signals', priority: 'Medium', status: 'Data contract drafting' },
-  { name: 'Google Business Reviews', focus: 'Reputation insights', priority: 'Medium', status: 'Aggregation backlog' },
-]
-
-const milestones = [
-  {
-    phase: 'Phase 0 · Experience Blueprint (Now)',
-    detail: 'Stakeholder alignment, content audit, data architecture, and this visual-first articulation of the future state.',
-  },
-  {
-    phase: 'Phase 1 · Booking Foundation',
-    detail: 'Deliver room catalogue, availability services, and baseline payments with progressive enhancement.',
-  },
-  {
-    phase: 'Phase 2 · AI Concierge & Dining',
-    detail: 'Layer in restaurant floor management, AI concierge flows, and partner integrations.',
-  },
-  {
-    phase: 'Phase 3 · Operations Intelligence',
-    detail: 'Launch admin dashboards, forecasting engines, and loyalty programming tied to live data.',
-  },
-]
-
-function SectionHeader({
-  eyebrow,
-  title,
-  description,
-  align = 'center',
-}: {
-  eyebrow: string
-  title: string
-  description?: string
-  align?: 'left' | 'center'
-}) {
-  const alignmentClasses = align === 'center' ? 'mx-auto text-center' : ''
-
-  return (
-    <div className={`max-w-3xl ${alignmentClasses}`}>
-      <p className="text-xs font-semibold uppercase tracking-[0.3em] text-lundies-moss">{eyebrow}</p>
-      <h2 className="mt-4 text-3xl font-semibold leading-tight text-lundies-charcoal sm:text-4xl">{title}</h2>
-      {description ? <p className="mt-4 text-base text-lundies-peat sm:text-lg">{description}</p> : null}
-    </div>
-  )
-}
-
 export default function Home() {
-  const { user, userProfile } = useAuth()
-  const [showGuestRegistration, setShowGuestRegistration] = useState(false)
+  const { user } = useAuth()
+  const prefersReducedMotion = usePrefersReducedMotion()
+  const [showLogin, setShowLogin] = useState(false)
 
-  if (!user) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-gradient-to-br from-lundies-ivory via-lundies-linen to-lundies-stone p-4">
-        <div className="w-full max-w-md">
-          <div className="mb-8 text-center">
-            <h1 className="mb-2 text-3xl font-bold text-lundies-charcoal">Schiehallion Hotel</h1>
-            <p className="text-lundies-peat">Highland hospitality reimagined</p>
-          </div>
-          <LoginForm />
-        </div>
-      </main>
-    )
-  }
+  useRevealOnScroll(prefersReducedMotion)
+
+  useEffect(() => {
+    if (!showLogin) return
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setShowLogin(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [showLogin])
+
+  useEffect(() => {
+    if (user) {
+      setShowLogin(false)
+    }
+  }, [user])
 
   return (
-    <main className="relative overflow-hidden bg-lundies-ivory text-lundies-charcoal">
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-[-10%] h-[32rem] w-[32rem] -translate-x-1/2 rounded-full bg-lundies-heather/30 blur-[160px]" />
-        <div className="absolute right-[-10%] top-1/3 h-[24rem] w-[24rem] rounded-full bg-lundies-sand/40 blur-[180px]" />
-        <div className="absolute bottom-[-20%] left-[5%] h-[28rem] w-[28rem] rounded-full bg-lundies-peat/20 blur-[160px]" />
-      </div>
+    <main className="relative bg-lundies-ivory text-lundies-charcoal">
+      <SiteNavigation
+        sectionLinks={landingSections}
+        isSticky
+        layout="landing"
+        actionSlot={
+          user ? (
+            <Link
+              href="/booking"
+              className="inline-flex rounded-full border border-lundies-stone/70 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-lundies-charcoal transition hover:bg-white/70"
+            >
+              Manage booking
+            </Link>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setShowLogin(true)}
+              className="inline-flex rounded-full border border-lundies-stone/70 px-4 py-2 text-[10px] font-semibold uppercase tracking-[0.35em] text-lundies-charcoal transition hover:bg-white/70"
+            >
+              Sign in
+            </button>
+          )
+        }
+      />
 
-      <header className="relative">
-        <div className="mx-auto flex max-w-6xl flex-col gap-12 px-6 pb-20 pt-12 sm:pt-16">
-          <SiteNavigation
-            sectionLinks={landingSections}
-            actionSlot={
-              <Link
-                href="/rooms"
-                className="rounded-full border border-lundies-stone/70 bg-white/60 px-3 py-1.5 text-xs font-medium uppercase tracking-[0.2em] text-lundies-moss transition hover:bg-white/80 hover:text-lundies-charcoal"
-              >
-                Browse Rooms
-              </Link>
+      <HeroSection heroImages={heroImages} prefersReducedMotion={prefersReducedMotion} />
+      <RoomsSection rooms={roomCollections} />
+      <DiningSection moments={diningMoments} />
+      <ExperiencesSection experiences={experienceStories} />
+      <TechnologySection pillars={technologyPillars} />
+      <OperationsSection highlights={operationsHighlights} />
+      <AwardsSection awards={awards} />
+      <ContactSection
+        channels={contactChannels}
+        conciergeWidget={
+          <ErrorBoundary
+            fallback={
+              <p className="text-sm text-lundies-peat">
+                Concierge widget unavailable. Please contact us directly.
+              </p>
             }
-          />
+          >
+            <ConciergeChatWidget />
+          </ErrorBoundary>
+        }
+      />
 
-          <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
-            <div className="space-y-8">
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-lundies-moss">Highland hospitality reimagined</p>
-              <h1 className="text-4xl font-semibold leading-tight text-lundies-charcoal sm:text-5xl lg:text-6xl">
-                A modern booking journey for Aberfeldy’s landmark hotel
-              </h1>
-              <p className="max-w-xl text-base text-lundies-peat sm:text-lg">
-                This first-pass interface stitches together rooms, dining, experiences, and intelligent guest services into one
-                cohesive digital platform. Every section below maps directly to the architecture, data models, and product
-                ambitions outlined in the Schiehallion documentation.
-              </p>
-              <div className="flex flex-wrap gap-4">
-                <a
-                  href="/booking"
-                  className="rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-lundies-heather/80"
-                >
-                  Book Now
-                </a>
-                <a
-                  href="/rooms"
-                  className="rounded-full border border-lundies-moss px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-moss transition hover:bg-lundies-moss/10"
-                >
-                  Browse Rooms
-                </a>
-                <a
-                  href="#rooms"
-                  className="rounded-full border border-lundies-stone/70 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-white/70"
-                >
-                  Room Overview
-                </a>
-                <a
-                  href="#technology"
-                  className="rounded-full border border-lundies-stone/70 px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-white/70"
-                >
-                  View Platform Plan
-                </a>
-              </div>
-            </div>
-            <div className="grid gap-6 rounded-3xl border border-lundies-stone/60 bg-white/80 p-8 shadow-xl backdrop-blur">
-              <div className="space-y-4">
-                <h2 className="text-xl font-semibold text-lundies-charcoal">Why this matters</h2>
-                <p className="text-sm text-lundies-peat">
-                  Designed for mobile-first bookings, high repeat guests, and story-driven marketing campaigns. This canvas sets the
-                  tone for visual design, content hierarchy, and future interactive prototypes.
-                </p>
-              </div>
-              <dl className="grid gap-4 sm:grid-cols-3">
-                {heroStats.map((stat) => (
-                  <div key={stat.label} className="rounded-2xl bg-lundies-stone/50 p-4 text-center shadow-inner">
-                    <dt className="text-xs uppercase tracking-[0.3em] text-lundies-moss">{stat.label}</dt>
-                    <dd className="mt-2 text-2xl font-semibold text-lundies-charcoal">{stat.value}</dd>
-                  </div>
-                ))}
-              </dl>
-              <div className="rounded-2xl bg-lundies-heather/20 p-4 text-sm text-lundies-charcoal">
-                Future Enhancements: integrate live availability widgets, hero photography, and real guest storytelling once data connections are in place.
-              </div>
-            </div>
+      <footer className="border-t border-lundies-stone/60 bg-white/80">
+        <div className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-12 text-sm text-lundies-peat md:flex-row md:items-center md:justify-between">
+          <div>
+            <p className="font-semibold text-lundies-charcoal">Schiehallion Hotel</p>
+            <p className="mt-1">Luxury in the heart of Aberfeldy since 1870.</p>
           </div>
-        </div>
-      </header>
-
-      <section id="rooms" className="relative border-t border-lundies-stone/60 bg-white/70 py-20 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionHeader
-            eyebrow="Rooms & Suites"
-            title="Curated stays for every Schiehallion persona"
-            description="Each card mirrors a Firestore room document with packages, amenities, and storytelling hooks ready for CMS integration."
-            align="left"
-          />
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {roomShowcase.map((room) => (
-              <article
-                key={room.name}
-                className="flex flex-col gap-5 rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-lg shadow-lundies-stone/40"
-              >
-                <div>
-                  <h3 className="text-2xl font-semibold text-lundies-charcoal">{room.name}</h3>
-                  <p className="text-sm uppercase tracking-[0.25em] text-lundies-moss">{room.vibe}</p>
-                </div>
-                <p className="text-sm text-lundies-peat">{room.notes}</p>
-                <div className="grid gap-4 text-sm text-lundies-charcoal">
-                  <p className="flex items-center justify-between rounded-2xl bg-lundies-stone/40 px-4 py-3 text-lundies-charcoal">
-                    <span className="font-medium text-lundies-moss">Occupancy</span>
-                    <span>{room.occupancy}</span>
-                  </p>
-                  <div className="rounded-2xl bg-lundies-linen p-4">
-                    <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Packages</p>
-                    <ul className="mt-3 space-y-2 text-sm">
-                      {room.packages.map((pkg) => (
-                        <li
-                          key={pkg}
-                          className="flex items-center justify-between gap-2 rounded-full border border-lundies-stone/60 bg-white/80 px-3 py-2"
-                        >
-                          <span>{pkg}</span>
-                          <span className="text-lundies-moss">Live pricing soon</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  <div className="rounded-2xl bg-lundies-linen p-4">
-                    <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Signature touches</p>
-                    <ul className="mt-3 grid gap-2 text-sm">
-                      {room.features.map((feature) => (
-                        <li key={feature} className="rounded-full bg-white/80 px-3 py-2 text-lundies-peat">
-                          {feature}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </article>
-            ))}
+          <div className="flex flex-wrap gap-6">
+            <Link href="/privacy" className="transition hover:text-lundies-charcoal">
+              Privacy
+            </Link>
+            <Link href="/terms" className="transition hover:text-lundies-charcoal">
+              Terms
+            </Link>
+            <Link href="/rooms" className="transition hover:text-lundies-charcoal">
+              Rooms
+            </Link>
+            <Link href="/restaurant" className="transition hover:text-lundies-charcoal">
+              Dining
+            </Link>
           </div>
-        </div>
-      </section>
-
-      <section
-        id="dining"
-        className="relative border-t border-lundies-stone/60 bg-gradient-to-b from-white/90 to-lundies-linen/80 py-20"
-      >
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionHeader
-            eyebrow="Dining"
-            title="Celebrating Perthshire produce from morning to late night"
-            description="Structured for CMS-powered menu updates, live table availability, and storytelling content modules."
-            align="left"
-          />
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {diningMoments.map((moment) => (
-              <article
-                key={moment.title}
-                className="flex flex-col gap-4 rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/30"
-              >
-                <h3 className="text-xl font-semibold text-lundies-charcoal">{moment.title}</h3>
-                <p className="text-sm text-lundies-peat">{moment.description}</p>
-                <ul className="mt-auto space-y-2 text-sm text-lundies-charcoal">
-                  {moment.highlights.map((item) => (
-                    <li key={item} className="rounded-full bg-lundies-heather/30 px-3 py-2">{item}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-          <div className="mt-10 grid gap-6 rounded-3xl border border-lundies-heather/40 bg-lundies-heather/20 p-6 text-sm text-lundies-charcoal md:grid-cols-3">
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Restaurant Operations</p>
-              <p className="mt-2 text-lundies-charcoal">
-                Interactive floor plan, waitlist management, and POS integrations will sit beneath this hospitality storytelling.
-              </p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Guest Signals</p>
-              <p className="mt-2">
-                Capture dietary notes, celebration flags, and concierge tasks for the team dashboard.
-              </p>
-            </div>
-            <div>
-              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Content Rhythm</p>
-              <p className="mt-2">
-                Schedule Sunday roast countdowns, chef’s journal entries, and seasonal photography drops.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section id="experiences" className="relative border-t border-lundies-stone/60 bg-white/70 py-20 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionHeader
-            eyebrow="Experiences"
-            title="Build itineraries that stretch beyond the hotel walls"
-            description="Data-ready attraction cards link to partner APIs, distance calculations, and AI-generated recommendations."
-            align="left"
-          />
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {experienceHighlights.map((experience) => (
-              <article
-                key={experience.name}
-                className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/40"
-              >
-                <div className="flex items-baseline justify-between gap-4">
-                  <h3 className="text-xl font-semibold text-lundies-charcoal">{experience.name}</h3>
-                  <span className="text-xs uppercase tracking-[0.25em] text-lundies-moss">{experience.distance}</span>
-                </div>
-                <p className="mt-4 text-sm text-lundies-peat">{experience.focus}</p>
-                <div className="mt-6 flex items-center justify-between text-xs uppercase tracking-[0.3em] text-lundies-moss">
-                  <span>Live data feed ready</span>
-                  <span>Partner onboarding</span>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="technology"
-        className="relative border-t border-lundies-stone/60 bg-gradient-to-b from-lundies-linen/90 to-lundies-stone/70 py-20"
-      >
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionHeader
-            eyebrow="Platform Architecture"
-            title="Nano Banana foundations tuned for hospitality"
-            description="Grounded in the architecture blueprint: client experiences on Next.js, real-time data via Firebase, and integrations powering conversions."
-          />
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {technologyPillars.map((pillar) => (
-              <article
-                key={pillar.title}
-                className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/40"
-              >
-                <h3 className="text-lg font-semibold text-lundies-charcoal">{pillar.title}</h3>
-                <p className="mt-4 text-sm text-lundies-peat">{pillar.detail}</p>
-              </article>
-            ))}
-          </div>
-          <div className="mt-12 grid gap-6 rounded-3xl border border-lundies-stone/70 bg-lundies-stone/30 p-6 md:grid-cols-4">
-            {bookingFlow.map((step) => (
-              <article
-                key={step.stage}
-                className="flex flex-col gap-4 rounded-2xl border border-lundies-stone/60 bg-white/90 p-4 text-lundies-charcoal"
-              >
-                <h4 className="text-base font-semibold text-lundies-charcoal">{step.stage}</h4>
-                <p className="text-sm text-lundies-peat">{step.description}</p>
-                <ul className="mt-auto space-y-1 text-xs text-lundies-charcoal">
-                  {step.touchpoints.map((touchpoint) => (
-                    <li key={touchpoint} className="rounded-full bg-lundies-heather/30 px-3 py-2">{touchpoint}</li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="concierge" className="relative border-t border-lundies-stone/60 bg-white/70 py-20 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionHeader
-            eyebrow="AI Concierge"
-            title="Human warmth, AI speed"
-            description="Gemini and OpenAI services power contextual recommendations, multi-language support, and upsell journeys."
-            align="left"
-          />
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {conciergeFeatures.map((feature) => (
-              <article
-                key={feature.title}
-                className="rounded-3xl border border-lundies-heather/40 bg-lundies-heather/20 p-6 text-lundies-charcoal"
-              >
-                <h3 className="text-lg font-semibold text-lundies-charcoal">{feature.title}</h3>
-                <p className="mt-3 text-sm text-lundies-peat">{feature.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="operations"
-        className="relative border-t border-lundies-stone/60 bg-gradient-to-b from-lundies-linen/80 to-lundies-stone/60 py-20"
-      >
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionHeader
-            eyebrow="Operations"
-            title="A command centre for the Schiehallion team"
-            description="Admin dashboards align with the architecture plan: Cloud Functions orchestrate automations, Redis accelerates forecasting, and Firestore stores operational states."
-          />
-          <div className="mt-12 grid gap-6 md:grid-cols-3">
-            {operationsHighlights.map((panel) => (
-              <article
-                key={panel.title}
-                className="flex flex-col gap-4 rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/40"
-              >
-                <h3 className="text-lg font-semibold text-lundies-charcoal">{panel.title}</h3>
-                <ul className="space-y-2 text-sm text-lundies-peat">
-                  {panel.bullets.map((bullet) => (
-                    <li key={bullet} className="rounded-full bg-lundies-linen px-3 py-2 text-lundies-charcoal">
-                      {bullet}
-                    </li>
-                  ))}
-                </ul>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="integrations" className="relative border-t border-lundies-stone/60 bg-white/70 py-20 backdrop-blur-sm">
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionHeader
-            eyebrow="Ecosystem"
-            title="Integration runway"
-            description="Prioritised roadmap for critical channel, payment, messaging, and data services."
-            align="left"
-          />
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {integrationPartners.map((partner) => (
-              <article
-                key={partner.name}
-                className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/40"
-              >
-                <h3 className="text-lg font-semibold text-lundies-charcoal">{partner.name}</h3>
-                <p className="mt-2 text-sm text-lundies-peat">{partner.focus}</p>
-                <div className="mt-4 flex flex-wrap gap-2 text-xs uppercase tracking-[0.25em] text-lundies-moss">
-                  <span className="rounded-full bg-lundies-linen px-3 py-1 text-lundies-charcoal">Priority · {partner.priority}</span>
-                  <span className="rounded-full bg-lundies-heather/30 px-3 py-1 text-lundies-charcoal">{partner.status}</span>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section
-        id="roadmap"
-        className="relative border-t border-lundies-stone/60 bg-gradient-to-b from-lundies-linen/90 to-lundies-stone/70 py-20"
-      >
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionHeader
-            eyebrow="Delivery"
-            title="From blueprint to live guest journeys"
-            description="Phased plan aligning design sprints, engineering focus, and content production."
-          />
-          <div className="mt-12 grid gap-6 md:grid-cols-2">
-            {milestones.map((milestone) => (
-              <article
-                key={milestone.phase}
-                className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6 shadow-sm shadow-lundies-stone/40"
-              >
-                <h3 className="text-lg font-semibold text-lundies-charcoal">{milestone.phase}</h3>
-                <p className="mt-3 text-sm text-lundies-peat">{milestone.detail}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="contact" className="relative border-t border-lundies-stone/60 bg-lundies-linen/80 py-20">
-        <div className="mx-auto max-w-5xl px-6 text-center">
-          <SectionHeader
-            eyebrow="Stay in touch"
-            title="Let’s craft the full Schiehallion experience"
-            description="Next steps: translate this vision into detailed component libraries, connect live data sources, and prepare usability tests with target guests."
-          />
-          <div className="mt-10 grid gap-6 text-sm text-lundies-peat sm:grid-cols-3">
-            <div className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6">
-              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Visit</p>
-              <p className="mt-3 text-sm text-lundies-charcoal">
-                6 Dunkeld Street
-                <br /> Aberfeldy, Perth & Kinross
-                <br /> PH15 2AF
-              </p>
-            </div>
-            <div className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6">
-              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Call</p>
-              <p className="mt-3 text-lg font-semibold text-lundies-charcoal">01887 820421</p>
-              <p className="mt-2 text-xs text-lundies-peat">Front desk · 24/7</p>
-            </div>
-            <div className="rounded-3xl border border-lundies-stone/60 bg-white/90 p-6">
-              <p className="text-xs uppercase tracking-[0.25em] text-lundies-moss">Write</p>
-              <p className="mt-3 text-sm text-lundies-charcoal">bookings@schiehallionhotel.co.uk</p>
-              <p className="mt-2 text-xs text-lundies-peat">Booking enquiries & partnerships</p>
-            </div>
-          </div>
-          <div className="mt-12 flex flex-wrap justify-center gap-4 text-xs uppercase tracking-[0.25em] text-lundies-moss">
-            <span className="rounded-full border border-lundies-stone/60 px-4 py-2">Phase 0 Prototype</span>
-            <span className="rounded-full border border-lundies-stone/60 px-4 py-2">WCAG-first layout</span>
-            <span className="rounded-full border border-lundies-stone/60 px-4 py-2">Mobile friendly</span>
-          </div>
-        </div>
-      </section>
-
-      <footer className="border-t border-lundies-stone/60 bg-lundies-stone/60 py-10 text-xs text-lundies-charcoal">
-        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-6 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Schiehallion Hotel · Perthshire, Scotland</p>
-          <p>Part of the Nano Banana hospitality stack initiative.</p>
+          <p className="text-xs uppercase tracking-[0.3em] text-lundies-peat/70">Design · Photography · Hospitality</p>
         </div>
       </footer>
 
-      <Suspense fallback={null}>
-        <ConciergeChatWidget />
-      </Suspense>
+      {!user && showLogin ? (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="relative w-full max-w-md space-y-6 rounded-3xl border border-lundies-stone/60 bg-white/95 p-8 shadow-2xl">
+            <button
+              type="button"
+              onClick={() => setShowLogin(false)}
+              className="absolute right-4 top-4 rounded-full border border-lundies-stone/60 px-3 py-1 text-xs uppercase tracking-[0.3em] text-lundies-charcoal transition hover:bg-lundies-stone/30"
+              aria-label="Close login"
+            >
+              Close
+            </button>
+            <div className="text-center">
+              <h2 className="text-2xl text-lundies-charcoal">Welcome back</h2>
+              <p className="mt-2 text-sm text-lundies-peat">Sign in to manage bookings and staff tools.</p>
+            </div>
+            <LoginForm />
+          </div>
+        </div>
+      ) : null}
     </main>
   )
 }

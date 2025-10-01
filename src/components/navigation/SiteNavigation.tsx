@@ -23,6 +23,7 @@ interface SiteNavigationProps {
   className?: string
   layout?: 'landing' | 'standard'
   sectionLinks?: NavigationLink[]
+  isSticky?: boolean
 }
 
 const basePrimaryClasses =
@@ -71,13 +72,20 @@ export default function SiteNavigation({
   className = '',
   layout = 'landing',
   sectionLinks = [],
+  isSticky = false,
 }: SiteNavigationProps) {
   const pathname = usePathname()
   const palette = palettes[layout]
+  const stickyClasses = isSticky
+    ? 'sticky top-0 z-50 border-b border-white/40 bg-[rgba(245,241,235,0.82)] backdrop-blur-lg'
+    : ''
 
   return (
-    <div className={`flex flex-col gap-4 text-lundies-charcoal ${className}`}>
-      <div className="flex flex-col gap-4 md:grid md:grid-cols-[auto,1fr,auto] md:items-center">
+    <nav
+      className={`flex flex-col gap-4 text-lundies-charcoal transition-colors duration-500 ease-out ${stickyClasses} ${className}`}
+      aria-label="Primary"
+    >
+      <div className="flex flex-col gap-4 px-4 py-5 md:grid md:grid-cols-[auto,1fr,auto] md:items-center md:px-10">
         <Link href="/" className="font-semibold tracking-wide text-lundies-charcoal">
           Schiehallion Hotel
         </Link>
@@ -117,8 +125,8 @@ export default function SiteNavigation({
       </div>
 
       {sectionLinks.length > 0 ? (
-        <div className="-mx-2 overflow-x-auto">
-          <div className="flex min-w-fit items-center gap-2 px-2 md:flex-wrap md:justify-center">
+        <div className="-mx-2 overflow-x-auto border-t border-white/40">
+          <div className="flex min-w-fit items-center gap-2 px-6 py-3 md:flex-wrap md:justify-center">
             {sectionLinks.map((link) => (
               <Link key={link.label} href={link.href} className={`${baseSectionClasses} ${palette.section}`}>
                 {link.label}
@@ -127,6 +135,6 @@ export default function SiteNavigation({
           </div>
         </div>
       ) : null}
-    </div>
+    </nav>
   )
 }
