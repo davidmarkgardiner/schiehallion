@@ -24,7 +24,8 @@ export default defineConfig({
     },
   ],
 
-  webServer: {
+  // Only start local server if not testing against a remote URL
+  webServer: process.env.PLAYWRIGHT_TEST_BASE_URL ? undefined : {
     command: "npm run dev",
     url: "http://localhost:3001",
     reuseExistingServer: !process.env.CI,
