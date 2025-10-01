@@ -4,10 +4,13 @@
 
 import { test, expect } from '@playwright/test'
 
+// Get base URL from environment or use default
+const BASE_URL = process.env.PLAYWRIGHT_TEST_BASE_URL || 'http://localhost:3001'
+
 test.describe('E2E Booking Flow', () => {
   test.beforeEach(async ({ page }) => {
     // Start at homepage
-    await page.goto('http://localhost:3001')
+    await page.goto(BASE_URL)
     await page.waitForLoadState('networkidle')
   })
 
@@ -16,7 +19,7 @@ test.describe('E2E Booking Flow', () => {
     console.log('Step 1: Testing guest browsing...')
 
     // Navigate to booking page (which has room browsing)
-    await page.goto('http://localhost:3001/booking')
+    await page.goto(`${BASE_URL}/booking`)
     await page.waitForLoadState('networkidle')
 
     // Verify page loads - look for any room-related content
@@ -106,7 +109,7 @@ test.describe('E2E Booking Flow', () => {
       console.log('✓ Opened cart and clicked checkout')
     } else {
       // Maybe already on booking page
-      await page.goto('http://localhost:3001/booking')
+      await page.goto(`${BASE_URL}/booking`)
     }
 
     await page.waitForTimeout(2000)
@@ -244,7 +247,7 @@ test.describe('E2E Booking Flow', () => {
 
   test('guest can access booking page', async ({ page }) => {
     // Quick test to verify public access to booking page
-    await page.goto('http://localhost:3001/booking')
+    await page.goto(`${BASE_URL}/booking`)
     await page.waitForLoadState('networkidle', { timeout: 30000 })
 
     // Should see booking interface
@@ -256,7 +259,7 @@ test.describe('E2E Booking Flow', () => {
 
   test('homepage loads successfully', async ({ page }) => {
     // Verify homepage works
-    await page.goto('http://localhost:3001')
+    await page.goto(BASE_URL)
     await page.waitForLoadState('networkidle', { timeout: 30000 })
 
     // Should see some content
