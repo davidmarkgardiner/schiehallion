@@ -60,9 +60,9 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="max-w-2xl w-full max-h-[90vh] overflow-hidden rounded-3xl border border-lundies-stone/60 bg-white/95 backdrop-blur-sm">
+      <div className="max-w-2xl w-full max-h-[90vh] rounded-3xl border border-lundies-stone/60 bg-white/95 backdrop-blur-sm flex flex-col">
         {/* Header */}
-        <div className="flex items-center justify-between p-6 border-b border-lundies-stone/60">
+        <div className="flex items-center justify-between p-6 border-b border-lundies-stone/60 flex-shrink-0">
           <div>
             <h2 className="text-2xl font-semibold text-lundies-charcoal">Shopping Cart</h2>
             <p className="text-lundies-peat">
@@ -77,8 +77,8 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
           </button>
         </div>
 
-        {/* Cart Items */}
-        <div className="flex-1 overflow-y-auto p-6 space-y-4 max-h-[50vh]">
+        {/* Cart Items - Scrollable */}
+        <div className="flex-1 overflow-y-auto p-6 space-y-4 min-h-0">
           {cartSummary.items.length === 0 ? (
             <div className="text-center py-12">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-lundies-stone/40 flex items-center justify-center">
@@ -103,11 +103,11 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
           )}
         </div>
 
-        {/* Summary and Actions */}
+        {/* Summary and Actions - Always Visible */}
         {cartSummary.items.length > 0 && (
           <>
             {/* Cart Summary */}
-            <div className="border-t border-lundies-stone/60 p-6 space-y-3">
+            <div className="border-t border-lundies-stone/60 p-6 space-y-3 flex-shrink-0">
               <div className="flex justify-between text-lundies-peat">
                 <span>Subtotal:</span>
                 <span>{formatPrice(cartSummary.subtotal)}</span>
@@ -132,12 +132,13 @@ const ShoppingCart: React.FC<ShoppingCartProps> = ({
             </div>
 
             {/* Action Buttons */}
-            <div className="p-6 pt-0 space-y-3">
+            <div className="p-6 pt-0 space-y-3 flex-shrink-0">
               <button
                 onClick={onProceedToBooking}
-                className="w-full rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-lundies-heather/80"
+                disabled={!onProceedToBooking}
+                className="w-full rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-lundies-heather/80 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                Proceed to Booking
+                Continue to Checkout
               </button>
 
               <div className="flex gap-3">
