@@ -24,6 +24,7 @@ import PackageSelection from './PackageSelection'
 import RoomSelectionPanel from './RoomSelectionPanel'
 import { PaymentStep } from '@/components/payment/PaymentStep'
 import { PersonalizationPanel } from './PersonalizationPanel'
+import LoginForm from '@/components/LoginForm'
 
 interface BookingFlowProps {
   initialStep?: BookingFlowState['currentStep']
@@ -48,6 +49,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
   const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null)
   const [selectedPackage, setSelectedPackage] = useState<PackageType>('room-only')
   const [bookingHistory, setBookingHistory] = useState<BookingHistoryEntry[]>([])
+  const [showLoginModal, setShowLoginModal] = useState(false)
 
   const sanitizeList = (values?: string[]): string[] =>
     (values || []).map(value => value.trim()).filter(Boolean)
@@ -152,6 +154,15 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
     refreshBookingHistory()
   }, [refreshBookingHistory])
 
+  // Auto-close login modal and proceed after user logs in
+  useEffect(() => {
+    if (user && showLoginModal) {
+      setShowLoginModal(false)
+      setCurrentStep('guest-info')
+      setShowCart(false)
+    }
+  }, [user, showLoginModal])
+
   const suggestionContext = useMemo<SuggestionContext>(() => {
     const firstItem = items[0]
     const accountPreferences = userProfile?.preferences
@@ -208,6 +219,13 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
       setError('Please add at least one room to your cart before proceeding.')
       return
     }
+
+    // Require login before proceeding to guest info
+    if (!user) {
+      setShowLoginModal(true)
+      return
+    }
+
     setCurrentStep('guest-info')
     setShowCart(false)
   }
@@ -350,18 +368,26 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
   }
 
   const handlePaymentSuccess = async (paymentIntentIdReceived: string) => {
+    console.log('BookingFlow: handlePaymentSuccess called with:', paymentIntentIdReceived)
+    console.log('BookingFlow: bookingIds:', bookingIds)
+
     setPaymentIntentId(paymentIntentIdReceived)
 
     // Generate a group booking reference if multiple bookings
     const groupReference = bookingIds.length > 1
       ? `SCH-GROUP-${Date.now()}`
-      : await BookingService.getBooking(bookingIds[0]).then(booking => booking?.bookingReference)
+      : `SCH-${bookingIds[0].substring(0, 8).toUpperCase()}`
 
-    setBookingReference(groupReference || bookingIds[0])
+    console.log('BookingFlow: setting booking reference:', groupReference)
+    setBookingReference(groupReference)
+
+    console.log('BookingFlow: changing step to confirmation')
     setCurrentStep('confirmation')
 
     // Clear the cart after successful payment
+    console.log('BookingFlow: clearing cart')
     clearCart()
+    console.log('BookingFlow: payment success handler completed')
   }
 
   const handlePaymentError = (errorMessage: string) => {
@@ -536,23 +562,6 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
     }
   }
 
-  if (!user) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-lundies-charcoal to-lundies-peat flex items-center justify-center p-4">
-        <div className="max-w-md w-full text-center">
-          <h1 className="text-3xl font-bold text-lundies-ivory mb-2">Access Required</h1>
-          <p className="text-lundies-stone mb-6">Please log in to start booking your Highland getaway</p>
-          <a
-            href="/"
-            className="rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-lundies-heather/80"
-          >
-            Go to Login
-          </a>
-        </div>
-      </div>
-    )
-  }
-
   return (
     <main className="relative overflow-hidden bg-lundies-ivory text-lundies-charcoal min-h-screen">
       {/* Background decoration */}
@@ -602,6 +611,27 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
         onClose={() => setShowCart(false)}
         onProceedToBooking={handleProceedToGuestInfo}
       />
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+          <div className="relative w-full max-w-md space-y-6 rounded-3xl border border-lundies-stone/60 bg-white/95 p-8 shadow-2xl">
+            <button
+              type="button"
+              onClick={() => setShowLoginModal(false)}
+              className="absolute right-4 top-4 rounded-full border border-lundies-stone/60 px-3 py-1 text-xs uppercase tracking-[0.3em] text-lundies-charcoal transition hover:bg-lundies-stone/30"
+              aria-label="Close login"
+            >
+              Close
+            </button>
+            <div className="text-center">
+              <h2 className="text-2xl text-lundies-charcoal">Sign in to continue booking</h2>
+              <p className="mt-2 text-sm text-lundies-peat">Please sign in or create an account to proceed with your booking.</p>
+            </div>
+            <LoginForm />
+          </div>
+        </div>
+      )}
     </main>
   )
 }

@@ -80,10 +80,10 @@ service cloud.firestore {
 
     // SCHH-007: Hotel Rooms Collection
     match /rooms/{roomId} {
-      // All authenticated users can read room information
-      allow read: if isAuthenticated();
-      // Only managers and admins can create/update/delete rooms
-      allow write: if isManager();
+      // Allow anyone to read room information (public information)
+      allow read: if true;
+      // Only staff (managers and admins) can create/update/delete rooms
+      allow write: if isStaff();
     }
 
     // SCHH-008: Hotel Bookings Collection
@@ -91,26 +91,20 @@ service cloud.firestore {
       // Guests can read their own bookings (by userId or email)
       allow read: if isAuthenticated() && (
         request.auth.uid == resource.data.guestUserId ||
-        request.auth.token.email == resource.data.guestInfo.email ||
-        isStaff()
+        request.auth.token.email == resource.data.guestInfo.email
       );
       // All authenticated users can create bookings for themselves
-      allow create: if isAuthenticated() && (
-        // Guest must match their own user ID
-        request.auth.uid == request.resource.data.guestUserId ||
-        // Or allow staff to create bookings
-        isStaff()
-      );
-      // Staff can update bookings
-      allow update: if isStaff();
-      // Only admins can delete bookings (for data integrity)
-      allow delete: if isAdmin();
+      allow create: if isAuthenticated() && request.auth.uid == request.resource.data.guestUserId;
+      // Authenticated users can update their own bookings
+      allow update: if isAuthenticated() && request.auth.uid == resource.data.guestUserId;
+      // Authenticated users can delete their own bookings
+      allow delete: if isAuthenticated() && request.auth.uid == resource.data.guestUserId;
     }
 
     // SCHH-009: Daily Availability Collection
     match /dailyAvailability/{date} {
-      // All authenticated users can read availability
-      allow read: if isAuthenticated();
+      // Allow anyone to read availability (public information)
+      allow read: if true;
       // Allow authenticated users to update availability (for booking creation)
       // and staff can also manage availability manually
       allow write: if isAuthenticated();

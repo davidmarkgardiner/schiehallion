@@ -5,7 +5,7 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   PaymentElement,
   useStripe,
@@ -40,18 +40,24 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
   const { user } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
+  const hasCheckedPayment = useRef(false)
 
   useEffect(() => {
-    if (!stripe) return
+    if (!stripe || hasCheckedPayment.current) return
 
-    // Check if payment already succeeded
+    // Check if payment already succeeded (e.g., after page refresh)
     const paymentIntentId = clientSecret.split('_secret_')[0]
+    hasCheckedPayment.current = true
+
     stripe.retrievePaymentIntent(clientSecret).then(({ paymentIntent }) => {
       if (paymentIntent?.status === 'succeeded') {
+        console.log('Payment already succeeded, calling onSuccess')
         onSuccess(paymentIntent.id)
       }
+    }).catch(err => {
+      console.error('Failed to check payment status:', err)
     })
-  }, [stripe, clientSecret, onSuccess])
+  }, [stripe, clientSecret])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -95,6 +101,7 @@ export const PaymentForm: React.FC<PaymentFormProps> = ({
       } else if (paymentIntent) {
         // Payment succeeded
         if (paymentIntent.status === 'succeeded') {
+          console.log('Payment succeeded, calling onSuccess with ID:', paymentIntent.id)
           onSuccess(paymentIntent.id)
         } else if (paymentIntent.status === 'requires_action') {
           // 3D Secure authentication required

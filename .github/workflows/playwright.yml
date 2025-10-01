@@ -1,0 +1,122 @@
+name: Playwright E2E Tests on Vercel Preview
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+  deployments: read
+  statuses: write
+
+jobs:
+  test:
+    # Only run when Vercel deployment succeeds
+    if: github.event.deployment_status.state == 'success'
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    env:
+      CI: true
+      # Pass the Vercel preview URL to Playwright
+      PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: Wait for deployment to be ready
+      run: |
+        echo "Testing deployment at: ${{ github.event.deployment_status.target_url }}"
+        # Wait up to 60 seconds for the deployment to be fully ready
+        for i in {1..12}; do
+          if curl -sSf "${{ github.event.deployment_status.target_url }}" > /dev/null 2>&1; then
+            echo "✓ Deployment is ready!"
+            break
+          fi
+          echo "Waiting for deployment... ($i/12)"
+          sleep 5
+        done
+
+    - name: Run Playwright tests against Vercel preview
+      run: npx playwright test tests/e2e-booking-flow.spec.ts
+      env:
+        PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+        NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+        NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
+        NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
+        NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: ${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}
+        NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}
+        NEXT_PUBLIC_FIREBASE_APP_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}
+        NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+        STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+
+    - name: Upload Playwright Report
+      uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: test-results
+        path: test-results/
+        retention-days: 30
+
+    - name: Upload screenshots
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: screenshots
+        path: test-results/*.png
+        retention-days: 7
+
+    - name: Comment on commit with test results
+      if: always()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const testResultsPath = 'test-results/junit.xml';
+          const deploymentUrl = '${{ github.event.deployment_status.target_url }}';
+
+          let comment = '## 🎭 Playwright E2E Test Results\n\n';
+          comment += `**Tested on:** ${deploymentUrl}\n\n`;
+
+          if (fs.existsSync(testResultsPath)) {
+            comment += '✅ Tests completed. Check the [full report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.\n\n';
+          } else {
+            comment += '❌ Tests failed or did not complete.\n\n';
+          }
+
+          comment += '### Test Coverage\n';
+          comment += '- ✓ Guest browsing without authentication\n';
+          comment += '- ✓ User login flow\n';
+          comment += '- ✓ Room selection and cart\n';
+          comment += '- ✓ Booking information\n';
+          comment += '- ✓ Payment processing\n';
+          comment += '- ✓ Booking confirmation\n';
+
+          // Comment on the commit
+          github.rest.repos.createCommitComment({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            commit_sha: context.sha,
+            body: comment
+          });

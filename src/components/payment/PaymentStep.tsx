@@ -5,7 +5,7 @@
 
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useAuth } from '@/context/AuthContext'
 import { StripeProvider } from '@/components/providers/StripeProvider'
 import { PaymentForm } from './PaymentForm'
@@ -45,8 +45,10 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntentResponse | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
+  const [isConfirming, setIsConfirming] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [retryCount, setRetryCount] = useState(0)
+  const [lastPaymentIntentId, setLastPaymentIntentId] = useState<string | null>(null)
   const maxRetries = 3
 
   useEffect(() => {
@@ -100,10 +102,27 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
     }
   }
 
-  const handlePaymentSuccess = async (paymentIntentId: string) => {
+  const handlePaymentSuccess = useCallback(async (paymentIntentId: string) => {
+    // Prevent duplicate confirmation calls
+    if (isConfirming) {
+      console.log('Payment confirmation already in progress, skipping...')
+      return
+    }
+
+    // Prevent duplicate confirmation for same payment intent
+    if (lastPaymentIntentId === paymentIntentId) {
+      console.log('Payment already confirmed for this intent, skipping...', paymentIntentId)
+      return
+    }
+
     try {
+      setIsConfirming(true)
+      setLastPaymentIntentId(paymentIntentId)
+      console.log('Starting payment confirmation for:', paymentIntentId)
+
       // Confirm payment on server
       const token = await user?.getIdToken()
+      console.log('Got auth token, calling API...')
 
       const response = await fetch('/api/payment/confirm', {
         method: 'POST',
@@ -116,20 +135,26 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
         }),
       })
 
+      console.log('API response status:', response.status)
       const data = await response.json()
+      console.log('API response data:', data)
 
       if (!response.ok) {
         throw new Error(data.message || 'Failed to confirm payment')
       }
 
+      console.log('Payment confirmed successfully, calling onPaymentSuccess callback')
       onPaymentSuccess(paymentIntentId)
+      console.log('Callback completed')
     } catch (err) {
       console.error('Failed to confirm payment:', err)
       const message = err instanceof Error ? err.message : 'Payment confirmation failed'
       setError(message)
       onPaymentError(message)
+    } finally {
+      setIsConfirming(false)
     }
-  }
+  }, [isConfirming, lastPaymentIntentId, user, onPaymentSuccess, onPaymentError])
 
   const handlePaymentError = (errorMessage: string) => {
     setError(errorMessage)
@@ -287,11 +312,26 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
           </StripeProvider>
         )}
 
+        {/* Confirming overlay */}
+        {isConfirming && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+            <div className="rounded-3xl border border-white/10 bg-slate-900/95 p-8 text-center max-w-md">
+              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-400 mb-4"></div>
+              <h3 className="text-xl font-semibold text-white mb-2">
+                Confirming Your Payment
+              </h3>
+              <p className="text-slate-300">
+                Please wait while we confirm your booking...
+              </p>
+            </div>
+          </div>
+        )}
+
         {/* Back Button */}
         <div className="mt-6 pt-6 border-t border-white/10">
           <button
             onClick={onBack}
-            disabled={isProcessing}
+            disabled={isProcessing || isConfirming}
             className="py-3 px-6 rounded-full border border-white/20 text-slate-300 hover:bg-white/5 transition disabled:opacity-50"
           >
             Back to Package Selection
