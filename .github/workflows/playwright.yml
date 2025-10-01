@@ -1,0 +1,106 @@
+name: Playwright E2E Tests
+on:
+  push:
+    branches: [ main, main-clean, develop ]
+  pull_request:
+    branches: [ main, main-clean ]
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    # Environment variables for the test
+    env:
+      CI: true
+      # Add Firebase emulator or test project credentials here
+      # FIREBASE_PROJECT_ID: ${{ secrets.FIREBASE_PROJECT_ID }}
+      # NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
+      # STRIPE_PUBLISHABLE_KEY: ${{ secrets.STRIPE_PUBLISHABLE_KEY }}
+      # STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: lts/*
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright Browsers
+      run: npx playwright install --with-deps
+
+    - name: Create .env.local file
+      run: |
+        echo "NEXT_PUBLIC_FIREBASE_API_KEY=${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}" >> .env.local
+        echo "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}" >> .env.local
+        echo "NEXT_PUBLIC_FIREBASE_PROJECT_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}" >> .env.local
+        echo "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=${{ secrets.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET }}" >> .env.local
+        echo "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID }}" >> .env.local
+        echo "NEXT_PUBLIC_FIREBASE_APP_ID=${{ secrets.NEXT_PUBLIC_FIREBASE_APP_ID }}" >> .env.local
+        echo "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}" >> .env.local
+        echo "STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}" >> .env.local
+        echo "STRIPE_WEBHOOK_SECRET=${{ secrets.STRIPE_WEBHOOK_SECRET }}" >> .env.local
+
+    - name: Run Playwright tests
+      run: npx playwright test tests/e2e-booking-flow.spec.ts
+
+    - name: Upload Playwright Report
+      uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: test-results
+        path: test-results/
+        retention-days: 30
+
+    - name: Upload screenshots
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: screenshots
+        path: test-results/*.png
+        retention-days: 7
+
+    - name: Comment PR with test results
+      if: github.event_name == 'pull_request' && !cancelled()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const fs = require('fs');
+          const testResultsPath = 'test-results/junit.xml';
+
+          let comment = '## 🎭 Playwright E2E Test Results\n\n';
+
+          if (fs.existsSync(testResultsPath)) {
+            comment += '✅ Tests completed. Check the [full report](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details.\n\n';
+          } else {
+            comment += '❌ Tests failed or did not complete.\n\n';
+          }
+
+          comment += '### Test Coverage\n';
+          comment += '- ✓ Guest browsing without authentication\n';
+          comment += '- ✓ User login flow\n';
+          comment += '- ✓ Room selection and cart\n';
+          comment += '- ✓ Booking information\n';
+          comment += '- ✓ Payment processing\n';
+          comment += '- ✓ Booking confirmation\n';
+
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });

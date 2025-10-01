@@ -99,23 +99,6 @@ export default function RoomsPage() {
     setSelectedDates({ startDate: null, endDate: null })
   }
 
-  if (!user) {
-    return (
-      <main className="min-h-screen bg-gradient-to-br from-lundies-ivory via-lundies-linen to-lundies-stone flex items-center justify-center p-4">
-        <div className="max-w-md w-full text-center">
-          <h1 className="text-3xl font-bold text-lundies-charcoal mb-2">Access Required</h1>
-          <p className="text-lundies-moss mb-6">Please log in to view rooms and make bookings</p>
-          <Link
-            href="/"
-            className="rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-lundies-heather/80"
-          >
-            Go to Login
-          </Link>
-        </div>
-      </main>
-    )
-  }
-
   return (
     <main className="relative overflow-hidden bg-lundies-ivory text-lundies-charcoal min-h-screen">
       {/* Background decoration */}
