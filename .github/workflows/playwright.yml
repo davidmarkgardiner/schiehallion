@@ -3,6 +3,11 @@ name: Playwright E2E Tests on Vercel Preview
 on:
   deployment_status:
 
+permissions:
+  contents: read
+  deployments: read
+  statuses: write
+
 jobs:
   test:
     # Only run when Vercel deployment succeeds
