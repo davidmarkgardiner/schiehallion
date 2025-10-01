@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import type { ReactNode } from 'react'
 
 import NavUserProfile from '@/components/NavUserProfile'
+import { cn } from '@/lib/utils'
 
 interface NavigationLink {
   label: string
@@ -25,25 +26,20 @@ interface SiteNavigationProps {
   sectionLinks?: NavigationLink[]
 }
 
-const basePrimaryClasses =
-  'whitespace-nowrap rounded-full px-3 py-1.5 text-[11px] font-semibold uppercase tracking-[0.25em] transition-colors'
-const baseSectionClasses =
-  'whitespace-nowrap rounded-full px-3 py-1 text-[10px] font-medium uppercase tracking-[0.3em] transition-colors'
-
 const palettes = {
   landing: {
-    primary: {
-      active: 'bg-lundies-heather/30 text-lundies-charcoal shadow-sm',
-      inactive: 'text-lundies-moss hover:bg-lundies-heather/20 hover:text-lundies-charcoal',
-    },
-    section: 'text-lundies-peat hover:text-lundies-charcoal',
+    shell: 'border-lundies-stone/40 bg-white/70 shadow-sm backdrop-blur-xl',
+    link: 'text-lundies-charcoal/70 hover:text-lundies-charcoal',
+    activeLink: 'text-lundies-charcoal',
+    indicator: 'bg-lundies-charcoal',
+    sectionLink: 'text-lundies-moss/80 hover:text-lundies-charcoal',
   },
   standard: {
-    primary: {
-      active: 'bg-lundies-stone text-lundies-charcoal shadow-sm',
-      inactive: 'text-lundies-moss hover:bg-lundies-stone/80 hover:text-lundies-charcoal',
-    },
-    section: 'text-lundies-peat hover:text-lundies-charcoal',
+    shell: 'border-lundies-stone/60 bg-white/90 shadow-sm backdrop-blur',
+    link: 'text-lundies-peat hover:text-lundies-charcoal',
+    activeLink: 'text-lundies-charcoal',
+    indicator: 'bg-lundies-peat',
+    sectionLink: 'text-lundies-peat/80 hover:text-lundies-charcoal',
   },
 } as const
 
@@ -76,38 +72,56 @@ export default function SiteNavigation({
   const palette = palettes[layout]
 
   return (
-    <div className={`flex flex-col gap-4 text-lundies-charcoal ${className}`}>
-      <div className="flex flex-col gap-4 md:grid md:grid-cols-[auto,1fr,auto] md:items-center">
-        <Link href="/" className="font-semibold tracking-wide text-lundies-charcoal">
+    <nav className={cn('flex flex-col gap-3 text-lundies-charcoal', className)} aria-label="Primary">
+      <div
+        className={cn(
+          'flex flex-col gap-3 rounded-full border px-5 py-4 md:flex-row md:items-center md:justify-between',
+          palette.shell
+        )}
+      >
+        <Link
+          href="/"
+          className="text-sm font-semibold uppercase tracking-[0.3em] text-lundies-charcoal"
+          aria-label="Schiehallion Hotel home"
+        >
           Schiehallion Hotel
         </Link>
 
-        <div className="order-last -mx-2 overflow-x-auto md:order-none md:justify-self-center">
-          <div className="flex min-w-fit items-center gap-2 px-2 md:flex-wrap md:justify-center">
-            {primaryLinks.map((link) => {
-              const isActive = isActiveLink(link.href, pathname)
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className={`${basePrimaryClasses} ${
-                    isActive ? palette.primary.active : palette.primary.inactive
-                  }`}
-                  aria-current={isActive ? 'page' : undefined}
-                >
-                  {link.label}
-                </Link>
-              )
-            })}
-          </div>
+        <div className="-mx-3 flex items-center gap-1 overflow-x-auto px-3 md:flex-1 md:justify-center">
+          {primaryLinks.map((link) => {
+            const active = isActiveLink(link.href, pathname)
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={cn(
+                  'relative whitespace-nowrap px-3 py-1 text-[11px] font-medium uppercase tracking-[0.35em] transition-colors',
+                  active ? palette.activeLink : palette.link
+                )}
+                aria-current={active ? 'page' : undefined}
+              >
+                {link.label}
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    'pointer-events-none absolute inset-x-2 -bottom-1 h-[2px] origin-center scale-x-0 rounded-full transition',
+                    palette.indicator,
+                    active && 'scale-x-100'
+                  )}
+                />
+              </Link>
+            )
+          })}
         </div>
 
-        <div className="order-2 flex items-center justify-end gap-3 md:order-none">
+        <div className="flex items-center justify-end gap-2 md:flex-none">
           {actionSlot}
-          {/* Admin Panel Link */}
           <Link
             href="/admin"
-            className={`${basePrimaryClasses} ${palette.primary.inactive} text-xs`}
+            className={cn(
+              'rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.3em] transition-colors',
+              palette.link
+            )}
             title="Admin Panel"
           >
             ⚙️ Admin
@@ -117,16 +131,23 @@ export default function SiteNavigation({
       </div>
 
       {sectionLinks.length > 0 ? (
-        <div className="-mx-2 overflow-x-auto">
-          <div className="flex min-w-fit items-center gap-2 px-2 md:flex-wrap md:justify-center">
+        <div className="-mx-4 overflow-x-auto px-4">
+          <div className="flex min-w-fit items-center justify-center gap-3 py-1">
             {sectionLinks.map((link) => (
-              <Link key={link.label} href={link.href} className={`${baseSectionClasses} ${palette.section}`}>
+              <Link
+                key={link.label}
+                href={link.href}
+                className={cn(
+                  'whitespace-nowrap text-[10px] uppercase tracking-[0.4em] transition-colors',
+                  palette.sectionLink
+                )}
+              >
                 {link.label}
               </Link>
             ))}
           </div>
         </div>
       ) : null}
-    </div>
+    </nav>
   )
 }

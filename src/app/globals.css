@@ -4,6 +4,7 @@
 
 :root {
   color-scheme: light;
+  font-family: var(--font-sans), 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --surface-base: 245 241 235;
   --surface-muted: 233 226 215;
   --surface-accent: 215 205 193;
@@ -11,6 +12,10 @@
   --accent-brown: 139 109 90;
   --text-primary: 26 23 20;
   --text-muted: 96 92 84;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -26,8 +31,34 @@ body {
       rgb(var(--surface-muted)) 45%,
       rgb(var(--surface-accent))
     );
+  font-family: inherit;
+  line-height: 1.6;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-serif), 'Playfair Display', 'Times New Roman', serif;
+  letter-spacing: 0.01em;
+}
+
+p {
+  font-size: 1rem;
+}
+
+a {
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 /* Image loading animations */
@@ -49,6 +80,18 @@ body {
   }
 }
 
+@keyframes scrollPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(10px);
+  }
+}
+
 /* Custom animations for image loading */
 .animate-shimmer {
   animation: shimmer 2s infinite;
@@ -58,8 +101,18 @@ body {
   animation: fadeIn 0.5s ease-out;
 }
 
+.scroll-indicator-bar {
+  animation: scrollPulse 3s ease-in-out infinite;
+}
+
 /* Optimize image rendering */
 img {
   image-rendering: -webkit-optimize-contrast;
   image-rendering: optimize-contrast;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scroll-indicator-bar {
+    animation: none;
+  }
 }
