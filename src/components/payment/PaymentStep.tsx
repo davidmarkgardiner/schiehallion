@@ -48,6 +48,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
   const [isConfirming, setIsConfirming] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [retryCount, setRetryCount] = useState(0)
+  const [lastPaymentIntentId, setLastPaymentIntentId] = useState<string | null>(null)
   const maxRetries = 3
 
   useEffect(() => {
@@ -108,8 +109,15 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
       return
     }
 
+    // Prevent duplicate confirmation for same payment intent
+    if (lastPaymentIntentId === paymentIntentId) {
+      console.log('Payment already confirmed for this intent, skipping...', paymentIntentId)
+      return
+    }
+
     try {
       setIsConfirming(true)
+      setLastPaymentIntentId(paymentIntentId)
       console.log('Starting payment confirmation for:', paymentIntentId)
 
       // Confirm payment on server
@@ -146,7 +154,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
     } finally {
       setIsConfirming(false)
     }
-  }, [isConfirming, user, onPaymentSuccess, onPaymentError])
+  }, [isConfirming, lastPaymentIntentId, user, onPaymentSuccess, onPaymentError])
 
   const handlePaymentError = (errorMessage: string) => {
     setError(errorMessage)

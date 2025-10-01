@@ -82,9 +82,8 @@ service cloud.firestore {
     match /rooms/{roomId} {
       // Allow anyone to read room information (public information)
       allow read: if true;
-      // Only managers and admins can create/update/delete rooms
-      // For now, allow all authenticated users to write (will tighten after testing)
-      allow write: if isAuthenticated();
+      // Only staff (managers and admins) can create/update/delete rooms
+      allow write: if isStaff();
     }
 
     // SCHH-008: Hotel Bookings Collection

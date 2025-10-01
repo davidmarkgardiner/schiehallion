@@ -58,6 +58,10 @@ export class PaymentService {
         guestName: request.guestName,
       }
 
+      // Create idempotency key to prevent duplicate charges
+      // Uses booking IDs and user ID to ensure uniqueness per booking attempt
+      const idempotencyKey = `payment_${request.bookingIds.sort().join('_')}_${request.guestUserId}`
+
       const paymentIntent = await stripe.paymentIntents.create({
         amount,
         currency: request.currency || 'gbp',
@@ -73,6 +77,8 @@ export class PaymentService {
             request_three_d_secure: 'automatic',
           },
         },
+      }, {
+        idempotencyKey,
       })
 
       if (!paymentIntent.client_secret) {
