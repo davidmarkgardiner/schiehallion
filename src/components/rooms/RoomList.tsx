@@ -72,7 +72,7 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
 
         // Add timeout to prevent infinite loading
         const timeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Room loading timeout')), 5000)
+          setTimeout(() => reject(new Error('Room loading timeout')), 2000)
         )
 
         let roomsData: Room[]

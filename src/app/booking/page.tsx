@@ -25,7 +25,7 @@ export default function BookingPage() {
 
         // Add timeout to prevent infinite loading
         const timeoutPromise = new Promise<never>((_, reject) =>
-          setTimeout(() => reject(new Error('Firebase query timeout')), 5000)
+          setTimeout(() => reject(new Error('Firebase query timeout')), 2000)
         )
 
         const rooms = await Promise.race([
