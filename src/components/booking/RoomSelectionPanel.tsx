@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { PackageType, Room } from '@/types/hotel'
 import { PACKAGE_OPTIONS, useCartStore } from '@/store/cartStore'
+import { AvailabilityService } from '@/lib/firebase/hotel-service'
 
 interface RoomSelectionPanelProps {
   availableRooms: Room[]
@@ -38,16 +39,48 @@ export const RoomSelectionPanel: React.FC<RoomSelectionPanelProps> = ({
   const [selectedPackage, setSelectedPackage] = useState<PackageType>('room-only')
   const [error, setError] = useState<string | null>(null)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
+  const [dateFilteredRooms, setDateFilteredRooms] = useState<Room[]>(availableRooms)
+
+  // Filter rooms by selected dates
+  useEffect(() => {
+    const filterRoomsByDates = async () => {
+      if (!checkInDate || !checkOutDate) {
+        // No dates selected - show all rooms
+        setDateFilteredRooms(availableRooms)
+        return
+      }
+
+      try {
+        // Get room IDs that are available for selected dates
+        const availableRoomIds = await AvailabilityService.getAvailableRoomIds(checkInDate, checkOutDate)
+
+        // Filter the available rooms to only include those that are available for the dates
+        const filtered = availableRooms.filter(room => availableRoomIds.includes(room.id))
+        setDateFilteredRooms(filtered)
+
+        // If currently selected room is no longer available, clear selection
+        if (selectedRoomId && !availableRoomIds.includes(selectedRoomId)) {
+          setSelectedRoomId(filtered.length > 0 ? filtered[0].id : null)
+        }
+      } catch (error) {
+        console.error('[RoomSelectionPanel] Error filtering rooms by dates:', error)
+        // On error, show all rooms as fallback
+        setDateFilteredRooms(availableRooms)
+      }
+    }
+
+    filterRoomsByDates()
+  }, [checkInDate, checkOutDate, availableRooms, selectedRoomId])
 
   useEffect(() => {
-    if (availableRooms.length > 0) {
-      setSelectedRoomId(prev => prev ?? availableRooms[0].id)
+    if (dateFilteredRooms.length > 0) {
+      setSelectedRoomId(prev => prev ?? dateFilteredRooms[0].id)
     }
-  }, [availableRooms])
+  }, [dateFilteredRooms])
 
   const selectedRoom = useMemo(
-    () => availableRooms.find(room => room.id === selectedRoomId) ?? null,
-    [availableRooms, selectedRoomId]
+    () => dateFilteredRooms.find(room => room.id === selectedRoomId) ?? null,
+    [dateFilteredRooms, selectedRoomId]
   )
 
   const today = useMemo(() => toDateInputValue(new Date()), [])
@@ -200,7 +233,7 @@ export const RoomSelectionPanel: React.FC<RoomSelectionPanelProps> = ({
           <div>
             <h3 className="text-lg font-semibold text-lundies-charcoal mb-3">Choose your room</h3>
             <div className="grid gap-4 md:grid-cols-2">
-              {availableRooms.map(room => {
+              {dateFilteredRooms.map(room => {
                 const isSelected = selectedRoomId === room.id
                 return (
                   <button

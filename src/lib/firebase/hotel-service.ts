@@ -426,13 +426,23 @@ export class AvailabilityService {
 
   // Get daily availability document
   static async getDailyAvailability(date: string): Promise<DailyAvailability | null> {
-    const docRef = doc(db, COLLECTIONS.DAILY_AVAILABILITY, date)
-    const docSnap = await getDoc(docRef)
+    try {
+      // Add timeout to prevent hanging Firebase queries
+      const timeoutPromise = new Promise<never>((_, reject) =>
+        setTimeout(() => reject(new Error('Daily availability query timeout')), 2000)
+      )
 
-    if (docSnap.exists()) {
-      return { id: docSnap.id, ...docSnap.data() } as DailyAvailability
+      const docRef = doc(db, COLLECTIONS.DAILY_AVAILABILITY, date)
+      const docSnap = await Promise.race([getDoc(docRef), timeoutPromise])
+
+      if (docSnap.exists()) {
+        return { id: docSnap.id, ...docSnap.data() } as DailyAvailability
+      }
+      return null
+    } catch (error) {
+      console.warn(`[AvailabilityService] Failed to get availability for ${date}, assuming no rooms available:`, error)
+      return null // Return null to exclude this date's rooms from availability
     }
-    return null
   }
 
   // Update availability for a booking action
