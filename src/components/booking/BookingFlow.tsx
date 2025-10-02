@@ -160,6 +160,47 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
     refreshBookingHistory()
   }, [refreshBookingHistory])
 
+  // Validate cart items on mount - remove any that are no longer available
+  useEffect(() => {
+    const validateCart = async () => {
+      if (items.length === 0) return
+
+      const { AvailabilityService } = isTestMode
+        ? await import('@/lib/firebase/hotel-service-mock')
+        : await import('@/lib/firebase/hotel-service')
+
+      const itemsToRemove: string[] = []
+
+      for (const item of items) {
+        try {
+          const isAvailable = await AvailabilityService.checkRoomAvailability(
+            item.room.id,
+            item.checkInDate,
+            item.checkOutDate
+          )
+
+          if (!isAvailable) {
+            console.warn(`[BookingFlow] Removing unavailable item from cart:`, item)
+            itemsToRemove.push(item.id)
+          }
+        } catch (err) {
+          console.error('[BookingFlow] Failed to validate cart item:', err)
+        }
+      }
+
+      // Remove all unavailable items at once
+      if (itemsToRemove.length > 0) {
+        itemsToRemove.forEach(id => {
+          const { removeItem } = useCartStore.getState()
+          removeItem(id)
+        })
+        setError(`${itemsToRemove.length} room${itemsToRemove.length > 1 ? 's' : ''} in your cart ${itemsToRemove.length > 1 ? 'are' : 'is'} no longer available and ${itemsToRemove.length > 1 ? 'have' : 'has'} been removed.`)
+      }
+    }
+
+    validateCart()
+  }, []) // Run once on mount
+
   // Auto-close login modal and proceed after user logs in
   useEffect(() => {
     if (user && showLoginModal) {

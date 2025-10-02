@@ -14,6 +14,7 @@ import {
 
 interface CartState {
   items: CartItem[]
+  version: number // Cart storage version to force clear on breaking changes
 
   // Actions
   addItem: (item: Omit<CartItem, 'id' | 'addedAt'>) => Promise<void>
@@ -29,6 +30,9 @@ interface CartState {
   // Drag and drop support
   addRoomFromDrop: (result: DragDropResult) => void
 }
+
+// Current cart version - increment when data structure or validation logic changes
+const CART_VERSION = 2 // v2: Added date-based room filtering
 
 // Package options configuration
 export const PACKAGE_OPTIONS: Record<PackageType, PackageOption> = {
@@ -113,6 +117,7 @@ export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
+      version: CART_VERSION,
 
       addItem: async (itemData) => {
         // Check availability before adding to cart
@@ -288,9 +293,18 @@ export const useCartStore = create<CartState>()(
           ...item,
           // Convert Date objects to strings for storage
           addedAt: item.addedAt.toISOString()
-        }))
+        })),
+        version: state.version
       }),
       onRehydrateStorage: () => (state) => {
+        // Check version and clear cart if outdated
+        if (state && state.version !== CART_VERSION) {
+          console.warn(`[CartStore] Cart version mismatch (stored: ${state.version}, current: ${CART_VERSION}). Clearing cart.`)
+          state.items = []
+          state.version = CART_VERSION
+          return
+        }
+
         // Convert stored date strings back to Date objects
         if (state?.items) {
           state.items = state.items.map(item => ({
