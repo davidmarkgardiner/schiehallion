@@ -220,7 +220,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
     }
   }
 
-  const handleProceedToGuestInfo = () => {
+  const handleProceedToGuestInfo = async () => {
     if (cartSummary.itemCount === 0) {
       setError('Please add at least one room to your cart before proceeding.')
       return
@@ -232,8 +232,34 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
       return
     }
 
-    setCurrentStep('guest-info')
-    setShowCart(false)
+    // Validate cart items availability before proceeding
+    try {
+      setIsLoading(true)
+      const { AvailabilityService } = isTestMode
+        ? await import('@/lib/firebase/hotel-service-mock')
+        : await import('@/lib/firebase/hotel-service')
+
+      for (const item of cartSummary.items) {
+        const isAvailable = await AvailabilityService.checkRoomAvailability(
+          item.room.id,
+          item.checkInDate,
+          item.checkOutDate
+        )
+
+        if (!isAvailable) {
+          setError(`${item.room.type} room (${item.room.roomNumber}) is no longer available for your selected dates. Please remove it from your cart and select another room.`)
+          return
+        }
+      }
+
+      setCurrentStep('guest-info')
+      setShowCart(false)
+    } catch (err) {
+      console.error('Cart validation failed:', err)
+      setError(err instanceof Error ? err.message : 'Failed to validate cart items. Please try again.')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleGuestInfoSubmit = (data: GuestFormData) => {
@@ -252,6 +278,23 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
     setError(null)
 
     try {
+      // Re-check availability for all cart items before creating bookings
+      const { AvailabilityService } = isTestMode
+        ? await import('@/lib/firebase/hotel-service-mock')
+        : await import('@/lib/firebase/hotel-service')
+
+      for (const item of cartSummary.items) {
+        const isAvailable = await AvailabilityService.checkRoomAvailability(
+          item.room.id,
+          item.checkInDate,
+          item.checkOutDate
+        )
+
+        if (!isAvailable) {
+          throw new Error(`${item.room.type} room (${item.room.roomNumber}) is no longer available for your selected dates. Please return to room selection and choose another room.`)
+        }
+      }
+
       const createdBookingIds = []
       const preferenceSnapshot = buildPreferenceSnapshot(guestInfo.preferences)
 
