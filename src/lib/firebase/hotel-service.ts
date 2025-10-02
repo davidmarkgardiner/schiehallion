@@ -345,6 +345,8 @@ export class AvailabilityService {
 
   // Check if a specific room is available for date range
   static async checkRoomAvailability(roomId: string, checkIn: string, checkOut: string): Promise<boolean> {
+    console.log(`[AvailabilityService] Checking availability for room ${roomId} from ${checkIn} to ${checkOut}`)
+
     try {
       // Add timeout to prevent infinite loading (2 seconds)
       const timeoutPromise = new Promise<never>((_, reject) =>
@@ -353,6 +355,7 @@ export class AvailabilityService {
 
       const availabilityCheck = async () => {
         const dates = this.getDateRange(checkIn, checkOut)
+        console.log(`[AvailabilityService] Checking ${dates.length} dates:`, dates)
 
         for (const date of dates) {
           const availability = await this.getDailyAvailability(date)
@@ -361,7 +364,10 @@ export class AvailabilityService {
             // Auto-initialize missing availability for this date
             await this.initializeDailyAvailability(date)
             const retryAvailability = await this.getDailyAvailability(date)
-            if (!retryAvailability) return false
+            if (!retryAvailability) {
+              console.error(`[AvailabilityService] Failed to initialize availability for ${date}, returning false`)
+              return false
+            }
 
             // Continue with the retry
             const roomData = await RoomService.getRoom(roomId)
@@ -376,14 +382,23 @@ export class AvailabilityService {
 
           // Check if room is available in any room type
           const roomData = await RoomService.getRoom(roomId)
-          if (!roomData) return false
+          if (!roomData) {
+            console.error(`[AvailabilityService] Room ${roomId} not found in database`)
+            return false
+          }
 
           const typeAvailability = availability.availability[roomData.type]
           if (!typeAvailability || !typeAvailability.roomIds.available.includes(roomId)) {
+            console.error(`[AvailabilityService] Room ${roomId} (${roomData.type}) NOT available on ${date}`, {
+              typeAvailability,
+              availableRoomIds: typeAvailability?.roomIds.available || []
+            })
             return false
           }
+          console.log(`[AvailabilityService] Room ${roomId} (${roomData.type}) IS available on ${date}`)
         }
 
+        console.log(`[AvailabilityService] Room ${roomId} is available for all dates`)
         return true
       }
 
@@ -404,7 +419,11 @@ export class AvailabilityService {
       const date = dates[i]
       const availability = await this.getDailyAvailability(date)
 
-      if (!availability) continue
+      // If no availability document exists for any date, no rooms are available
+      if (!availability) {
+        console.warn(`[AvailabilityService] No availability for ${date}, returning empty array`)
+        return []
+      }
 
       const dayAvailableRooms: string[] = []
       Object.values(availability.availability).forEach(typeAvail => {
@@ -436,11 +455,20 @@ export class AvailabilityService {
       const docSnap = await Promise.race([getDoc(docRef), timeoutPromise])
 
       if (docSnap.exists()) {
-        return { id: docSnap.id, ...docSnap.data() } as DailyAvailability
+        const data = { id: docSnap.id, ...docSnap.data() } as DailyAvailability
+        console.log(`[AvailabilityService] Found availability for ${date}:`, {
+          standard: data.availability.standard?.roomIds.available.length || 0,
+          deluxe: data.availability.deluxe?.roomIds.available.length || 0,
+          suite: data.availability.suite?.roomIds.available.length || 0,
+          family: data.availability.family?.roomIds.available.length || 0,
+          accessible: data.availability.accessible?.roomIds.available.length || 0
+        })
+        return data
       }
+      console.warn(`[AvailabilityService] No availability document found for ${date}`)
       return null
     } catch (error) {
-      console.warn(`[AvailabilityService] Failed to get availability for ${date}, assuming no rooms available:`, error)
+      console.error(`[AvailabilityService] Failed to get availability for ${date}:`, error)
       return null // Return null to exclude this date's rooms from availability
     }
   }
