@@ -42,6 +42,7 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
   onBack,
 }) => {
   const { user } = useAuth()
+  const isTestMode = process.env.NEXT_PUBLIC_E2E_TEST_MODE === 'true'
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntentResponse | null>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [isProcessing, setIsProcessing] = useState(false)
@@ -52,8 +53,15 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
   const maxRetries = 3
 
   useEffect(() => {
+    if (isTestMode) {
+      setIsLoading(false)
+      setError(null)
+      return
+    }
+
     createPaymentIntent()
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isTestMode])
 
   const createPaymentIntent = async () => {
     if (!user) {
@@ -172,6 +180,70 @@ export const PaymentStep: React.FC<PaymentStepProps> = ({
 
   const formatPrice = (priceInPence: number): string => {
     return `£${(priceInPence / 100).toFixed(2)}`
+  }
+
+  if (isTestMode) {
+    const testFailureMessage = 'Test payment failure triggered'
+
+    return (
+      <div className="max-w-2xl mx-auto space-y-6">
+        <div className="rounded-3xl border border-white/10 bg-slate-900/80 backdrop-blur-sm p-8">
+          <h2 className="text-2xl font-semibold text-white mb-3">Test Payment Mode</h2>
+          <p className="text-slate-300 text-sm leading-relaxed">
+            Real Stripe requests are disabled for automated runs. Use the actions below to validate the booking
+            journey without external dependencies.
+          </p>
+
+          <div className="mt-4 rounded-2xl border border-white/10 bg-white/5 p-4 text-slate-200 text-sm">
+            <div className="flex justify-between items-center">
+              <span>Total amount</span>
+              <span className="text-lg font-semibold text-white">
+                {formatPrice(cartSummary.total)}
+              </span>
+            </div>
+            <p className="mt-2 text-xs text-slate-400">
+              Guest: {guestInfo.personalInfo.firstName} {guestInfo.personalInfo.lastName} · {guestInfo.personalInfo.email}
+            </p>
+          </div>
+        </div>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <button
+            type="button"
+            data-testid="e2e-complete-test-payment"
+            className="rounded-full bg-emerald-500/90 px-6 py-3 text-sm font-semibold text-emerald-950 shadow hover:bg-emerald-400"
+            onClick={() => onPaymentSuccess('pi_e2e_test_success')}
+          >
+            Complete Test Payment
+          </button>
+          <button
+            type="button"
+            data-testid="e2e-fail-test-payment"
+            className="rounded-full border border-rose-400/80 px-6 py-3 text-sm font-semibold text-rose-200 hover:bg-rose-500/10"
+            onClick={() => {
+              setError(testFailureMessage)
+              onPaymentError(testFailureMessage)
+            }}
+          >
+            Simulate Payment Failure
+          </button>
+        </div>
+
+        {error && (
+          <div className="rounded-xl border border-rose-500/30 bg-rose-950/40 p-4 text-sm text-rose-200">
+            {error}
+          </div>
+        )}
+
+        <button
+          type="button"
+          onClick={onBack}
+          className="inline-flex items-center gap-2 rounded-full border border-white/20 px-5 py-2 text-sm text-slate-200 hover:bg-white/10"
+        >
+          ← Back to Package Selection
+        </button>
+      </div>
+    )
   }
 
   if (isLoading) {

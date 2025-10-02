@@ -36,36 +36,56 @@ export default function AvailabilityCalendar({
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [availabilityData, setAvailabilityData] = useState<Record<string, DailyAvailability>>({})
   const [loading, setLoading] = useState(false)
+  const [showLoading, setShowLoading] = useState(false)
 
   // Load availability data for current month
   useEffect(() => {
     const loadAvailabilityData = async () => {
+      const startTime = Date.now()
       setLoading(true)
+      setShowLoading(true)
+
       try {
         const startOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth(), 1)
         const endOfMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0)
-        const data: Record<string, DailyAvailability> = {}
-        
-        // Load availability for each day of the month
+
+        // Build array of dates to fetch
+        const dates: string[] = []
         const currentDate = new Date(startOfMonth)
         while (currentDate <= endOfMonth) {
-          const dateStr = currentDate.toISOString().split('T')[0]
-          try {
-            const dayAvailability = await AvailabilityService.getDailyAvailability(dateStr)
-            if (dayAvailability) {
-              data[dateStr] = dayAvailability
-            }
-          } catch (error) {
-            console.warn(`Failed to load availability for ${dateStr}:`, error)
-          }
+          dates.push(currentDate.toISOString().split('T')[0])
           currentDate.setDate(currentDate.getDate() + 1)
         }
-        
+
+        // Fetch all dates in parallel for faster loading
+        const results = await Promise.allSettled(
+          dates.map(dateStr => AvailabilityService.getDailyAvailability(dateStr))
+        )
+
+        const data: Record<string, DailyAvailability> = {}
+        results.forEach((result, index) => {
+          if (result.status === 'fulfilled' && result.value) {
+            data[dates[index]] = result.value
+          }
+        })
+
         setAvailabilityData(data)
       } catch (error) {
         console.error('Failed to load availability data:', error)
       } finally {
-        setLoading(false)
+        // Ensure loading indicator shows for at least 300ms so user sees the feedback
+        const elapsed = Date.now() - startTime
+        const minDelay = 300
+
+        if (elapsed < minDelay) {
+          setTimeout(() => {
+            setLoading(false)
+            setShowLoading(false)
+          }, minDelay - elapsed)
+        } else {
+          setLoading(false)
+          setShowLoading(false)
+        }
       }
     }
 
@@ -237,23 +257,23 @@ export default function AvailabilityCalendar({
   const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+    <div className="relative rounded-3xl bg-white p-8">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <h3 className="text-xl font-semibold text-white">Select Dates</h3>
+        <h3 className="text-2xl font-semibold text-lundies-charcoal">Select Dates</h3>
         <div className="flex items-center gap-4">
           <button
             onClick={() => navigateMonth('prev')}
-            className="w-8 h-8 rounded-full border border-white/20 text-white hover:bg-white/10 transition-colors flex items-center justify-center"
+            className="w-10 h-10 rounded-full border-2 border-lundies-stone bg-lundies-stone/20 text-lundies-charcoal hover:bg-lundies-heather/30 transition-colors flex items-center justify-center font-bold"
           >
             ←
           </button>
-          <div className="text-lg font-medium text-white min-w-[140px] text-center">
+          <div className="text-lg font-semibold text-lundies-charcoal min-w-[160px] text-center">
             {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
           </div>
           <button
             onClick={() => navigateMonth('next')}
-            className="w-8 h-8 rounded-full border border-white/20 text-white hover:bg-white/10 transition-colors flex items-center justify-center"
+            className="w-10 h-10 rounded-full border-2 border-lundies-stone bg-lundies-stone/20 text-lundies-charcoal hover:bg-lundies-heather/30 transition-colors flex items-center justify-center font-bold"
           >
             →
           </button>
@@ -287,7 +307,7 @@ export default function AvailabilityCalendar({
       {/* Day Headers */}
       <div className="grid grid-cols-7 gap-1 mb-2">
         {dayNames.map(day => (
-          <div key={`header-${day}`} className="text-center text-xs font-medium text-lundies-peat py-2">
+          <div key={`header-${day}`} className="text-center text-sm font-semibold text-lundies-moss py-2">
             {day}
           </div>
         ))}
@@ -295,48 +315,48 @@ export default function AvailabilityCalendar({
 
       {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-1">
-        {calendarDays.map((day) => {
+        {calendarDays.map((day, index) => {
           const dayClasses = [
-            'relative h-16 rounded-lg border transition-all cursor-pointer text-center p-1',
-            day.isCurrentMonth ? 'border-white/10' : 'border-white/5',
-            day.isBlocked ? 'cursor-not-allowed opacity-50' : 'hover:bg-white/10',
-            day.isSelected ? 'bg-lundies-heather/30 border-lundies-heather/50' : '',
-            day.isInRange ? 'bg-lundies-heather/20' : '',
-            !day.isCurrentMonth ? 'text-lundies-peat' : 'text-white',
+            'relative h-20 rounded-xl border-2 transition-all cursor-pointer text-center p-2',
+            day.isCurrentMonth ? 'border-lundies-stone/40 bg-lundies-linen/30' : 'border-lundies-stone/20 bg-lundies-stone/10',
+            day.isBlocked ? 'cursor-not-allowed opacity-40' : 'hover:bg-lundies-heather/20 hover:border-lundies-heather',
+            day.isSelected ? 'bg-lundies-heather/40 border-lundies-heather shadow-md' : '',
+            day.isInRange ? 'bg-lundies-heather/20 border-lundies-heather/50' : '',
+            !day.isCurrentMonth ? 'text-lundies-peat' : 'text-lundies-charcoal font-medium',
           ].filter(Boolean).join(' ')
 
           return (
             <div
-              key={day.date.toISOString()}
+              key={`${day.date.toISOString()}-${index}`}
               className={dayClasses}
               onClick={() => handleDateClick(day.date, day)}
             >
-              <div className="text-sm font-medium">
+              <div className="text-base font-bold">
                 {day.date.getDate()}
               </div>
-              
+
               {day.isCurrentMonth && day.availability !== undefined && (
                 <div className="text-xs mt-1">
                   {day.availability > 0 ? (
-                    <div className={`text-lundies-heather ${day.isPeak ? 'font-bold' : ''}`}>
+                    <div className={`text-green-700 ${day.isPeak ? 'font-bold' : ''}`}>
                       {day.availability} left
                     </div>
                   ) : (
-                    <div className="text-red-300">Full</div>
+                    <div className="text-red-600 font-semibold">Full</div>
                   )}
                 </div>
               )}
-              
+
               {day.isCurrentMonth && day.price && (
-                <div className={`absolute bottom-1 left-1/2 -translate-x-1/2 text-xs ${
-                  day.isPeak ? 'text-lundies-sand font-bold' : 'text-lundies-stone'
+                <div className={`absolute bottom-2 left-1/2 -translate-x-1/2 text-xs font-semibold ${
+                  day.isPeak ? 'text-orange-600' : 'text-lundies-moss'
                 }`}>
                   {formatPrice(day.price)}
                 </div>
               )}
 
               {day.isPeak && day.isCurrentMonth && (
-                <div className="absolute top-1 right-1 w-2 h-2 bg-yellow-400 rounded-full"></div>
+                <div className="absolute top-2 right-2 w-2.5 h-2.5 bg-yellow-500 rounded-full shadow-sm"></div>
               )}
             </div>
           )
@@ -344,28 +364,31 @@ export default function AvailabilityCalendar({
       </div>
 
       {/* Legend */}
-      <div className="mt-6 flex flex-wrap items-center justify-center gap-4 text-xs text-lundies-peat">
+      <div className="mt-8 pt-6 border-t-2 border-lundies-stone/30 flex flex-wrap items-center justify-center gap-6 text-sm text-lundies-charcoal">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded bg-lundies-heather/30 border border-lundies-heather/50"></div>
-          <span>Selected</span>
+          <div className="w-4 h-4 rounded bg-lundies-heather/40 border-2 border-lundies-heather"></div>
+          <span className="font-medium">Selected</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded bg-lundies-heather/20"></div>
-          <span>In Range</span>
+          <div className="w-4 h-4 rounded bg-lundies-heather/20 border-2 border-lundies-heather/50"></div>
+          <span className="font-medium">In Range</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-2 h-2 bg-yellow-400 rounded-full"></div>
-          <span>Peak Season</span>
+          <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+          <span className="font-medium">Peak Season</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded bg-lundies-charcoal"></div>
-          <span>Unavailable</span>
+          <div className="w-4 h-4 rounded bg-gray-300 border-2 border-gray-400"></div>
+          <span className="font-medium">Unavailable</span>
         </div>
       </div>
 
-      {loading && (
-        <div className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-3xl flex items-center justify-center">
-          <div className="text-white">Loading availability...</div>
+      {showLoading && (
+        <div className="absolute inset-0 bg-lundies-charcoal/80 backdrop-blur-md rounded-3xl flex items-center justify-center z-10">
+          <div className="flex flex-col items-center gap-3 bg-white px-8 py-6 rounded-2xl shadow-2xl border-2 border-lundies-heather">
+            <div className="w-10 h-10 border-4 border-lundies-stone/30 border-t-lundies-heather rounded-full animate-spin"></div>
+            <div className="text-lundies-charcoal font-semibold text-lg">Loading availability...</div>
+          </div>
         </div>
       )}
     </div>

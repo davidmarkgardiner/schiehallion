@@ -12,9 +12,11 @@ interface RoomCardProps {
   room: Room
   viewMode: 'grid' | 'list'
   onSelect?: (room: Room) => void
+  disabled?: boolean
+  disabledMessage?: string
 }
 
-export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
+export default function RoomCard({ room, viewMode, onSelect, disabled = false, disabledMessage = 'Please select dates first' }: RoomCardProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [imageError, setImageError] = useState(false)
   const [imageLoading, setImageLoading] = useState(true)
@@ -258,12 +260,24 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
           </div>
 
           {onSelect && (
-            <button
-              onClick={() => onSelect(room)}
-              className="w-full sm:w-auto rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-lundies-heather/80"
-            >
-              Select Room
-            </button>
+            <div className="relative group">
+              <button
+                onClick={() => !disabled && onSelect(room)}
+                disabled={disabled}
+                className={`w-full sm:w-auto rounded-full px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] transition ${
+                  disabled
+                    ? 'bg-lundies-stone/40 text-lundies-peat/50 cursor-not-allowed'
+                    : 'bg-lundies-heather text-lundies-charcoal hover:bg-lundies-heather/80'
+                }`}
+              >
+                Select Room
+              </button>
+              {disabled && (
+                <div className="invisible group-hover:visible absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-lundies-charcoal text-white text-xs rounded-lg whitespace-nowrap">
+                  {disabledMessage}
+                </div>
+              )}
+            </div>
           )}
         </div>
       </div>
@@ -380,12 +394,24 @@ export default function RoomCard({ room, viewMode, onSelect }: RoomCardProps) {
         </div>
 
         {onSelect && (
-          <button
-            onClick={() => onSelect(room)}
-            className="w-full rounded-full bg-lundies-heather px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] text-lundies-charcoal transition hover:bg-lundies-heather/80"
-          >
-            Select Room
-          </button>
+          <div className="relative group">
+            <button
+              onClick={() => !disabled && onSelect(room)}
+              disabled={disabled}
+              className={`w-full rounded-full px-6 py-3 text-sm font-semibold uppercase tracking-[0.2em] transition ${
+                disabled
+                  ? 'bg-lundies-stone/40 text-lundies-peat/50 cursor-not-allowed'
+                  : 'bg-lundies-heather text-lundies-charcoal hover:bg-lundies-heather/80'
+              }`}
+            >
+              Select Room
+            </button>
+            {disabled && (
+              <div className="invisible group-hover:visible absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-lundies-charcoal text-white text-xs rounded-lg whitespace-nowrap z-10">
+                {disabledMessage}
+              </div>
+            )}
+          </div>
         )}
       </div>
     </div>

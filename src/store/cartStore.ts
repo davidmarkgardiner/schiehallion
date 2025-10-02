@@ -116,7 +116,11 @@ export const useCartStore = create<CartState>()(
 
       addItem: async (itemData) => {
         // Check availability before adding to cart
-        const { AvailabilityService } = await import('@/lib/firebase/hotel-service')
+        const isTestMode = process.env.NEXT_PUBLIC_E2E_TEST_MODE === 'true'
+
+        const { AvailabilityService } = isTestMode
+          ? await import('@/lib/firebase/hotel-service-mock')
+          : await import('@/lib/firebase/hotel-service')
 
         const isAvailable = await AvailabilityService.checkRoomAvailability(
           itemData.room.id,

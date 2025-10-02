@@ -273,6 +273,8 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
               room={room}
               viewMode={viewMode}
               onSelect={onRoomSelect}
+              disabled={!checkInDate || !checkOutDate}
+              disabledMessage="Please select check-in and check-out dates first"
             />
           ))}
         </div>

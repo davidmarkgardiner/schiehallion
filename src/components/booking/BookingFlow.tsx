@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/context/AuthContext'
 import { useCartStore } from '@/store/cartStore'
 import { BookingService } from '@/lib/firebase/hotel-service'
+import { BookingService as MockBookingService } from '@/lib/firebase/hotel-service-mock'
 import {
   Booking,
   BookingFlowState,
@@ -38,6 +39,11 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
   const router = useRouter()
   const { user, userProfile } = useAuth()
   const { getCartSummary, clearCart, items, updateItem } = useCartStore()
+
+  const isTestMode = process.env.NEXT_PUBLIC_E2E_TEST_MODE === 'true'
+  const ActiveBookingService = isTestMode ? MockBookingService : BookingService
+  const fallbackUserId = isTestMode ? 'mock-user' : null
+  const activeUserId = user?.uid ?? fallbackUserId
 
   const [currentStep, setCurrentStep] = useState<BookingFlowState['currentStep']>(initialStep)
   const [guestInfo, setGuestInfo] = useState<GuestFormData | null>(null)
@@ -119,13 +125,13 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
   )
 
   const refreshBookingHistory = useCallback(async () => {
-    if (!user?.uid) {
+    if (!activeUserId) {
       setBookingHistory([])
       return
     }
 
     try {
-      const bookings = await BookingService.getBookings({ guestUserId: user.uid })
+      const bookings = await ActiveBookingService.getBookings({ guestUserId: activeUserId })
 
       const uniqueEntries = bookings
         .map(transformBookingToHistoryEntry)
@@ -140,7 +146,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
     } catch (historyError) {
       console.warn('Failed to load booking history for personalization', historyError)
     }
-  }, [transformBookingToHistoryEntry, user?.uid])
+  }, [ActiveBookingService, activeUserId, transformBookingToHistoryEntry])
 
   const cartSummary = getCartSummary()
 
@@ -186,7 +192,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
       companions: totalGuests || 1,
       budgetSensitivity,
       stayOccasion: stayOccasion || undefined,
-      isReturningGuest: Boolean(user?.uid && (bookingHistory.length > 0 || accountPreferences || guestInfo)),
+      isReturningGuest: Boolean(activeUserId && (bookingHistory.length > 0 || accountPreferences || guestInfo)),
       checkInMonth: firstItem?.checkInDate
         ? new Date(firstItem.checkInDate).getMonth() + 1
         : undefined,
@@ -196,7 +202,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
     bookingHistory.length,
     guestInfo,
     items,
-    user,
+    activeUserId,
     userProfile?.preferences
   ])
 
@@ -221,7 +227,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
     }
 
     // Require login before proceeding to guest info
-    if (!user) {
+    if (!user && !isTestMode) {
       setShowLoginModal(true)
       return
     }
@@ -237,7 +243,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
 
   const handlePackageSelectionComplete = async () => {
     // Create bookings before payment
-    if (!user || !guestInfo || cartSummary.itemCount === 0) {
+    if (!activeUserId || !guestInfo || cartSummary.itemCount === 0) {
       setError('Missing required information for booking.')
       return
     }
@@ -257,7 +263,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
           : undefined
 
         const bookingData = {
-          guestUserId: user.uid,
+          guestUserId: activeUserId,
           guestInfo: {
             firstName: guestInfo.personalInfo.firstName,
             lastName: guestInfo.personalInfo.lastName,
@@ -318,7 +324,7 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
           statusHistory: [{
             status: 'pending-payment' as const,
             timestamp: Timestamp.now(),
-            changedBy: user.uid,
+            changedBy: activeUserId,
             notes: 'Booking created, awaiting payment'
           }],
           checkInTime: guestInfo.arrival.estimatedArrivalTime
@@ -339,11 +345,11 @@ const BookingFlow: React.FC<BookingFlowProps> = ({
           guestNotes: undefined,
           source: 'direct' as const,
           sourceReference: undefined,
-          createdBy: user.uid,
-          lastUpdatedBy: user.uid
+          createdBy: activeUserId,
+          lastUpdatedBy: activeUserId
         }
 
-        const bookingId = await BookingService.createBooking(bookingData)
+        const bookingId = await ActiveBookingService.createBooking(bookingData)
         createdBookingIds.push(bookingId)
       }
 

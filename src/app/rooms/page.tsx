@@ -220,12 +220,12 @@ export default function RoomsPage() {
 
         {/* Calendar Modal */}
         {showCalendar && (
-          <div className="fixed inset-0 bg-lundies-peat/30 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
             <div className="max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-              <div className="relative">
+              <div className="relative bg-white rounded-3xl shadow-2xl">
                 <button
                   onClick={() => setShowCalendar(false)}
-                  className="absolute top-4 right-4 z-10 w-8 h-8 rounded-full bg-white/80 text-lundies-charcoal hover:bg-white transition-colors flex items-center justify-center"
+                  className="absolute top-4 right-4 z-10 w-10 h-10 rounded-full bg-lundies-charcoal text-white hover:bg-lundies-moss transition-colors flex items-center justify-center text-2xl font-light shadow-lg"
                 >
                   ×
                 </button>

@@ -50,7 +50,7 @@ jobs:
         done
 
     - name: Run Playwright tests against Vercel preview
-      run: npx playwright test tests/e2e-booking-flow.spec.ts
+      run: npx playwright test
       env:
         PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
         NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
@@ -62,6 +62,8 @@ jobs:
         NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
         STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
         STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
+        TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL || 'playwright@example.com' }}
+        TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD || 'playwright' }}
 
     - name: Upload Playwright Report
       uses: actions/upload-artifact@v4

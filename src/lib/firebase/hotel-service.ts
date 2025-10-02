@@ -273,6 +273,11 @@ export class BookingService {
     } as Booking))
   }
 
+  // Get bookings by user ID
+  static async getBookingsByUserId(userId: string): Promise<Booking[]> {
+    return this.getBookings({ guestUserId: userId })
+  }
+
   // Update booking status
   static async updateBookingStatus(
     bookingId: string,

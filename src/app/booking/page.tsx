@@ -10,10 +10,12 @@ import { Room } from '@/types/hotel'
 import BookingFlow from '@/components/booking/BookingFlow'
 import { useAuth } from '@/context/AuthContext'
 import { useRouter } from 'next/navigation'
+import { useCartStore } from '@/store/cartStore'
 
 export default function BookingPage() {
   const [availableRooms, setAvailableRooms] = useState<Room[]>([])
   const [loading, setLoading] = useState(true)
+  const { items } = useCartStore()
 
   useEffect(() => {
     const loadAvailableRooms = async () => {
@@ -62,9 +64,12 @@ export default function BookingPage() {
     )
   }
 
+  // If cart has items, skip room selection and go straight to guest info
+  const initialStep = items.length > 0 ? 'guest-info' : 'room-selection'
+
   return (
     <BookingFlow
-      initialStep="room-selection"
+      initialStep={initialStep}
       availableRooms={availableRooms}
     />
   )

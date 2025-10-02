@@ -93,12 +93,18 @@ service cloud.firestore {
         request.auth.uid == resource.data.guestUserId ||
         request.auth.token.email == resource.data.guestInfo.email
       );
+      // Staff can read all bookings
+      allow read: if isStaff();
       // All authenticated users can create bookings for themselves
       allow create: if isAuthenticated() && request.auth.uid == request.resource.data.guestUserId;
       // Authenticated users can update their own bookings
       allow update: if isAuthenticated() && request.auth.uid == resource.data.guestUserId;
+      // Staff can update any booking
+      allow update: if isStaff();
       // Authenticated users can delete their own bookings
       allow delete: if isAuthenticated() && request.auth.uid == resource.data.guestUserId;
+      // Staff can delete any booking
+      allow delete: if isStaff();
     }
 
     // SCHH-009: Daily Availability Collection

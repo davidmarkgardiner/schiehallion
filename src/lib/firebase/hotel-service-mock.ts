@@ -13,6 +13,9 @@ const createMockTimestamp = (date: Date): Timestamp => ({
   isEqual: (other: Timestamp) => date.getTime() === other.toMillis(),
 } as Timestamp)
 
+const mockBookings: any[] = []
+let mockBookingCounter = 0
+
 // Mock room data for testing Epic 4
 const mockRooms: Room[] = [
   {
@@ -395,16 +398,37 @@ export class RoomService {
 
 // Mock Booking Service
 export class BookingService {
-  static async createBooking(): Promise<string> {
-    return 'mock-booking-id'
+  static async createBooking(bookingData: any = {}): Promise<string> {
+    mockBookingCounter += 1
+    const id = `mock-booking-${mockBookingCounter}`
+    const bookingReference = `SCH-MOCK-${mockBookingCounter.toString().padStart(4, '0')}`
+
+    const now = createMockTimestamp(new Date())
+    mockBookings.push({
+      id,
+      bookingReference,
+      createdAt: now,
+      updatedAt: now,
+      statusHistory: bookingData.statusHistory || [],
+      ...bookingData,
+    })
+
+    return id
   }
 
-  static async getBooking(): Promise<any> {
-    return null
+  static async getBooking(bookingId: string): Promise<any> {
+    return mockBookings.find(booking => booking.id === bookingId) || null
   }
 
-  static async getBookings(): Promise<any[]> {
-    return []
+  static async getBookings(filters: { guestUserId?: string } = {}): Promise<any[]> {
+    if (filters.guestUserId) {
+      return mockBookings.filter(booking => booking.guestUserId === filters.guestUserId)
+    }
+    return [...mockBookings]
+  }
+
+  static async getBookingsByUserId(userId: string): Promise<any[]> {
+    return mockBookings.filter(booking => booking.guestUserId === userId)
   }
 
   static async updateBookingStatus(): Promise<void> {
