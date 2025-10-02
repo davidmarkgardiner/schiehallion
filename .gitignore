@@ -89,3 +89,4 @@ todo
 pnpm-lock.yaml
 build-output.txt
 .vercel
+.env.preview

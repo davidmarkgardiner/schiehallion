@@ -70,17 +70,28 @@ export default function RoomList({ onRoomSelect, checkInDate, checkOutDate, gues
         setLoading(true)
         setError(null)
 
+        // Add timeout to prevent infinite loading
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Room loading timeout')), 5000)
+        )
+
         let roomsData: Room[]
 
         if (checkInDate && checkOutDate) {
           // Get available rooms for specific dates
-          roomsData = await RoomService.getAvailableRooms(checkInDate, checkOutDate, guests)
+          roomsData = await Promise.race([
+            RoomService.getAvailableRooms(checkInDate, checkOutDate, guests),
+            timeoutPromise
+          ])
         } else {
           // Get all rooms
-          roomsData = await RoomService.getRooms({
-            status: 'available',
-            maxOccupancy: guests
-          })
+          roomsData = await Promise.race([
+            RoomService.getRooms({
+              status: 'available',
+              maxOccupancy: guests
+            }),
+            timeoutPromise
+          ])
         }
 
         setRooms(roomsData)

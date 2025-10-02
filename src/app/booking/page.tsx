@@ -22,9 +22,17 @@ export default function BookingPage() {
       setLoading(true)
       try {
         console.log('[BookingPage] Loading available rooms')
-        const rooms = await RoomService.getRooms({
-          status: 'available'
-        })
+
+        // Add timeout to prevent infinite loading
+        const timeoutPromise = new Promise<never>((_, reject) =>
+          setTimeout(() => reject(new Error('Firebase query timeout')), 5000)
+        )
+
+        const rooms = await Promise.race([
+          RoomService.getRooms({ status: 'available' }),
+          timeoutPromise
+        ])
+
         if (rooms.length > 0) {
           setAvailableRooms(rooms)
           return
