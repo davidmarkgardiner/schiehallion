@@ -52,7 +52,8 @@ jobs:
     - name: Run Playwright tests against Vercel preview
       run: npx playwright test
       env:
-        PLAYWRIGHT_TEST_BASE_URL: ${{ github.event.deployment_status.target_url }}
+        # Append bypass token to URL if deployment protection is enabled
+        PLAYWRIGHT_TEST_BASE_URL: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET && format('{0}?x-vercel-protection-bypass={1}', github.event.deployment_status.target_url, secrets.VERCEL_AUTOMATION_BYPASS_SECRET) || github.event.deployment_status.target_url }}
         NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
         NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
         NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
